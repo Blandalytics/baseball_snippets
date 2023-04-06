@@ -1,4 +1,6 @@
-#Jonah Pemstein
+#This is basically Jonah Pemstein's code:
+#https://github.com/japem/stabilization/blob/master/main_code.py
+
 #Cronbach's alpha to measure reliability of different stats
 
 #Import modules
