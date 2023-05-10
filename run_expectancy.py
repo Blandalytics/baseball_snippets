@@ -58,4 +58,4 @@ re_24_df = (pitch_data
 )
 
 ### Commit year to csv
-re_24_df.to_csv(f'RE24 Matrix - {}.csv')
+re_24_df.to_csv(f'RE24 Matrix - {this_year}.csv')
