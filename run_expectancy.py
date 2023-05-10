@@ -46,12 +46,12 @@ pitch_data['inning_runs'] = pitch_data['end_inning_score'].sub(pitch_data['start
 ### Generate a dataframe for the 24 base-out states
 ### 3 outs x 8 base states
 re_24_df = (pitch_data
-            .dropna(subset=['events'])
-            .groupby(['game_year','base_state','outs_when_up'])
+            .dropna(subset=['events']) # Removes pitches that don't end a PA or otherwise change the base-out state
+            .groupby(['game_year','base_state','outs_when_up']) # Find average runs at each base-out state
             ['inning_runs']
             .mean()
             .reset_index()
-            .pivot(index=['game_year','base_state'],
+            .pivot(index=['game_year','base_state'], # Pivots data so that the 2 dimensions are outs and base state
                    columns='outs_when_up',
                    values='inning_runs')
             .copy()
