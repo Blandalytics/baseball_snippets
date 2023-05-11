@@ -4,6 +4,9 @@
 #Cronbach's alpha to measure reliability of different stats
 
 #Import modules
+import numpy as np
+import pandas as pd
+import math
 import random
 import timeit
 import os
