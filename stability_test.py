@@ -49,9 +49,9 @@ def calculate(statlist, # list; string of each stat
               data, # dataframe
               playeridtype, # string; name of ID column
               yearcolumn, # string; name of year column
-              denom_name, # string; denominator name
+              denom_name, # string; denominator name (doesn't need to be in 'data')
               yearrange, # list; selection of years
-              playertype, # string; name for player type (pitchers/hitters/etc)
+              playertype, # string; name for player type (pitchers/hitters/etc) (doesn't need to be in 'data')
               path, # string;' os path to store output
               maxdenom, # integer;  value for largest sample size
               increment, # integer of increment
