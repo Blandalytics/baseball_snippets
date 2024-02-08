@@ -45,7 +45,18 @@ def alpha(prepped):
     varterm = 1-(sum_vary/varx)
     return(kterm * varterm)
 
-def calculate(statlist, data, playeridtype, yearcolumn, denom_name, yearrange, playertype, path, maxdenom, increment, extradenom=[]):
+def calculate(statlist, # list; string of each stat
+              data, # dataframe
+              playeridtype, # string; name of ID column
+              yearcolumn, # string; name of year column
+              denom_name, # string; denominator name
+              yearrange, # list; selection of years
+              playertype, # string; name for player type (pitchers/hitters/etc)
+              path, # string;' os path to store output
+              maxdenom, # integer;  value for largest sample size
+              increment, # integer of increment
+              extradenom=[] # list; additional sample sizes, in addition to the others run by maxdenom & increment combo
+             ):
     #Create dictionary with every increment of denominator desired
     statnum=[]
     for i in range(1, int(maxdenom/increment)):
