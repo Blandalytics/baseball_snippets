@@ -1,5 +1,6 @@
 import streamlit as st
 import datetime
+from datetime import timedelta
 import matplotlib as mpl
 import seaborn as sns
 import requests
@@ -69,7 +70,7 @@ def spin_calcs(data):
     
     return data[['IHB','IVB']]
 
-today = datetime.date.today()
+today = (datetime.datetime.today() - timedelta(hours=6)).date()
 st.header(f"Today's 4-Seam Fastballs by Starters ({today.strftime('%#m/%#d/%Y')})")
 
 def load_savant(date=today):
