@@ -156,7 +156,7 @@ def load_savant(date=today):
             .loc[(player_df['pitch_type']=='FF') &
                     (player_df['Inning'].groupby(player_df['MLBAMID']).transform('min')==1) & 
                     (player_df['Out'].groupby(player_df['MLBAMID']).transform('min')==0)]
-            .groupby(['MLBAMID','Pitcher','P Hand'])
+            .groupby(['Pitcher'])
             [['#','Velo','Ext','IVB','HAVAA','IHB']]
             .agg({
               '#':'count',
