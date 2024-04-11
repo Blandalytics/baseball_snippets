@@ -25,6 +25,8 @@ def adjusted_vaa(dataframe):
     return dataframe[['raw_vaa','adj_vaa']]
 
 def spin_calcs(data):
+    needed_cols = ['Velo','px','pz','vx0','vy0',
+                   'vz0','ax','ay','az','Ext']
     data[needed_cols] = data[needed_cols].astype('float')
     
     ## Formulas
