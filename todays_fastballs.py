@@ -109,6 +109,8 @@ def load_savant(date=today):
                     pitcher_id_list += [pitcher_id]
                     pitcher_name += [x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['pitcher_name']]
                     throws += [x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['p_throws']]
+                    inning += [x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['inning']]
+                    out += [x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['outs']]
                     pitch_id += [pitch]
                     pitch_type += [x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['pitch_type']]
                     velo += [x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['start_speed']]
@@ -122,12 +124,14 @@ def load_savant(date=today):
                     az += [x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['az']]
                     px += [x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['px']]
                     pz += [x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['pz']]
-    
+
     player_df = pd.DataFrame()
     player_df['game_date'] = game_date
     player_df['MLBAMID'] = pitcher_id_list
     player_df['Pitcher'] = pitcher_name
     player_df['P Hand'] = throws
+    player_df['Inning'] = inning
+    player_df['Out'] = out
     player_df['Num Pitches'] = pitch_id
     player_df['pitch_type'] = pitch_type
     player_df['Velo'] = velo
@@ -146,7 +150,9 @@ def load_savant(date=today):
     player_df[['raw_vaa','HAVAA']] = adjusted_vaa(player_df)
   
     return (player_df
-            .loc[player_df['pitch_type']=='FF']
+            .loc[(player_df['pitch_type']=='FF') &
+                    (player_df['Inning'].groupby(player_df['MLBAMID']).transform('min')==1) & 
+                    (player_df['Out'].groupby(player_df['MLBAMID']).transform('min')==0)]
             .groupby(['MLBAMID','Pitcher','P Hand'])
             [['Num Pitches','Velo','Ext','IVB','IHB','HAVAA']]
             .agg({
