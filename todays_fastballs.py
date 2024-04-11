@@ -134,7 +134,7 @@ def load_savant(date=today):
     player_df['P Hand'] = throws
     player_df['Inning'] = inning
     player_df['Out'] = out
-    player_df['Num Pitches'] = pitch_id
+    player_df['#'] = pitch_id
     player_df['pitch_type'] = pitch_type
     player_df['Velo'] = velo
     player_df['Ext'] = extension
@@ -156,16 +156,16 @@ def load_savant(date=today):
                     (player_df['Inning'].groupby(player_df['MLBAMID']).transform('min')==1) & 
                     (player_df['Out'].groupby(player_df['MLBAMID']).transform('min')==0)]
             .groupby(['MLBAMID','Pitcher','P Hand'])
-            [['Num Pitches','Velo','Ext','IVB','HAVAA','IHB']]
+            [['#','Velo','Ext','IVB','HAVAA','IHB']]
             .agg({
-              'Num Pitches':'count',
+              '#':'count',
               'Velo':'mean',
               'Ext':'mean',
               'IVB':'mean',
               'HAVAA':'mean',
               'IHB':'mean',
               })
-            .sort_values('Num Pitches',ascending=False)
+            .sort_values('#',ascending=False)
            )
 
 st.dataframe(load_savant()
