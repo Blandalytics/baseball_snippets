@@ -67,7 +67,10 @@ def spin_calcs(data):
     
     return data[['IHB','IVB']]
 
-def load_savant(date=datetime.date.today()):
+today = datetime.date.today()
+st.title(f"Today's 4-Seam Fastballs ({today.strftime('%#m/%#d/%Y')})")
+
+def load_savant(date=today):
     r = requests.get(f'https://statsapi.mlb.com/api/v1/schedule?sportId=1&date={date}')
     x = r.json()
     
@@ -155,4 +158,10 @@ def load_savant(date=datetime.date.today()):
             .sort_values('Num Pitches',ascending=False)
            )
 
-st.dataframe(load_savant())
+st.dataframe(load_savant()
+             .style
+             .format(precision=1, thousands=',')
+             .background_gradient(axis=0, vmin=91.4, vmax=96.6, cmap="vlag", subset=['Velo'])
+             .background_gradient(axis=0, vmin=5.95, vmax=6.95, cmap="vlag", subset=['Ext'])
+             .background_gradient(axis=0, vmin=12.4, vmax=18.2, cmap="vlag", subset=['IVB'])
+             .background_gradient(axis=0, vmin=0.4, vmax=1.5, cmap="vlag", subset=['HAVAA']))
