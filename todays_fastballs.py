@@ -70,7 +70,7 @@ def spin_calcs(data):
     return data[['IHB','IVB']]
 
 today = datetime.date.today()
-st.title(f"Today's 4-Seam Fastballs ({today.strftime('%#m/%#d/%Y')})")
+st.header(f"Today's 4-Seam Fastballs by Starters ({today.strftime('%#m/%#d/%Y')})")
 
 def load_savant(date=today):
     r = requests.get(f'https://statsapi.mlb.com/api/v1/schedule?sportId=1&date={date}')
@@ -86,6 +86,8 @@ def load_savant(date=today):
     throws = []
     pitch_id = []
     pitch_type = []
+    inning = []
+    out = []
     velo = []
     extension = []
     ivb = []
@@ -124,7 +126,7 @@ def load_savant(date=today):
                     az += [x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['az']]
                     px += [x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['px']]
                     pz += [x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['pz']]
-
+    
     player_df = pd.DataFrame()
     player_df['game_date'] = game_date
     player_df['MLBAMID'] = pitcher_id_list
