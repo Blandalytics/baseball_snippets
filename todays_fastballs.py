@@ -150,21 +150,22 @@ def load_savant(date=today):
     player_df['pz'] = pz
     player_df[['IHB','IVB']] = spin_calcs(player_df)
     player_df['IHB'] = np.where(player_df['P Hand']=='R',player_df['IHB'].mul(-1),player_df['IHB'])
-    player_df[['raw_vaa','HAVAA']] = adjusted_vaa(player_df)
+    player_df[['VAA','HAVAA']] = adjusted_vaa(player_df)
   
     return (player_df
             .loc[(player_df['pitch_type']=='FF') &
                     (player_df['Inning'].groupby(player_df['MLBAMID']).transform('min')==1) & 
                     (player_df['Out'].groupby(player_df['MLBAMID']).transform('min')==0)]
             .groupby(['Pitcher'])
-            [['#','Velo','Ext','IVB','HAVAA','IHB']]
+            [['#','Velo','Ext','IVB','HAVAA','IHB','VAA]]
             .agg({
-              '#':'count',
-              'Velo':'mean',
-              'Ext':'mean',
-              'IVB':'mean',
-              'HAVAA':'mean',
-              'IHB':'mean',
+                '#':'count',
+                'Velo':'mean',
+                'Ext':'mean',
+                'IVB':'mean',
+                'HAVAA':'mean',
+                'IHB':'mean',
+                'VAA':'mean
               })
             .sort_values('#',ascending=False)
            )
