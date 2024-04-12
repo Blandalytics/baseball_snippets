@@ -157,7 +157,7 @@ def load_savant(date=today):
                     (player_df['Inning'].groupby(player_df['MLBAMID']).transform('min')==1) & 
                     (player_df['Out'].groupby(player_df['MLBAMID']).transform('min')==0)]
             .groupby(['Pitcher'])
-            [['#','Velo','Ext','IVB','HAVAA','IHB','VAA]]
+            [['#','Velo','Ext','IVB','HAVAA','IHB','VAA']]
             .agg({
                 '#':'count',
                 'Velo':'mean',
@@ -165,7 +165,7 @@ def load_savant(date=today):
                 'IVB':'mean',
                 'HAVAA':'mean',
                 'IHB':'mean',
-                'VAA':'mean
+                'VAA':'mean'
               })
             .sort_values('#',ascending=False)
            )
