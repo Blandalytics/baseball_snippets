@@ -72,7 +72,9 @@ def spin_calcs(data):
 
 today = (datetime.datetime.today() - timedelta(hours=6)).date()
 st.header(f"4-Seam Fastballs by Starters")
-date = st.date_input("Select a game date:", today, min_value=datetime.date(2024, 3, 28), max_value=today)
+col1, col2 = st.columns([1/3,2/3])
+with col1:
+    date = st.date_input("Select a game date:", today, min_value=datetime.date(2024, 3, 28), max_value=today)
 
 def load_savant(date=date):
     r = requests.get(f'https://statsapi.mlb.com/api/v1/schedule?sportId=1&date={date}')
