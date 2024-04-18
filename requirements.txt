@@ -3,5 +3,4 @@ matplotlib
 numpy
 pandas
 seaborn
-pickle
 xgboost == 1.6.0
