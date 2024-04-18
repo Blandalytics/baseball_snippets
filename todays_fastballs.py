@@ -2,10 +2,11 @@ import streamlit as st
 import datetime
 from datetime import timedelta
 import matplotlib as mpl
-import seaborn as sns
-import requests
 import numpy as np
 import pandas as pd
+import pickle
+import seaborn as sns
+import requests
 
 def adjusted_vaa(dataframe):
     ## Physical characteristics of pitch
@@ -176,10 +177,25 @@ def load_savant(date=date):
             .sort_values('#',ascending=False)
            )
 
-st.dataframe(load_savant(date)
+with open('https://github.com/Blandalytics/baseball_snippets/blob/main/model_files/fan-4_contact_model.pkl?raw=true', 'rb') as f:
+    whiff_model = pickle.load(f)
+model_df = load_savant(date)
+model_df[['swinging_strike_pred','contact_input']] = swing_result_model.predict_proba(model_df
+                                                                                      .rename(columns={
+                                                                                          'Velo':'velo',
+                                                                                          'Ext':'pitch_extension',
+                                                                                          'HAVAA':'adj_vaa',
+                                                                                          'VAA':'vaa'
+                                                                                          })
+                                                                                      .assign(total_IB = lambda x: (x['IHB'].astype('float')**2+x['IVB'].astype('float')**2)**0.5)
+                                                                                      [swing_result_model.feature_names_in_])
+model_df['Fan 4+'] = model_df['swinging_strike_pred'].div(0.2195).mul(100).astype('int')
+
+st.dataframe(model_df[['Velo','Ext','IVB','HAVAA','IHB','VAA','Fan 4+']]
              .style
              .format(precision=1, thousands=',')
              .background_gradient(axis=0, vmin=91.4, vmax=96.6, cmap="vlag", subset=['Velo'])
              .background_gradient(axis=0, vmin=5.95, vmax=6.95, cmap="vlag", subset=['Ext'])
              .background_gradient(axis=0, vmin=12.4, vmax=18.2, cmap="vlag", subset=['IVB'])
-             .background_gradient(axis=0, vmin=0.4, vmax=1.5, cmap="vlag", subset=['HAVAA']))
+             .background_gradient(axis=0, vmin=0.4, vmax=1.5, cmap="vlag", subset=['HAVAA'])
+             .background_gradient(axis=0, vmin=70, vmax=130, cmap="vlag", subset=['Fan 4+']))
