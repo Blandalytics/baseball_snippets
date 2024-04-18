@@ -188,7 +188,7 @@ model_df[['swinging_strike_pred','contact_input']] = whiff_model.predict_proba(m
                                                                                           'VAA':'vaa'
                                                                                           })
                                                                                       .assign(total_IB = lambda x: (x['IHB'].astype('float')**2+x['IVB'].astype('float')**2)**0.5)
-                                                                                      [swing_result_model.feature_names_in_])
+                                                                                      [whiff_model.feature_names_in_])
 model_df['Fan 4+'] = model_df['swinging_strike_pred'].div(0.2195).mul(100).astype('int')
 
 st.dataframe(model_df[['Velo','Ext','IVB','HAVAA','IHB','VAA','Fan 4+']]
