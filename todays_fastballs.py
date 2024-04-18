@@ -180,7 +180,7 @@ def load_savant(date=date):
 with open('model_files/fan-4_contact_model.pkl', 'rb') as f:
     whiff_model = pickle.load(f)
 model_df = load_savant(date)
-model_df[['swinging_strike_pred','contact_input']] = swing_result_model.predict_proba(model_df
+model_df[['swinging_strike_pred','contact_input']] = whiff_model.predict_proba(model_df
                                                                                       .rename(columns={
                                                                                           'Velo':'velo',
                                                                                           'Ext':'pitch_extension',
