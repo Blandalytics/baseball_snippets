@@ -2,5 +2,6 @@ streamlit
 matplotlib
 numpy
 pandas
+scikit-learn
 seaborn
 xgboost == 1.6.0
