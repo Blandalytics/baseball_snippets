@@ -176,7 +176,7 @@ def load_savant(date=date):
             .sort_values('#',ascending=False)
            )
 
-st.dataframe(load_savant()
+st.dataframe(load_savant(date)
              .style
              .format(precision=1, thousands=',')
              .background_gradient(axis=0, vmin=91.4, vmax=96.6, cmap="vlag", subset=['Velo'])
