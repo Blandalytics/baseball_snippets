@@ -177,7 +177,7 @@ def load_savant(date=date):
             .sort_values('#',ascending=False)
            )
 
-with open('https://github.com/Blandalytics/baseball_snippets/blob/main/model_files/fan-4_contact_model.pkl?raw=true', 'rb') as f:
+with open('https://github.com/Blandalytics/baseball_snippets/blob/main/model_files/fan-4_contact_model.pkl', 'rb') as f:
     whiff_model = pickle.load(f)
 model_df = load_savant(date)
 model_df[['swinging_strike_pred','contact_input']] = swing_result_model.predict_proba(model_df
