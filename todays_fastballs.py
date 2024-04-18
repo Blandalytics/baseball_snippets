@@ -7,6 +7,8 @@ import pandas as pd
 import pickle
 import seaborn as sns
 import requests
+import xgboost as xgb
+from xgboost import XGBClassifier
 
 def adjusted_vaa(dataframe):
     ## Physical characteristics of pitch
@@ -181,14 +183,14 @@ with open('model_files/fan-4_contact_model.pkl', 'rb') as f:
     whiff_model = pickle.load(f)
 model_df = load_savant(date)
 model_df[['swinging_strike_pred','contact_input']] = whiff_model.predict_proba(model_df
-                                                                                      .rename(columns={
-                                                                                          'Velo':'velo',
-                                                                                          'Ext':'pitch_extension',
-                                                                                          'HAVAA':'adj_vaa',
-                                                                                          'VAA':'vaa'
-                                                                                          })
-                                                                                      .assign(total_IB = lambda x: (x['IHB'].astype('float')**2+x['IVB'].astype('float')**2)**0.5)
-                                                                                      [whiff_model.feature_names_in_])
+                                                                               .rename(columns={
+                                                                                   'Velo':'velo',
+                                                                                   'Ext':'pitch_extension',
+                                                                                   'HAVAA':'adj_vaa',
+                                                                                   'VAA':'vaa'
+                                                                                   })
+                                                                               .assign(total_IB = lambda x: (x['IHB'].astype('float')**2+x['IVB'].astype('float')**2)**0.5)
+                                                                               [whiff_model.feature_names_in_])
 model_df['Fan 4+'] = model_df['swinging_strike_pred'].div(0.2195).mul(100).astype('int')
 
 st.dataframe(model_df[['Velo','Ext','IVB','HAVAA','IHB','VAA','Fan 4+']]
