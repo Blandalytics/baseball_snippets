@@ -179,7 +179,7 @@ def load_savant(date=date):
             .sort_values('#',ascending=False)
            )
 
-st.write('**Fan 4+**: the modeled Whiff% of a pitch (based on the "Fan-Tastic 4" stats: Velo, Extension, IVB, and HAVAA), compared to the average 4-Seam Fastball')
+st.write('**Fan 4+**: the modeled Whiff% of a pitch (based on the "Fan-Tastic 4" stats: Velo, Extension, IVB, and HAVAA), where 100 = an average 4-Seam Fastball')
 
 with open('model_files/fan-4_contact_model.pkl', 'rb') as f:
     whiff_model = pickle.load(f)
