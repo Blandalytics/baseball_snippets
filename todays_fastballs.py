@@ -193,7 +193,7 @@ model_df[['swinging_strike_pred','contact_input']] = whiff_model.predict_proba(m
                                                                                [whiff_model.feature_names_in_])
 model_df['Fan 4+'] = model_df['swinging_strike_pred'].div(0.2195).mul(100).astype('int')
 
-st.dataframe(model_df[['Velo','Ext','IVB','HAVAA','IHB','VAA','Fan 4+']]
+st.dataframe(model_df[['#','Velo','Ext','IVB','HAVAA','IHB','VAA','Fan 4+']]
              .style
              .format(precision=1, thousands=',')
              .background_gradient(axis=0, vmin=91.4, vmax=96.6, cmap="vlag", subset=['Velo'])
