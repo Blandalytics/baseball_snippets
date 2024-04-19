@@ -203,5 +203,5 @@ st.dataframe(model_df[['#','Velo','Ext','IVB','HAVAA','IHB','VAA','Fan 4+']]
              .background_gradient(axis=0, vmin=12.4, vmax=18.2, cmap="vlag", subset=['IVB'])
              .background_gradient(axis=0, vmin=0.4, vmax=1.5, cmap="vlag", subset=['HAVAA'])
              .background_gradient(axis=0, vmin=70, vmax=130, cmap="vlag", subset=['Fan 4+']),
-            column_config={"Pitcher": st.column_config.Column(width="large")}
+            column_config={"Pitcher": st.column_config.Column(width="medium")}
 )
