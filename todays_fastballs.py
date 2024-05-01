@@ -287,7 +287,7 @@ def load_savant(date=date):
     player_df['Out'] = out
     player_df['balls'] = balls
     player_df['strikes'] = strikes
-    player_df['Num Pitches'] = pitch_id
+    player_df['#'] = pitch_id
     player_df['pitch_type'] = pitch_type
     player_df['Velo'] = velo
     player_df['Ext'] = extension
@@ -304,7 +304,7 @@ def load_savant(date=date):
     player_df['sz_bot'] = sz_bot
     player_df[['IHB','IVB']] = spin_calcs(player_df)
     player_df['IHB'] = np.where(player_df['P Hand']=='R',player_df['IHB'].mul(-1),player_df['IHB'])
-    player_df[['raw_vaa','HAVAA']] = adjusted_vaa(player_df)
+    player_df[['VAA','HAVAA']] = adjusted_vaa(player_df)
     player_df['sz_z'] = strikezone_z(player_df,'sz_top','sz_bot')
     player_df['plvLoc+'] = loc_model(player_df)
   
