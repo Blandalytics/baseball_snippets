@@ -81,7 +81,7 @@ def strikezone_z(dataframe,top_column,bottom_column):
     dataframe['sz_mid'] = dataframe[[top_column,bottom_column]].mean(axis=1)
     dataframe['sz_height'] = dataframe[top_column].sub(dataframe[bottom_column])
     
-    return dataframe['pz'].sub(dataframe['sz_mid']).div(dataframe['sz_height'])
+    return dataframe['p_z'].sub(dataframe['sz_mid']).div(dataframe['sz_height'])
 
 def loc_model(df,year=2024):
     df['balls_before_pitch'] = np.clip(df['balls'], 0, 3)
