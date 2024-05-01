@@ -25,7 +25,7 @@ def adjusted_vaa(dataframe):
     # VAA of all pitches at that height
     dataframe['vaa_z_adj'] = np.where(dataframe['p_z']<3.5,
                                       dataframe['p_z'].mul(1.5635).add(-10.092),
-                                      dataframe['p_z'].pow(2).mul(-0.1996).add(dataframe['pz'].mul(2.704)).add(-11.69))
+                                      dataframe['p_z'].pow(2).mul(-0.1996).add(dataframe['p_z'].mul(2.704)).add(-11.69))
     dataframe['adj_vaa'] = dataframe['raw_vaa'].sub(dataframe['vaa_z_adj'])
     # Adjusted VAA, based on height
     return dataframe[['raw_vaa','adj_vaa']]
