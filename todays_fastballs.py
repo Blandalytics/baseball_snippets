@@ -89,6 +89,9 @@ def loc_model(df,year=2024):
     df['pitcherside'] = df['P Hand'].copy()
 
     df = pd.get_dummies(df, columns=['pitcherside','hitterside','balls_before_pitch','strikes_before_pitch'])
+    for hand in ['L','R']:
+        if f'pitcherside_{hand}' not in df.columns.values:
+            df[f'pitcherside_{hand}'] = None
 
     df[['take_input','swing_input','called_strike_raw','ball_raw',
                 'hit_by_pitch_raw','swinging_strike_raw','contact_raw',
