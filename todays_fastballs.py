@@ -7,6 +7,10 @@ import pandas as pd
 import pickle
 import seaborn as sns
 import requests
+import plotly.graph_objs as go
+from plotly import tools
+from plotly.subplots import make_subplots
+import plotly.offline as py
 import xgboost as xgb
 from xgboost import XGBClassifier
 
@@ -313,7 +317,15 @@ def load_savant(date=date):
     player_df['sz_z'] = strikezone_z(player_df,'sz_top','sz_bot')
     player_df['plvLoc+'] = loc_model(player_df)
   
-    return (player_df
+    return player_df
+
+chart_df = load_savant(date)
+
+st.write('**Fan 4+**: modeled Whiff% of a pitch (based on the "Fan-Tastic 4" stats: Velo, Extension, IVB, and HAVAA), compared to an average 4-Seam Fastball')
+
+with open('model_files/fan-4_contact_model.pkl', 'rb') as f:
+    whiff_model = pickle.load(f)
+model_df = (chart_df
             .loc[(player_df['pitch_type']=='FF') &
                     (player_df['Inning'].groupby(player_df['MLBAMID']).transform('min')==1) & 
                     (player_df['Out'].groupby(player_df['MLBAMID']).transform('min')==0)]
@@ -331,12 +343,6 @@ def load_savant(date=date):
               })
             .sort_values('#',ascending=False)
            )
-
-st.write('**Fan 4+**: modeled Whiff% of a pitch (based on the "Fan-Tastic 4" stats: Velo, Extension, IVB, and HAVAA), compared to an average 4-Seam Fastball')
-
-with open('model_files/fan-4_contact_model.pkl', 'rb') as f:
-    whiff_model = pickle.load(f)
-model_df = load_savant(date)
 model_df[['swinging_strike_pred','contact_input']] = whiff_model.predict_proba(model_df
                                                                                .rename(columns={
                                                                                    'Velo':'velo',
@@ -359,3 +365,112 @@ st.dataframe(model_df[['#','Velo','Ext','IVB','HAVAA','IHB','VAA','Fan 4+','plvL
              .background_gradient(axis=0, vmin=85, vmax=115, cmap="vlag", subset=['plvLoc+']),
             column_config={"Pitcher": st.column_config.Column(width="medium")}
 )
+
+players = list(model_df['Pitcher'])
+player = st.selectbox('Choose a starter:', players)
+
+def location_chart(df,player):
+    chart_df = df.loc[(df['pitchername']==player)].copy()
+    chart_df['smoothed_csw'] = 0.288
+    chart_df['smoothed_wOBAcon'] = 0.3284
+
+    plate_y = -.25
+    
+    layout = go.Layout(height = 600,width = 500,xaxis_range=[-2.5,2.5], yaxis_range=[-1,6])
+
+    labels = chart_df['plvLoc+']
+    hover_text = '<b>plvLoc+: %{marker.color:.1f}</b><br>Count: %{customdata[0]}-%{customdata[1]}<br>X Loc: %{x:.1f}ft<br>Y Loc: %{y:.1f}ft<br>locCSW: %{customdata[2]:.1%}<br>loc wOBAcon: %{customdata[3]:.3f}<extra></extra>'
+    marker_dict = dict(color = labels, size= 5, line=dict(width=0), 
+                               cmin=50,cmax=150,
+                               colorscale=[[x/100,'rgb'+str(tuple([int(y*255) for y in sns.color_palette('vlag',n_colors=101)[x]]))] for x in range(101)], 
+                               colorbar=dict(
+                                   title="plvLocation+\n",
+                                   titleside="top",
+                                   tickmode="array",
+                                   tickvals=[50, 75, 100, 125, 150],
+                                   ticks="outside"
+                                   ))
+    trace = go.Scatter(x=chart_df['p_x'].mul(-1), y=chart_df['p_z'], mode='markers', 
+                       marker=marker_dict,
+                       customdata=chart_df[['balls','strikes']],
+                       hovertemplate=hover_text,
+                        showlegend=False)
+    
+    data = [trace]
+    fig = go.Figure(data = data, layout = layout)
+    fig.add_trace(go.Scatter(x=[10/12,10/12], y=[1.5,3.5],
+                             mode='lines',
+                             line=dict(color='black', width=4),
+                             showlegend=False))
+    fig.add_trace(go.Scatter(x=[-10/12,-10/12], y=[1.5,3.5],
+                             mode='lines',
+                             line=dict(color='black', width=4),
+                             showlegend=False))
+    fig.add_trace(go.Scatter(x=[-10/12,10/12], y=[1.5,1.5],
+                             mode='lines',
+                             line=dict(color='black', width=4),
+                             showlegend=False))
+    fig.add_trace(go.Scatter(x=[-10/12,10/12], y=[3.5,3.5],
+                             mode='lines',
+                             line=dict(color='black', width=4),
+                             showlegend=False))
+    fig.add_trace(go.Scatter(x=[10/36,10/36], y=[1.5,3.5],
+                             mode='lines',
+                             line=dict(color='black', width=2),
+                             showlegend=False))
+    fig.add_trace(go.Scatter(x=[-10/36,-10/36], y=[1.5,3.5],
+                             mode='lines',
+                             line=dict(color='black', width=2),
+                             showlegend=False))
+    fig.add_trace(go.Scatter(x=[-10/12,10/12], y=[1.5+2/3,1.5+2/3],
+                             mode='lines',
+                             line=dict(color='black', width=2),
+                             showlegend=False))
+    fig.add_trace(go.Scatter(x=[-10/12,10/12], y=[3.5-2/3,3.5-2/3],
+                             mode='lines',
+                             line=dict(color='black', width=2),
+                             showlegend=False))
+    
+    # Plate
+    fig.add_trace(go.Scatter(x=[-8.5/12,8.5/12], y=[plate_y,plate_y],
+                             mode='lines',
+                             line=dict(color='black', width=2),
+                             showlegend=False))
+    fig.add_trace(go.Scatter(x=[-8.5/12,-8.25/12], y=[plate_y,plate_y+0.15],
+                             mode='lines',
+                             line=dict(color='black', width=2),
+                             showlegend=False))
+    fig.add_trace(go.Scatter(x=[8.5/12,8.25/12], y=[plate_y,plate_y+0.15],
+                             mode='lines',
+                             line=dict(color='black', width=2),
+                             showlegend=False))
+    fig.add_trace(go.Scatter(x=[8.28/12,0], y=[plate_y+0.15,plate_y+0.25],
+                             mode='lines',
+                             line=dict(color='black', width=2),
+                             showlegend=False))
+    fig.add_trace(go.Scatter(x=[-8.28/12,0], y=[plate_y+0.15,plate_y+0.25],
+                             mode='lines',
+                             line=dict(color='black', width=2),
+                             showlegend=False))
+    
+    fig.update_xaxes(visible=False, showticklabels=False)
+    fig.update_yaxes(visible=False, showticklabels=False)
+    
+    overall_loc = chart_df['plvLoc+'].mean()
+    fig.update_layout(
+            template='simple_white',
+            title={
+                'text': f"{player}'s Four-Seam<br>plvLocation+: {overall_loc:.1f}",
+                'y':0.9,
+                'x':0.5,
+                'xanchor': 'center',
+                'yanchor': 'top'},
+            legend={
+                "x": 0.8,
+                "y": 0.67}
+        )
+    fig.show()
+    st.plotly_chart(fig,
+                    theme=None
+                   )
+location_chart(chart_df, player)
