@@ -447,7 +447,7 @@ def location_chart(df,player):
                              line=dict(color='black', width=2),
                              showlegend=False))
 
-    bonus_text = chart_df['stands']
+    bonus_text = chart_df['hitterside']
     fig.add_trace(go.Scatter(x=chart_df['p_x'].mul(-1), y=chart_df['p_z'], mode='markers', 
                        marker=marker_dict, text=bonus_text,
                        customdata=chart_df[['balls','strikes']],
