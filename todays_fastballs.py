@@ -318,8 +318,8 @@ def load_savant(date=date):
     player_df['plvLoc+'] = loc_model(player_df)
   
     return player_df.loc[(player_df['pitch_type']=='FF') &
-                            (chart_df['Inning'].groupby(chart_df['MLBAMID']).transform('min')==1) & 
-                            (chart_df['Out'].groupby(chart_df['MLBAMID']).transform('min')==0)]
+                            (player_df['Inning'].groupby(player_df['MLBAMID']).transform('min')==1) & 
+                            (player_df['Out'].groupby(player_df['MLBAMID']).transform('min')==0)]
 
 chart_df = load_savant(date)
 
