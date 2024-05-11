@@ -397,7 +397,8 @@ def location_chart(df,player):
                         showlegend=False)
     
     data = [trace]
-    fig = go.Figure(data = data, layout = layout)
+    fig = go.Figure(#data = data, 
+                    layout = layout)
     fig.add_trace(go.Scatter(x=[10/12,10/12], y=[1.5,3.5],
                              mode='lines',
                              line=dict(color='black', width=4),
@@ -452,6 +453,12 @@ def location_chart(df,player):
                              mode='lines',
                              line=dict(color='black', width=2),
                              showlegend=False))
+
+    fig.add_trace(go.Scatter(x=chart_df['p_x'].mul(-1), y=chart_df['p_z'], mode='markers', 
+                       marker=marker_dict,
+                       customdata=chart_df[['balls','strikes']],
+                       hovertemplate=hover_text,
+                        showlegend=False))
     
     fig.update_xaxes(visible=False, showticklabels=False)
     fig.update_yaxes(visible=False, showticklabels=False)
