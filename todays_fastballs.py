@@ -370,7 +370,7 @@ players = list(chart_df['Pitcher'])
 player = st.selectbox('Choose a starter:', players)
 
 def location_chart(df,player):
-    chart_df = df.loc[(df['pitchername']==player)].copy()
+    chart_df = df.loc[(df['Pitcher']==player)].copy()
     chart_df['smoothed_csw'] = 0.288
     chart_df['smoothed_wOBAcon'] = 0.3284
 
