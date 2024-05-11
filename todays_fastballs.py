@@ -317,7 +317,9 @@ def load_savant(date=date):
     player_df['sz_z'] = strikezone_z(player_df,'sz_top','sz_bot')
     player_df['plvLoc+'] = loc_model(player_df)
   
-    return player_df
+    return player_df.loc[(player_df['pitch_type']=='FF') &
+                            (chart_df['Inning'].groupby(chart_df['MLBAMID']).transform('min')==1) & 
+                            (chart_df['Out'].groupby(chart_df['MLBAMID']).transform('min')==0)]
 
 chart_df = load_savant(date)
 
@@ -326,9 +328,6 @@ st.write('**Fan 4+**: modeled Whiff% of a pitch (based on the "Fan-Tastic 4" sta
 with open('model_files/fan-4_contact_model.pkl', 'rb') as f:
     whiff_model = pickle.load(f)
 model_df = (chart_df
-            .loc[(chart_df['pitch_type']=='FF') &
-                    (chart_df['Inning'].groupby(chart_df['MLBAMID']).transform('min')==1) & 
-                    (chart_df['Out'].groupby(chart_df['MLBAMID']).transform('min')==0)]
             .groupby(['Pitcher'])
             [['#','Velo','Ext','IVB','HAVAA','IHB','VAA','plvLoc+']]
             .agg({
