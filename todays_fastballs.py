@@ -390,15 +390,8 @@ def location_chart(df,player):
                                    tickvals=[50, 75, 100, 125, 150],
                                    ticks="outside"
                                    ))
-    trace = go.Scatter(x=chart_df['p_x'].mul(-1), y=chart_df['p_z'], mode='markers', 
-                       marker=marker_dict,
-                       customdata=chart_df[['balls','strikes']],
-                       hovertemplate=hover_text,
-                        showlegend=False)
     
-    data = [trace]
-    fig = go.Figure(#data = data, 
-                    layout = layout)
+    fig = go.Figure(layout = layout)
     fig.add_trace(go.Scatter(x=[10/12,10/12], y=[1.5,3.5],
                              mode='lines',
                              line=dict(color='black', width=4),
