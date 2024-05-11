@@ -379,8 +379,8 @@ def location_chart(df,player):
     layout = go.Layout(height = 600,width = 500,xaxis_range=[-2.5,2.5], yaxis_range=[-1,6])
 
     labels = chart_df['plvLoc+']
-    hover_text = '<b>plvLoc+: %{marker.color:.1f}</b><br>Count: %{customdata[0]}-%{customdata[1]}<br>X Loc: %{x:.1f}ft<br>Y Loc: %{y:.1f}ft<extra></extra>'
-    marker_dict = dict(color = labels, size= 15, line=dict(width=0), 
+    hover_text = '<b>plvLoc+: %{marker.color:.1f}</b><br>Count: %{customdata[0]}-%{customdata[1]}<br>Hitter Hand: %{text}<br>X Loc: %{x:.1f}ft<br>Y Loc: %{y:.1f}ft<extra></extra>'
+    marker_dict = dict(color = labels, size= 15, line=dict(width=0),
                                cmin=50,cmax=150,
                                colorscale=[[x/100,'rgb'+str(tuple([int(y*255) for y in sns.color_palette('vlag',n_colors=101)[x]]))] for x in range(101)], 
                                colorbar=dict(
@@ -447,8 +447,9 @@ def location_chart(df,player):
                              line=dict(color='black', width=2),
                              showlegend=False))
 
+    bonus_text = chart_df['stands']
     fig.add_trace(go.Scatter(x=chart_df['p_x'].mul(-1), y=chart_df['p_z'], mode='markers', 
-                       marker=marker_dict,
+                       marker=marker_dict, text=bonus_text,
                        customdata=chart_df[['balls','strikes']],
                        hovertemplate=hover_text,
                         showlegend=False))
