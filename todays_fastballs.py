@@ -236,8 +236,8 @@ def load_savant(date=date):
     for game_id in game_list:
         r = requests.get(f'https://baseballsavant.mlb.com/gf?game_pk={game_id}')
         x = r.json()
-        if x['game_status_code'] in ['P','S']:
-            continue
+        # if x['game_status_code'] in ['P','S']:
+        #     continue
         for home_away_pitcher in ['home','away']:
             # if f'{home_away_pitcher}_pitchers' not in x.keys():
             #     continue
