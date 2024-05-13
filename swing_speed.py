@@ -155,7 +155,7 @@ def speed_dist(player,stat):
 speed_dist(player,stat)
 
 st.header('Assumptions & Formulas')
-st.write('Assumptions: Swing Speed is recorded at the same point & time as Swing Length')
+st.write('Assumptions: Initial speed is 0mph, and Swing Speed is recorded at the same point & time as Swing Length')
 st.write('Formulas:')
 st.write('- Initial Speed (v_0; in ft/s) = 0 ')
 st.write('- Final Speed (v_f; in ft/s) = Swing Speed * 1.46667 (from Savant; converted from mph to ft/s)')
