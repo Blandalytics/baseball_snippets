@@ -84,15 +84,18 @@ with col2:
     
 def speed_dist(player,stat):
     fig, ax = plt.subplots(figsize=(6,3))
-    g = sns.kdeplot(swing_data[stat],
-                linestyle='--',
-                color='w',
-                cut=0)
 
     val = swing_data.loc[swing_data['Hitter']==player,stat].mean()
     player_color = sns.color_palette('vlag',n_colors=len(players))[len(players)-players.index(player)-1]
     p = sns.kdeplot(swing_data.loc[swing_data['Hitter']==player,stat],
                     color=player_color,
+                    fill=True
+                    cut=0)
+                    
+    g = sns.kdeplot(swing_data[stat],
+                    linestyle='--',
+                    color='w',
+                    alpha=0.8,
                     cut=0)
     
     ax.set(xlim=(swing_data[stat].quantile(0.03),swing_data[stat].max()),
@@ -103,17 +106,17 @@ def speed_dist(player,stat):
     plt.legend(labels=['MLB',player],
                loc='lower center')
     
-    kdeline_p = p.lines[1]
+    kdeline_p = p.lines[0]
     xs_p = kdeline_p.get_xdata()
     ys_p = kdeline_p.get_ydata()
     height_p = np.interp(val, xs_p, ys_p)
-    ax.vlines(val, 0, height_p, color=player_color, ls='--')
+    ax.vlines(val, 0, height_p, color='w', ls='--')
     
-    kdeline = g.lines[0]
-    xs = kdeline.get_xdata()
-    ys = kdeline.get_ydata()
-    height = np.interp(swing_data[stat].median(), xs, ys)
-    ax.vlines(swing_data[stat].median(), 0, height, color='w', ls='--')
+    # kdeline = g.lines[0]
+    # xs = kdeline.get_xdata()
+    # ys = kdeline.get_ydata()
+    # height = np.interp(swing_data[stat].median(), xs, ys)
+    # ax.vlines(swing_data[stat].median(), 0, height, color='w', ls='--')
     
     ax.set_yticks([])
     title_stat = ' '.join(stat_name_dict[stat].split(' ')[:-1])
