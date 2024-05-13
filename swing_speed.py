@@ -29,11 +29,20 @@ sns.set_theme(
 
 swing_data = pd.read_csv('https://github.com/Blandalytics/baseball_snippets/blob/main/swing_speed_data.csv?raw=true',encoding='latin1')
 
-swing_threshold = st.number_input(f'Min # of Swings:',
-                                  min_value=0, 
-                                  max_value=swing_data.groupby('Hitter')['Swings'].sum().max(),
-                                  step=25, 
-                                  value=100)
+col1, col2 = st.columns(2)
+
+with col1:
+    swing_threshold = st.number_input(f'Min # of Swings:',
+                                      min_value=0, 
+                                      max_value=swing_data.groupby('Hitter')['Swings'].sum().max(),
+                                      step=25, 
+                                      value=100)
+with col2:
+    team = st.selectbox('Team:',
+                        ['All','ATL', 'AZ', 'BAL', 'BOS', 'CHC', 'CIN', 'CLE', 'COL', 'CWS',
+                         'DET', 'HOU', 'KC', 'LAA', 'LAD', 'MIA', 'MIL', 'MIN', 'NYM',
+                         'NYY', 'OAK', 'PHI', 'PIT', 'SD', 'SEA', 'SF', 'STL', 'TB', 'TEX',
+                         'TOR', 'WSH'])
 
 stat_name_dict = {
     'bat_speed':'Swing Speed (mph)',
@@ -50,7 +59,7 @@ df_stat_dict = {
 }
 
 st.write('Swing Metrics')
-st.dataframe(swing_data
+st.dataframe(swing_data if team=='All' else swing_data.loc[swing_data['Team']=='Team']
              .groupby(['Hitter'])
              [['Team','Swings','bat_speed','swing_length','swing_time','swing_acceleration']]
              .agg({
