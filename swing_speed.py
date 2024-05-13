@@ -59,7 +59,7 @@ df_stat_dict = {
 }
 
 st.write('Swing Metrics')
-st.dataframe((swing_data if team=='All' else swing_data.loc[swing_data['Team']=='Team'])
+st.dataframe((swing_data if team=='All' else swing_data.loc[swing_data['Team']==team])
              .groupby(['Hitter'])
              [['Team','Swings','bat_speed','swing_length','swing_time','swing_acceleration']]
              .agg({
