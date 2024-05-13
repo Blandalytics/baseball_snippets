@@ -84,19 +84,35 @@ with col2:
     
 def speed_dist(player,stat):
     fig, ax = plt.subplots(figsize=(6,3))
-    sns.kdeplot(swing_data[stat],
+    g = sns.kdeplot(swing_data[stat],
                 linestyle='--',
                 color='w',
                 cut=0)
-    sns.kdeplot(swing_data.loc[swing_data['Hitter']==player,stat],
-                color=sns.color_palette('vlag',n_colors=len(players))[len(players)-players.index(player)-1],
+    
+    kdeline = g.lines[0]
+    xs = kdeline.get_xdata()
+    ys = kdeline.get_ydata()
+    height = np.interp(swing_data[stat].mean(), xs, ys)
+    ax.vlines(swing_data[stat].mean(), 0, height, color='w', ls='--')
+
+    val = swing_data.loc[swing_data['Hitter']==player,stat].mean()
+    player_color = sns.color_palette('vlag',n_colors=len(players))[len(players)-players.index(player)-1]
+    p = sns.kdeplot(swing_data.loc[swing_data['Hitter']==player,stat],
+                color=player_color,
                cut=0)
+    
+    kdeline = p.lines[0]
+    xs = kdeline.get_xdata()
+    ys = kdeline.get_ydata()
+    height = np.interp(val, xs, ys)
+    ax.vlines(val, 0, height, color=player_color, ls='--')
+    
     ax.set(xlim=(swing_data[stat].quantile(0.03),swing_data[stat].max()),
            xlabel=stat_name_dict[stat],
-           ylim=(0,ax.get_ylim()[1]*1.05),
+           ylim=(0,ax.get_ylim()[1]*1),
            ylabel='')
     plt.legend(labels=['MLB',player],
-               loc='lower center')
+               loc='upper center')
     ax.set_yticks([])
     title_stat = ' '.join(stat_name_dict[stat].split(' ')[:-1])
     fig.suptitle(f"{player}'s\n{title_stat} Distribution",y=1)
