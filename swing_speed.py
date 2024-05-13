@@ -48,7 +48,7 @@ st.dataframe(swing_data
                  'Swings':'count',
                  'bat_speed':'mean',
                  'swing_length':'mean',
-                 'swing_time':'mean;,
+                 'swing_time':'mean',
                  'swing_acceleration':'mean'
              })
              .query(f'Swings >={swing_threshold}')
