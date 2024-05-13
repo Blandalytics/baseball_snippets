@@ -95,22 +95,21 @@ def speed_dist(player,stat):
     g = sns.kdeplot(swing_data[stat],
                     linestyle='--',
                     color='w',
-                    alpha=0.8,
+                    alpha=0.5,
                     cut=0)
     
     ax.set(xlim=(swing_data[stat].quantile(0.03),swing_data[stat].max()),
            xlabel=stat_name_dict[stat],
-           # ylim=(0,ax.get_ylim()[1]*1),
            ylabel='')
 
-    plt.legend(labels=['MLB',player],
+    plt.legend(labels=[player,'MLB'],
                loc='lower center')
     
     kdeline_p = p.lines[0]
     xs_p = kdeline_p.get_xdata()
     ys_p = kdeline_p.get_ydata()
     height_p = np.interp(val, xs_p, ys_p)
-    ax.vlines(val, 0, height_p, color='w', ls='--')
+    ax.vlines(val, 0, height_p, color=player_color, ls='--')
     
     # kdeline = g.lines[0]
     # xs = kdeline.get_xdata()
