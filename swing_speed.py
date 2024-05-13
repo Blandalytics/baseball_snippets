@@ -115,7 +115,7 @@ def speed_dist(player,stat):
     # height = np.interp(swing_data[stat].median(), xs, ys)
     # ax.vlines(swing_data[stat].median(), 0, height, color='w', ls='--', alpha=0.5)
     
-    kdeline_p = p.lines[0]
+    kdeline_p = p.lines[1]
     xs_p = kdeline_p.get_xdata()
     ys_p = kdeline_p.get_ydata()
     height_p = np.interp(val, xs_p, ys_p)
