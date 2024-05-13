@@ -64,7 +64,7 @@ st.dataframe((swing_data if team=='All' else swing_data.loc[swing_data['Team']==
              .groupby(['Hitter'])
              [['Team','Swings','bat_speed','swing_length','swing_time','swing_acceleration']]
              .agg({
-                 'Team':pd.Series.mode,
+                 'Team':lambda x: pd.Series.unique(x)[-1],
                  'Swings':'count',
                  'bat_speed':'mean',
                  'swing_length':'mean',
