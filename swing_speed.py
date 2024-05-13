@@ -43,16 +43,18 @@ stat_name_dict = {
 
 st.dataframe(swing_data
              .groupby(['Hitter'])
-             [['Swings','bat_speed','swing_length','swing_acceleration']]
+             [['Swings','bat_speed','swing_length','swing_time','swing_acceleration']]
              .agg({
                  'Swings':'count',
                  'bat_speed':'mean',
                  'swing_length':'mean',
+                 'swing_time':'mean;,
                  'swing_acceleration':'mean'
              })
              .query(f'Swings >={swing_threshold}')
              .sort_values('swing_acceleration',ascending=False)
              .rename(columns=stat_name_dict)
+             .rename(columns={'swing_time':'Swing Time (s)')
              .round(1)
 )
 
