@@ -105,17 +105,17 @@ def speed_dist(player,stat):
     plt.legend(labels=[player,'MLB'],
                loc='lower center')
     
-    kdeline_p = p.lines[1]
-    xs_p = kdeline_p.get_xdata()
-    ys_p = kdeline_p.get_ydata()
-    height_p = np.interp(val, xs_p, ys_p)
-    ax.vlines(val, 0, height_p, color=player_color, ls='--')
-    
     kdeline = g.lines[0]
     xs = kdeline.get_xdata()
     ys = kdeline.get_ydata()
     height = np.interp(swing_data[stat].median(), xs, ys)
     ax.vlines(swing_data[stat].median(), 0, height, color='w', ls='--')
+    
+    kdeline_p = p.lines[1]
+    xs_p = kdeline_p.get_xdata()
+    ys_p = kdeline_p.get_ydata()
+    height_p = np.interp(val, xs_p, ys_p)
+    ax.vlines(val, 0, height_p, color=player_color, ls='--')
     
     ax.set_yticks([])
     title_stat = ' '.join(stat_name_dict[stat].split(' ')[:-1])
