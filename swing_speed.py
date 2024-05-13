@@ -72,6 +72,15 @@ with col1:
 with col2:
     stat = st.selectbox('Choose a metric:', list(stat_name_dict.values()))
     stat = list(stat_name_dict.keys())[list(stat_name_dict.values()).index(stat)]
+    players = list(swing_data
+               .groupby('Hitter')
+               [['Swings',stat]]
+               .agg({'Swings':'count',stat:'mean'})
+               .query(f'Swings >={swing_threshold}')
+               .reset_index()
+               .sort_values(stat, ascending=False)
+               ['Hitter']
+              )
     
 def speed_dist(player,stat):
     fig, ax = plt.subplots(figsize=(6,3))
@@ -87,7 +96,7 @@ def speed_dist(player,stat):
            ylim=(0,ax.get_ylim()[1]*1.05),
            ylabel='')
     plt.legend(labels=['MLB',player],
-               loc='center left')
+               loc='lower center')
     ax.set_yticks([])
     title_stat = ' '.join(stat_name_dict[stat].split(' ')[:-1])
     fig.suptitle(f"{player}'s\n{title_stat} Distribution",y=1)
