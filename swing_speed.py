@@ -87,7 +87,7 @@ def speed_dist(player,stat):
 
     val = swing_data.loc[swing_data['Hitter']==player,stat].mean()
     player_color = sns.color_palette('vlag',n_colors=len(players))[len(players)-players.index(player)-1]
-    p = sns.kdeplot(swing_data.loc[swing_data['Hitter']==player,stat],
+    sns.kdeplot(swing_data.loc[swing_data['Hitter']==player,stat],
                     color=player_color,
                     fill=True,
                     cut=0)
@@ -96,6 +96,10 @@ def speed_dist(player,stat):
                     linestyle='--',
                     color='w',
                     alpha=0.5,
+                    cut=0)
+
+    p = sns.kdeplot(swing_data.loc[swing_data['Hitter']==player,stat],
+                    color=player_color,
                     cut=0)
     
     ax.set(xlim=(swing_data[stat].quantile(0.03),swing_data[stat].max()),
