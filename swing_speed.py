@@ -125,7 +125,7 @@ def speed_dist(player,stat):
                     cut=0)
     
     ax.set(xlim=(min(swing_data[stat].quantile(0.025),swing_data.loc[swing_data['Hitter']==player,stat].quantile(0.04)),
-                 max(0.2,swing_data.loc[swing_data['Hitter']==player,stat].quantile(0.96)) if stat == 'swing_time' else swing_data[stat].max()),
+                 max(200,swing_data.loc[swing_data['Hitter']==player,stat].quantile(0.96)) if stat == 'swing_time' else swing_data[stat].max()),
            xlabel=stat_name_dict[stat],
            ylabel='')
 
