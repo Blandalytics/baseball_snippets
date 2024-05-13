@@ -28,6 +28,7 @@ sns.set_theme(
     )
 
 swing_data = pd.read_csv('https://github.com/Blandalytics/baseball_snippets/blob/main/swing_speed_data.csv?raw=true',encoding='latin1')
+swing_data['swing_time'] = swing_data['swing_time'].mul(1000)
 
 col1, col2 = st.columns(2)
 
@@ -47,14 +48,14 @@ with col2:
 stat_name_dict = {
     'bat_speed':'Swing Speed (mph)',
     'swing_length':'Swing Length (ft)',
-    'swing_time':'Swing Time (s)',
+    'swing_time':'Swing Time (ms)',
     'swing_acceleration':'Swing Acceleration (ft/s^2)'
 }
 
 df_stat_dict = {
     'bat_speed':'Speed (mph)',
     'swing_length':'Length (ft)',
-    'swing_time':'Time (s)',
+    'swing_time':'Time (ms)',
     'swing_acceleration':'Acceleration (ft/s^2)'
 }
 
@@ -63,8 +64,8 @@ st.dataframe((swing_data if team=='All' else swing_data.loc[swing_data['Team']==
              .groupby(['Hitter'])
              [['Team','Swings','bat_speed','swing_length','swing_time','swing_acceleration']]
              .agg({
-                 'Swings':'count',
                  'Team':pd.Series.mode,
+                 'Swings':'count',
                  'bat_speed':'mean',
                  'swing_length':'mean',
                  'swing_time':'mean',
@@ -72,13 +73,7 @@ st.dataframe((swing_data if team=='All' else swing_data.loc[swing_data['Team']==
              })
              .query(f'Swings >={swing_threshold}')
              .sort_values('swing_acceleration',ascending=False)
-             .round({
-                 'Swings':0,
-                 'bat_speed':1,
-                 'swing_length':1,
-                 'swing_time':3,
-                 'swing_acceleration':1
-             })
+             .round(1)
              .rename(columns=df_stat_dict)
 )
 
