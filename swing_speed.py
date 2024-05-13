@@ -42,6 +42,14 @@ stat_name_dict = {
     'swing_acceleration':'Swing Acceleration (ft/s^2)'
 }
 
+df_stat_dict = {
+    'bat_speed':'Speed (mph)',
+    'swing_length':'Length (ft)',
+    'swing_time':'Time (s)',
+    'swing_acceleration':'Acceleration (ft/s^2)'
+}
+
+st.write('Swing Metrics')
 st.dataframe(swing_data
              .groupby(['Hitter'])
              [['Team','Swings','bat_speed','swing_length','swing_time','swing_acceleration']]
@@ -62,8 +70,7 @@ st.dataframe(swing_data
                  'swing_time':3,
                  'swing_acceleration':1
              })
-             .rename(columns=stat_name_dict)
-             # .rename(columns={'swing_time':'Swing Time (s)'})
+             .rename(columns=df_stat_dict)
 )
 
 players = list(swing_data
