@@ -92,14 +92,14 @@ def speed_dist(player,stat):
     kdeline = g.lines[0]
     xs = kdeline.get_xdata()
     ys = kdeline.get_ydata()
-    height = np.interp(swing_data[stat].mean(), xs, ys)
-    ax.vlines(swing_data[stat].mean(), 0, height, color='w', ls='--')
+    height = np.interp(swing_data[stat].median(), xs, ys)
+    ax.vlines(swing_data[stat].median(), 0, height, color='w', ls='--')
 
     val = swing_data.loc[swing_data['Hitter']==player,stat].mean()
     player_color = sns.color_palette('vlag',n_colors=len(players))[len(players)-players.index(player)-1]
     p = sns.kdeplot(swing_data.loc[swing_data['Hitter']==player,stat],
-                color=player_color,
-               cut=0)
+                    color=player_color,
+                    cut=0)
     
     kdeline = p.lines[0]
     xs = kdeline.get_xdata()
@@ -111,7 +111,7 @@ def speed_dist(player,stat):
            xlabel=stat_name_dict[stat],
            ylim=(0,ax.get_ylim()[1]*1),
            ylabel='')
-    plt.legend(labels=['MLB',player],
+    plt.legend(labels=['MLB',,player][::2],
                loc='upper center')
     ax.set_yticks([])
     title_stat = ' '.join(stat_name_dict[stat].split(' ')[:-1])
