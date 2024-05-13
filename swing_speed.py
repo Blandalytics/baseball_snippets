@@ -123,7 +123,8 @@ def speed_dist(player,stat):
     
     ax.set_yticks([])
     title_stat = ' '.join(stat_name_dict[stat].split(' ')[:-1])
-    fig.suptitle(f"{player}'s\n{title_stat} Distribution",y=1)
+    apostrophe_text = "'" if player[-1]=='s' else "'s"
+    fig.suptitle(f"{player}{apostrophe_text}\n{title_stat} Distribution",y=1)
     sns.despine(left=True)
     fig.text(0.83,-0.15,'@blandalytics',ha='center',fontsize=10)
     fig.text(0.125,-0.15,'mlb-swing-speed.streamlit.app',ha='left',fontsize=10)
