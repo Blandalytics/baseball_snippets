@@ -127,6 +127,6 @@ def speed_dist(player,stat):
     fig.suptitle(f"{player}{apostrophe_text}\n{title_stat} Distribution",y=1)
     sns.despine(left=True)
     fig.text(0.83,-0.15,'@blandalytics\nData: Savant',ha='center',fontsize=10)
-    fig.text(0.125,-0.15,'mlb-swing-speed.streamlit.app',ha='left',fontsize=10)
+    fig.text(0.125,-0.14,'mlb-swing-speed.streamlit.app',ha='left',fontsize=10)
     st.pyplot(fig)
 speed_dist(player,stat)
