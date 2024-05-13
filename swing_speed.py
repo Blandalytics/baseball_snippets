@@ -44,7 +44,7 @@ stat_name_dict = {
 
 st.dataframe(swing_data
              .groupby(['Hitter'])
-             [['Swings','Team','bat_speed','swing_length','swing_time','swing_acceleration']]
+             [['Team','Swings','bat_speed','swing_length','swing_time','swing_acceleration']]
              .agg({
                  'Swings':'count',
                  'Team':pd.Series.mode,
