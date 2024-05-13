@@ -82,7 +82,7 @@ def speed_dist(player,stat):
     sns.kdeplot(swing_data.loc[swing_data['Hitter']==player,stat],
                 color=sns.color_palette('vlag',n_colors=len(players))[len(players)-players.index(player)-1],
                cut=0)
-    ax.set(xlim=(swing_data['bat_speed'].quantile(0.03),swing_data['bat_speed'].max()),
+    ax.set(xlim=(swing_data[stat].quantile(0.03),swing_data[stat].max()),
            xlabel=stat_name_dict[stat],
            ylim=(0,ax.get_ylim()[1]*1.05),
            ylabel='')
