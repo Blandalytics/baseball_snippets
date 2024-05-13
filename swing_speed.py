@@ -87,7 +87,7 @@ def speed_dist(player,stat):
            ylim=(0,ax.get_ylim()[1]*1.125),
            ylabel='')
     plt.legend(labels=['MLB',player],
-               loc='left')
+               loc='center left')
     ax.set_yticks([])
     title_stat = ' '.join(stat_name_dict[stat].split(' ')[:-1])
     fig.suptitle(f"{player}'s\n{title_stat} Distribution",y=1)
