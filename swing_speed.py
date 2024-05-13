@@ -102,7 +102,8 @@ def speed_dist(player,stat):
                     color=player_color,
                     cut=0)
     
-    ax.set(xlim=(swing_data[stat].quantile(0.025),swing_data[stat].max()),
+    ax.set(xlim=(min(swing_data[stat].quantile(0.025),swing_data.loc[swing_data['Hitter']==player,stat].quantile(0.025)),
+                 swing_data[stat].max()),
            xlabel=stat_name_dict[stat],
            ylabel='')
 
