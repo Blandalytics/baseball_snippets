@@ -102,17 +102,17 @@ def speed_dist(player,stat):
                     cut=0)
     
     kdeline = p.lines[0]
-    xs = kdeline.get_xdata()
-    ys = kdeline.get_ydata()
-    height = np.interp(val, xs, ys)
+    xs_p = kdeline.get_xdata()
+    ys_p = kdeline.get_ydata()
+    height = np.interp(val, xs_p, ys_p)
     ax.vlines(val, 0, height, color=player_color, ls='--')
     
     ax.set(xlim=(swing_data[stat].quantile(0.03),swing_data[stat].max()),
            xlabel=stat_name_dict[stat],
            ylim=(0,ax.get_ylim()[1]*1),
            ylabel='')
-    plt.legend(labels=['MLB','Median',player][::2],
-               loc='upper center')
+    plt.legend(labels=['MLB','Median',player,'Player Median'][::2],
+               loc='lower center')
     ax.set_yticks([])
     title_stat = ' '.join(stat_name_dict[stat].split(' ')[:-1])
     fig.suptitle(f"{player}'s\n{title_stat} Distribution",y=1)
