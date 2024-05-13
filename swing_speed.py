@@ -153,3 +153,11 @@ def speed_dist(player,stat):
     fig.text(0.125,-0.14,'mlb-swing-speed.streamlit.app',ha='left',fontsize=10)
     st.pyplot(fig)
 speed_dist(player,stat)
+
+st.header('Assumptions & Formulas')
+st.write('Initial Speed (v_0; in ft/s) = 0 ')
+st.write('Final Speed (v_f; in ft/s) = Swing Speed * 1.46667 (convert from mph to ft/s)')
+st.write('Swing Length (d; in ft) = swing length ')
+st.write('Average Speed (v_avg; in ft/s) = (v_f - v_i)/2')
+st.write('Swing Time (t; in s) = d / v_avg')
+st.write('Swing Acceleration (a; in ft/s^2) = v_f / t')
