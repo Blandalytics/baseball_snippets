@@ -162,4 +162,4 @@ st.write('- Final Speed (v_f; in ft/s) = Swing Speed * 1.46667 (from Savant; con
 st.write('- Swing Length (d; in ft) = Swing Length (from Savant)')
 st.write('- Average Speed (v_avg; in ft/s) = (v_f - v_i)/2')
 st.write('- Swing Time (t; in s) = d / v_avg')
-st.write('- Swing Acceleration (a; in ft/s^2) = v_f / t')
+st.write('- Swing Acceleration (a; in ft/s^2) = v_avg / t')
