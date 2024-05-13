@@ -5,7 +5,7 @@ import seaborn as sns
 import numpy as np
 
 st.title('MLB Swing Speed App')
-st.write('Find me [@Blandalytics](https://twitter.com/blandalytics)')
+st.write('Find me [@Blandalytics](https://twitter.com/blandalytics) and check out the data at [Baseball Savant](https://baseballsavant.mlb.com/leaderboard/bat-tracking)')
 
 pl_white = '#FEFEFE'
 pl_background = '#162B50'
