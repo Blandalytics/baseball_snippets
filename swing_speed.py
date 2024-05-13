@@ -4,6 +4,8 @@ import pandas as pd
 import seaborn as sns
 import numpy as np
 
+st.title('MLB Swing Speed App')
+st.write('Find me [@Blandalytics](https://twitter.com/blandalytics)')
 
 pl_white = '#FEFEFE'
 pl_background = '#162B50'
