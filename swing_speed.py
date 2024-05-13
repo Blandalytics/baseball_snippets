@@ -54,7 +54,7 @@ st.dataframe(swing_data
              .query(f'Swings >={swing_threshold}')
              .sort_values('swing_acceleration',ascending=False)
              .rename(columns=stat_name_dict)
-             .rename(columns={'swing_time':'Swing Time (s)')
+             .rename(columns={'swing_time':'Swing Time (s)'})
              .round(1)
 )
 
