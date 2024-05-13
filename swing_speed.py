@@ -108,7 +108,7 @@ def speed_dist(player,stat):
 
     val = swing_data.loc[swing_data['Hitter']==player,stat].mean()
     color_list = sns.color_palette('vlag',n_colors=len(players))
-    player_color = color_list[len(players)-players.index(player)] if stat not in ['swing_length','swing_time'] else color_list[players.index(player)-1]
+    player_color = color_list[len(players)-players.index(player)-1] if stat not in ['swing_length','swing_time'] else color_list[players.index(player)-1]
     sns.kdeplot(swing_data.loc[swing_data['Hitter']==player,stat],
                     color=player_color,
                     fill=True,
