@@ -38,14 +38,16 @@ swing_threshold = st.number_input(f'Min # of Swings:',
 stat_name_dict = {
     'bat_speed':'Swing Speed (mph)',
     'swing_length':'Swing Length (ft)',
+    'swing_time':'Swing Time (s)',
     'swing_acceleration':'Swing Acceleration (ft/s^2)'
 }
 
 st.dataframe(swing_data
              .groupby(['Hitter'])
-             [['Swings','bat_speed','swing_length','swing_time','swing_acceleration']]
+             [['Swings','Team','bat_speed','swing_length','swing_time','swing_acceleration']]
              .agg({
                  'Swings':'count',
+                 'Team':pd.Series.mode,
                  'bat_speed':'mean',
                  'swing_length':'mean',
                  'swing_time':'mean',
@@ -53,9 +55,15 @@ st.dataframe(swing_data
              })
              .query(f'Swings >={swing_threshold}')
              .sort_values('swing_acceleration',ascending=False)
+             .round({
+                 'Swings':0,
+                 'bat_speed':1,
+                 'swing_length':1,
+                 'swing_time':3,
+                 'swing_acceleration':1
+             })
              .rename(columns=stat_name_dict)
              # .rename(columns={'swing_time':'Swing Time (s)'})
-             .round(1)
 )
 
 players = list(swing_data
