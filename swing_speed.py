@@ -84,7 +84,7 @@ def speed_dist(player,stat):
                cut=0)
     ax.set(xlim=(swing_data['bat_speed'].quantile(0.03),swing_data['bat_speed'].max()),
            xlabel=stat_name_dict[stat],
-           ylim=(0,ax.get_ylim()[1]*1.125),
+           ylim=(0,ax.get_ylim()[1]*1.05),
            ylabel='')
     plt.legend(labels=['MLB',player],
                loc='center left')
