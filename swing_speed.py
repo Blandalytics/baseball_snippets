@@ -1,4 +1,5 @@
 import streamlit as st
+import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 import numpy as np
@@ -26,11 +27,17 @@ sns.set_theme(
 
 swing_data = pd.read_csv('https://github.com/Blandalytics/baseball_snippets/blob/main/swing_speed_data.csv?raw=true',encoding='latin1')
 
-swing_threshold = st.number_input(f'Min # of Pitches:',
+swing_threshold = st.number_input(f'Min # of Swings:',
                                   min_value=0, 
                                   max_value=swing_data.groupby('Hitter')['Swings'].sum().max(),
                                   step=25, 
-                                  value=200)
+                                  value=100)
+
+stat_name_dict = {
+    'bat_speed':'Swing Speed (mph)',
+    'swing_length':'Swing Length (ft)',
+    'swing_acceleration':'Swing Acceleration (ft/s^2)'
+}
 
 st.dataframe(swing_data
              .groupby(['Hitter'])
@@ -43,10 +50,7 @@ st.dataframe(swing_data
              })
              .query(f'Swings >={swing_threshold}')
              .sort_values('swing_acceleration',ascending=False)
-             .rename(columns={'bat_speed':'Swing Speed (mph)',
-                              'swing_length':'Swing Length (ft)',
-                              'swing_acceleration':'Swing Acceleration (ft/s^2)'
-                             })
+             .rename(columns=stat_name_dict)
              .round(1)
 )
 
@@ -59,24 +63,33 @@ players = list(swing_data
                .sort_values('swing_acceleration', ascending=False)
                ['Hitter']
               )
-player = st.selectbox('Choose a player:', players)
+col1, col2 = st.columns(2)
 
-def speed_dist(player):
+with col1:
+    player = st.selectbox('Choose a player:', players)
+with col2:
+    stat = st.selectbox('Choose a metric:', list(stat_name_dict.keys()))
+    
+def speed_dist(player,stat):
     fig, ax = plt.subplots(figsize=(6,3))
-    sns.kdeplot(pitch_data['bat_speed'],
+    sns.kdeplot(swing_data[stat],
                 linestyle='--',
                 color='w',
                 cut=0)
-    sns.kdeplot(pitch_data.loc[pitch_data['hittername']==player,'bat_speed'],
-                color=sns.color_palette('vlag',n_colors=1000)[-1],
+    sns.kdeplot(swing_data.loc[swing_data['Hitter']==player,stat],
+                color=sns.color_palette('vlag',n_colors=len(players))[len(players)-players.index(player)-1],
                cut=0)
-    ax.set(xlim=(50,90),
-           xlabel='Bat Speed (mph)',
+    ax.set(xlim=(swing_data['bat_speed'].quantile(0.03),swing_data['bat_speed'].max()),
+           xlabel=stat_name_dict[stat],
+           ylim=(0,ax.get_ylim()[1]*1.1),
            ylabel='')
     plt.legend(labels=['MLB',player],
-               loc='lower center')
+               loc='upper left')
     ax.set_yticks([])
-    fig.suptitle(f"{player}'s\nBat Speed Distribution",y=1)
+    title_stat = ' '.join(stat_name_dict[stat].split(' ')[:-1])
+    fig.suptitle(f"{player}'s\n{title_stat} Distribution",y=1)
     sns.despine(left=True)
+    fig.text(0.83,-0.15,'@blandalytics',ha='center',fontsize=10)
+    fig.text(0.125,-0.15,'mlb-swing-speed.streamlit.app',ha='left',fontsize=10)
     st.pyplot(fig)
-speed_dist(player)
+speed_dist(player,stat)
