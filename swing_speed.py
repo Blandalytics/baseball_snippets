@@ -111,7 +111,7 @@ def speed_dist(player,stat):
            xlabel=stat_name_dict[stat],
            ylim=(0,ax.get_ylim()[1]*1),
            ylabel='')
-    plt.legend(labels=['MLB',,player][::2],
+    plt.legend(labels=['MLB','Median',player][::2],
                loc='upper center')
     ax.set_yticks([])
     title_stat = ' '.join(stat_name_dict[stat].split(' ')[:-1])
