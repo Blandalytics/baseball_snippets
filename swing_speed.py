@@ -70,7 +70,8 @@ col1, col2 = st.columns(2)
 with col1:
     player = st.selectbox('Choose a player:', players)
 with col2:
-    stat = st.selectbox('Choose a metric:', list(stat_name_dict.keys()))
+    stat = st.selectbox('Choose a metric:', list(stat_name_dict.values()))
+    stat = list(stat_name_dict.keys())[list(stat_name_dict.values()).index(stat)]
     
 def speed_dist(player,stat):
     fig, ax = plt.subplots(figsize=(6,3))
@@ -83,7 +84,7 @@ def speed_dist(player,stat):
                cut=0)
     ax.set(xlim=(swing_data['bat_speed'].quantile(0.03),swing_data['bat_speed'].max()),
            xlabel=stat_name_dict[stat],
-           ylim=(0,ax.get_ylim()[1]*1.1),
+           ylim=(0,ax.get_ylim()[1]*1.12),
            ylabel='')
     plt.legend(labels=['MLB',player],
                loc='upper left')
