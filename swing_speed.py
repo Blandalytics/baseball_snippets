@@ -70,7 +70,7 @@ col1, col2 = st.columns(2)
 with col1:
     player = st.selectbox('Choose a player:', players)
 with col2:
-    stat = st.selectbox('Choose a metric:', list(stat_name_dict.values()))
+    stat = st.selectbox('Choose a metric:', list(stat_name_dict.values()), index='Swing Acceleration (ft/s^2)')
     stat = list(stat_name_dict.keys())[list(stat_name_dict.values()).index(stat)]
     players = list(swing_data
                .groupby('Hitter')
