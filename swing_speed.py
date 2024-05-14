@@ -1,5 +1,6 @@
 import streamlit as st
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mtick
 import pandas as pd
 import seaborn as sns
 import numpy as np
@@ -163,7 +164,9 @@ def speed_dist(player,stat):
     measure = '%' if stat == 'ahap' else stat_name_dict[stat].split(' ')[-1][1:-1]
     ax.text(val,ax.get_ylim()[1]*0.1,f'{val:.1f}{measure}',va='center',ha='center',color=player_color,
             bbox=dict(facecolor=pl_background, alpha=0.9,edgecolor=player_color))
-    
+
+    if stat=='ahap':
+        plt.gca().yaxis.set_major_formatter(mtick.PercentFormatter(100,decimals=0))
     ax.set_yticks([])
     title_stat = '% of Max Possible EV' if stat == 'ahap' else ' '.join(stat_name_dict[stat].split(' ')[:-1])
     apostrophe_text = "'" if player[-1]=='s' else "'s"
