@@ -161,10 +161,7 @@ def speed_dist(player,stat):
     ax.vlines(val, ax.get_ylim()[1]*0.1, height_p, color=player_color)
     
     measure = '%' if stat == 'ahap' else stat_name_dict[stat].split(' ')[-1][1:-1]
-    val_text = val.copy()
-    if stat=='ahap':
-        val_text = val*100
-    ax.text(val,ax.get_ylim()[1]*0.1,f'{val_text:.1f}{measure}',va='center',ha='center',color=player_color,
+    ax.text(val,ax.get_ylim()[1]*0.1,f'{val:.1f}{measure}',va='center',ha='center',color=player_color,
             bbox=dict(facecolor=pl_background, alpha=0.9,edgecolor=player_color))
     
     ax.set_yticks([])
