@@ -148,8 +148,8 @@ def speed_dist(player,stat):
     height_p = np.interp(val, xs_p, ys_p)
     ax.vlines(val, ax.get_ylim()[1]*0.1, height_p, color=player_color)
     measure = stat_name_dict[stat].split(' ')[-1][1:-1]
-    ax.text(val,ax.get_ylim()[1]*0.05,f'{val:.1f}{measure}',va='center',ha='center',color=player_color,
-            bbox=dict(facecolor=pl_background, alpha=1,edgecolor=player_color))
+    ax.text(val,ax.get_ylim()[1]*0.1,f'{val:.1f}{measure}',va='center',ha='center',color=player_color,
+            bbox=dict(facecolor=pl_background, alpha=0.9,edgecolor=player_color))
     
     ax.set_yticks([])
     title_stat = ' '.join(stat_name_dict[stat].split(' ')[:-1])
