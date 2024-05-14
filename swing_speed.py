@@ -128,19 +128,13 @@ def speed_dist(player,stat):
                     color=player_color,
                     cut=0)
     
-    ax.set(xlim=(min(swing_data[stat].quantile(0.025),swing_data.loc[swing_data['Hitter']==player,stat].quantile(0.04)),
-                 max(200,swing_data.loc[swing_data['Hitter']==player,stat].quantile(0.96)) if stat == 'swing_time' else swing_data[stat].max()),
+    ax.set(#xlim=(min(swing_data[stat].quantile(0.025),swing_data.loc[swing_data['Hitter']==player,stat].quantile(0.04)),
+                 # max(200,swing_data.loc[swing_data['Hitter']==player,stat].quantile(0.96)) if stat == 'swing_time' else swing_data[stat].max()),
            xlabel=stat_name_dict[stat],
            ylabel='')
 
     plt.legend(labels=[player,'MLB'],
                loc='lower center')
-    
-    # kdeline = g.lines[0]
-    # xs = kdeline.get_xdata()
-    # ys = kdeline.get_ydata()
-    # height = np.interp(swing_data[stat].median(), xs, ys)
-    # ax.vlines(swing_data[stat].median(), 0, height, color='w', ls='--', alpha=0.5)
     
     kdeline_p = p.lines[1]
     xs_p = kdeline_p.get_xdata()
