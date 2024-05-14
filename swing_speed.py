@@ -166,7 +166,7 @@ def speed_dist(player,stat):
             bbox=dict(facecolor=pl_background, alpha=0.9,edgecolor=player_color))
 
     if stat=='ahap':
-        plt.gca().yaxis.set_major_formatter(mtick.PercentFormatter(100,decimals=0))
+        plt.gca().xaxis.set_major_formatter(mtick.PercentFormatter(100,decimals=0))
     ax.set_yticks([])
     title_stat = '% of Max Possible EV' if stat == 'ahap' else ' '.join(stat_name_dict[stat].split(' ')[:-1])
     apostrophe_text = "'" if player[-1]=='s' else "'s"
