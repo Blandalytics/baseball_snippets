@@ -57,7 +57,7 @@ stat_name_dict = {
     'swing_length':'Swing Length (ft)',
     'swing_time':'Swing Time (ms)',
     'swing_acceleration':'Swing Acceleration (ft/s^2)',
-    'ahap':'% of Max Possible EV'
+    'ahap':'Squared Up%'
 }
 
 df_stat_dict = {
@@ -65,7 +65,7 @@ df_stat_dict = {
     'swing_length':'Length (ft)',
     'swing_time':'Time (ms)',
     'swing_acceleration':'Acceleration (ft/s^2)',
-    'ahap':'MPE%'
+    'ahap':'SU%'
 }
 
 st.write('Swing Metrics')
@@ -168,7 +168,7 @@ def speed_dist(player,stat):
     if stat=='ahap':
         plt.gca().xaxis.set_major_formatter(mtick.PercentFormatter(100,decimals=0))
     ax.set_yticks([])
-    title_stat = '% of Max Possible EV' if stat == 'ahap' else ' '.join(stat_name_dict[stat].split(' ')[:-1])
+    title_stat = 'Squared Up%' if stat == 'ahap' else ' '.join(stat_name_dict[stat].split(' ')[:-1])
     apostrophe_text = "'" if player[-1]=='s' else "'s"
     fig.suptitle(f"{player}{apostrophe_text}\n{title_stat} Distribution",y=1.025)
     sns.despine(left=True)
@@ -183,7 +183,7 @@ st.write('- Initial speed is 0mph')
 st.write('- Swing Speed is recorded at the same point & time as Swing Length')
 st.write('- Speed of pitch at plate = [~0.92 * Release Speed](https://twitter.com/tangotiger/status/1790432119275082139)')
 st.write('- Collision Efficiency = [0.23](http://tangotiger.com/index.php/site/article/statcast-lab-collisions-and-the-perfect-swing)')
-st.write("- % of Max Possible EV can't be >100%")
+st.write("- Squared Up% can't be >100%")
 st.write('Formulas:')
 st.write('- Initial Speed (v_0; in ft/s) = 0 ')
 st.write('- Final Speed (v_f; in ft/s) = Swing Speed * 1.46667 (from Savant; converted from mph to ft/s)')
@@ -193,4 +193,4 @@ st.write('- Swing Time (t; in s) = d / v_avg')
 st.write('- Swing Acceleration (a; in ft/s^2) = v_f / t')
 st.write('- Collision Efficiency (q; unitless) = 0.23')
 st.write('- Max Possible EV (in mph) = (Pitch Speed at Plate * q) + [Swing Speed * (1 + q]')
-st.write('- % of Max Possible EV (MPE%) = Exit Velocity / Max Possible EV')
+st.write('- Squared Up% (SU%) = Exit Velocity / Max Possible EV')
