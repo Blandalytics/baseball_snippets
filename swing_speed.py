@@ -150,7 +150,7 @@ def speed_dist(player,stat):
     ax.vlines(val, ax.get_ylim()[1]*0.1, height_p, color=player_color)
     
     league_val = swing_data[stat].mean()
-    kdeline_g = g.lines[1]
+    kdeline_g = g.lines[0]
     xs_g = kdeline_g.get_xdata()
     ys_g = kdeline_g.get_ydata()
     height_g = np.interp(league_val, xs_g, ys_g)
