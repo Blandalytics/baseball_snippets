@@ -127,9 +127,12 @@ def speed_dist(player,stat):
     p = sns.kdeplot(swing_data.loc[swing_data['Hitter']==player,stat],
                     color=player_color,
                     cut=0)
-    
-    ax.set(#xlim=(min(swing_data[stat].quantile(0.025),swing_data.loc[swing_data['Hitter']==player,stat].quantile(0.04)),
-                 # max(200,swing_data.loc[swing_data['Hitter']==player,stat].quantile(0.96)) if stat == 'swing_time' else swing_data[stat].max()),
+    if all_swings==True:
+        xlim = (min(swing_data[stat].quantile(0.025),swing_data.loc[swing_data['Hitter']==player,stat].quantile(0.04)),
+                 max(200,swing_data.loc[swing_data['Hitter']==player,stat].quantile(0.96)) if stat == 'swing_time' else swing_data[stat].max())
+    else:
+        xlim = (ax.get_xlim()[0],ax.get_xlim()[1])
+    ax.set(xlim=xlim,
            xlabel=stat_name_dict[stat],
            ylabel='')
 
