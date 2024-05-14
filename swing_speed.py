@@ -27,7 +27,11 @@ sns.set_theme(
      }
     )
 
+all_swings = st.toggle('Include Non-Competitive swings?')
+
 swing_data = pd.read_csv('https://github.com/Blandalytics/baseball_snippets/blob/main/swing_speed_data.csv?raw=true',encoding='latin1')
+if all_swings==False:
+    swing_data = swing_data.loc[swing_data['bat_speed']>=pitch_data['bat_speed'].groupby(pitch_data['batter']).transform(lambda x: x.quantile(0.1))).copy()
 swing_data['swing_time'] = swing_data['swing_time'].mul(1000)
 
 col1, col2 = st.columns(2)
