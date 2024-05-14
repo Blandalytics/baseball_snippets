@@ -135,7 +135,7 @@ def speed_dist(player,stat):
     ax.set(xlim=xlim,
            xlabel=stat_name_dict[stat],
            ylabel='',
-          ylim=(0,ax.get_ylim()[1]*1.2))
+          ylim=(0,ax.get_ylim()[1]*1.15))
 
     plt.legend(labels=[player,'MLB'],
                loc='upper center',
@@ -146,12 +146,12 @@ def speed_dist(player,stat):
     xs_p = kdeline_p.get_xdata()
     ys_p = kdeline_p.get_ydata()
     height_p = np.interp(val, xs_p, ys_p)
-    ax.vlines(val, 0, height_p, color=player_color)
+    ax.vlines(val, ax.get_ylim()[1]*0.1, height_p, color=player_color)
     
     ax.set_yticks([])
     title_stat = ' '.join(stat_name_dict[stat].split(' ')[:-1])
     apostrophe_text = "'" if player[-1]=='s' else "'s"
-    fig.suptitle(f"{player}{apostrophe_text}\n{title_stat} Distribution",y=1)
+    fig.suptitle(f"{player}{apostrophe_text}\n{title_stat} Distribution",y=1.025)
     sns.despine(left=True)
     fig.text(0.83,-0.15,'@blandalytics\nData: Savant',ha='center',fontsize=10)
     fig.text(0.125,-0.14,'mlb-swing-speed.streamlit.app',ha='left',fontsize=10)
