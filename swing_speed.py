@@ -153,7 +153,7 @@ def speed_dist(player,stat):
     kdeline_g = g.lines[1]
     xs_g = kdeline_g.get_xdata()
     ys_g = kdeline_g.get_ydata()
-    height_g = np.interp(league_val, xs_p, ys_p)
+    height_g = np.interp(league_val, xs_g, ys_g)
     ax.vlines(league_val, 0, height_g, color='w',alpha=0.5,linestyle='--')
     
     measure = stat_name_dict[stat].split(' ')[-1][1:-1]
