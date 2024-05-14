@@ -33,6 +33,7 @@ swing_data = pd.read_csv('https://github.com/Blandalytics/baseball_snippets/blob
 if all_swings==False:
     swing_data = swing_data.loc[(swing_data['bat_speed']>=40) &
                                 (swing_data['bat_speed']>swing_data['bat_speed'].groupby(swing_data['Hitter']).transform(lambda x: x.quantile(0.1)))].copy()
+swing_data['ahap'] = swing_data['ahap'].mul(100)
 swing_data['swing_time'] = swing_data['swing_time'].mul(1000)
 
 col1, col2 = st.columns(2)
