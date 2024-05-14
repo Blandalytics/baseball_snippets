@@ -134,7 +134,8 @@ def speed_dist(player,stat):
            ylabel='')
 
     plt.legend(labels=[player,'MLB'],
-               loc='lower center')
+               loc='lower center',
+               ncol=1)
     
     # kdeline_p = p.lines[1]
     # xs_p = kdeline_p.get_xdata()
