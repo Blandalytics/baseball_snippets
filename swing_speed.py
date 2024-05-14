@@ -147,7 +147,7 @@ def speed_dist(player,stat):
     ys_p = kdeline_p.get_ydata()
     height_p = np.interp(val, xs_p, ys_p)
     ax.vlines(val, ax.get_ylim()[1]*0.1, height_p, color=player_color)
-    ax.text(val,ax.get_ylim()[1]*0.09,f'{val:.1f}',va='top',ha='center',color=player_color)
+    ax.text(val,0,f'{val:.1f}',va='bottom',ha='center',color=player_color)
     
     ax.set_yticks([])
     title_stat = ' '.join(stat_name_dict[stat].split(' ')[:-1])
