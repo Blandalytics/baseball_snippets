@@ -54,27 +54,30 @@ stat_name_dict = {
     'bat_speed':'Swing Speed (mph)',
     'swing_length':'Swing Length (ft)',
     'swing_time':'Swing Time (ms)',
-    'swing_acceleration':'Swing Acceleration (ft/s^2)'
+    'swing_acceleration':'Swing Acceleration (ft/s^2)',
+    'ahap':'% of Max Possible EV'
 }
 
 df_stat_dict = {
     'bat_speed':'Speed (mph)',
     'swing_length':'Length (ft)',
     'swing_time':'Time (ms)',
-    'swing_acceleration':'Acceleration (ft/s^2)'
+    'swing_acceleration':'Acceleration (ft/s^2)',
+    'ahap':'MPE%'
 }
 
 st.write('Swing Metrics')
 st.dataframe((swing_data if team=='All' else swing_data.loc[swing_data['Team']==team])
              .groupby(['Hitter'])
-             [['Team','Swings','bat_speed','swing_length','swing_time','swing_acceleration']]
+             [['Team','Swings','bat_speed','swing_length','swing_time','swing_acceleration','ahap']]
              .agg({
                  'Team':lambda x: pd.Series.unique(x)[-1],
                  'Swings':'count',
                  'bat_speed':'mean',
                  'swing_length':'mean',
                  'swing_time':'mean',
-                 'swing_acceleration':'mean'
+                 'swing_acceleration':'mean',
+                 'ahap':'mean'
              })
              .query(f'Swings >={swing_threshold}')
              .sort_values('swing_acceleration',ascending=False)
@@ -156,12 +159,15 @@ def speed_dist(player,stat):
     height_p = np.interp(val, xs_p, ys_p)
     ax.vlines(val, ax.get_ylim()[1]*0.1, height_p, color=player_color)
     
-    measure = stat_name_dict[stat].split(' ')[-1][1:-1]
-    ax.text(val,ax.get_ylim()[1]*0.1,f'{val:.1f}{measure}',va='center',ha='center',color=player_color,
+    measure = '%' if stat == 'ahap' else stat_name_dict[stat].split(' ')[-1][1:-1]
+    val_text = val.copy()
+    if stat=='ahap':
+        val_text = val*100
+    ax.text(val,ax.get_ylim()[1]*0.1,f'{val_text:.1f}{measure}',va='center',ha='center',color=player_color,
             bbox=dict(facecolor=pl_background, alpha=0.9,edgecolor=player_color))
     
     ax.set_yticks([])
-    title_stat = ' '.join(stat_name_dict[stat].split(' ')[:-1])
+    title_stat = '% of Max Possible EV' if stat == 'ahap' else ' '.join(stat_name_dict[stat].split(' ')[:-1])
     apostrophe_text = "'" if player[-1]=='s' else "'s"
     fig.suptitle(f"{player}{apostrophe_text}\n{title_stat} Distribution",y=1.025)
     sns.despine(left=True)
@@ -171,7 +177,11 @@ def speed_dist(player,stat):
 speed_dist(player,stat)
 
 st.header('Assumptions & Formulas')
-st.write('Assumptions: Initial speed is 0mph, and Swing Speed is recorded at the same point & time as Swing Length')
+st.write('Assumptions:')
+st.write('- Initial speed is 0mph')
+st.write('- Swing Speed is recorded at the same point & time as Swing Length')
+st.write('- Speed of pitch at plate = [~0.92 * Release Speed](https://twitter.com/tangotiger/status/1790432119275082139)')
+st.write('- Collision Efficiency = [0.23](http://tangotiger.com/index.php/site/article/statcast-lab-collisions-and-the-perfect-swing)')
 st.write('Formulas:')
 st.write('- Initial Speed (v_0; in ft/s) = 0 ')
 st.write('- Final Speed (v_f; in ft/s) = Swing Speed * 1.46667 (from Savant; converted from mph to ft/s)')
@@ -179,3 +189,6 @@ st.write('- Swing Length (d; in ft) = Swing Length (from Savant)')
 st.write('- Average Speed (v_avg; in ft/s) = (v_f - v_i)/2')
 st.write('- Swing Time (t; in s) = d / v_avg')
 st.write('- Swing Acceleration (a; in ft/s^2) = v_f / t')
+st.write('- Collision Efficiency (q; unitless) = 0.23')
+st.write('- Max Possible EV (in mph) = (Pitch Speed at Plate * q) + [Swing Speed * (1 + q]')
+st.write('- % of Max Possible EV (MPE%) = Exit Velocity / Max Possible EV')
