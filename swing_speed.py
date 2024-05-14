@@ -119,7 +119,7 @@ def speed_dist(player,stat):
                     fill=True,
                     cut=0)
                     
-    sns.kdeplot(swing_data[stat],
+    g = sns.kdeplot(swing_data[stat],
                     linestyle='--',
                     color='w',
                     alpha=0.5,
@@ -148,6 +148,14 @@ def speed_dist(player,stat):
     ys_p = kdeline_p.get_ydata()
     height_p = np.interp(val, xs_p, ys_p)
     ax.vlines(val, ax.get_ylim()[1]*0.1, height_p, color=player_color)
+    
+    league_val = swing_data[stat].mean()
+    kdeline_g = g.lines[1]
+    xs_g = kdeline_g.get_xdata()
+    ys_g = kdeline_g.get_ydata()
+    height_g = np.interp(league_val, xs_p, ys_p)
+    ax.vlines(league_val, 0, height_g, color='w',alpha=0.5,linestyle='--')
+    
     measure = stat_name_dict[stat].split(' ')[-1][1:-1]
     ax.text(val,ax.get_ylim()[1]*0.1,f'{val:.1f}{measure}',va='center',ha='center',color=player_color,
             bbox=dict(facecolor=pl_background, alpha=0.9,edgecolor=player_color))
