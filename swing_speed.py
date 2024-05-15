@@ -60,7 +60,7 @@ stat_name_dict = {
     'swing_time':'Swing Time (ms)',
     'swing_acceleration':'Swing Acceleration (ft/s^2)',
     'squared_up_frac':'Squared Up%',
-    'blastitos':'Partial Blasts'
+    'blastitos':'Partial Blasts / Swing'
 }
 
 df_stat_dict = {
