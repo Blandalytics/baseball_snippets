@@ -244,7 +244,7 @@ def speed_dist(swing_data,player,stat):
     apostrophe_text = "'" if player[-1]=='s' else "'s"
     date_text = '' if (start_date==season_start) & (end_date==season_end) else f' ({start_date:%b %-d} - {end_date:%b %-d})'
     count_text = '' if count_select=='All' else f'\nin {count_select} counts'
-    fig.suptitle(f"{player}{apostrophe_text}\n{title_stat}{date_text}{count_text}",y=1.025 if count_select=='All' else 1.06)
+    fig.suptitle(f"{player}{apostrophe_text}\n{title_stat}{date_text}{count_text}",y=1.025 if count_select=='All' else 1.075)
     sns.despine(left=True)
     fig.text(0.8,-0.15,'@blandalytics\nData: Savant',ha='center',fontsize=10)
     fig.text(0.125,-0.14,'mlb-swing-speed.streamlit.app',ha='left',fontsize=10)
