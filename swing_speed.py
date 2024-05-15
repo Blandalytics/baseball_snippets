@@ -326,7 +326,7 @@ def rolling_chart(df,player,stat):
     locator = mdates.AutoDateLocator(minticks=3, maxticks=7)
     formatter = mdates.ConciseDateFormatter(locator,
                                             show_offset=False,
-                                           formats=['%Y', '%#m/1', '%#m/%#d', '%H:%M', '%H:%M', '%S.%f'])
+                                           formats=['%Y', '%-m/1', '%-m/%-d', '%H:%M', '%H:%M', '%S.%f'])
     if stat=='squared_up_frac':
         plt.gca().yaxis.set_major_formatter(mtick.PercentFormatter(100,decimals=0))
     ax.xaxis.set_major_locator(locator)
