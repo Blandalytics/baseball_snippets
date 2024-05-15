@@ -193,7 +193,7 @@ def speed_dist(swing_data,player,stat):
     if stat=='squared_up_frac':
         plt.gca().xaxis.set_major_formatter(mtick.PercentFormatter(100,decimals=0))
     ax.set_yticks([])
-    title_stat = 'Squared Up%' if stat == 'squared_up_frac' else ' '.join(stat_name_dict[stat].split(' ')[:-1])
+    title_stat = 'Squared Up%' if stat == 'squared_up_frac' else 'Partial Blasts' if stat == 'blastitos' else ' '.join(stat_name_dict[stat].split(' ')[:-1])
     apostrophe_text = "'" if player[-1]=='s' else "'s"
     date_text = ' Distribution' if (start_date==season_start) & (end_date==season_end) else f' ({start_date:%b %-d} - {end_date:%b %-d})'
     fig.suptitle(f"{player}{apostrophe_text}\n{title_stat}{date_text}",y=1.025)
