@@ -34,7 +34,7 @@ swing_data = pd.read_csv('https://github.com/Blandalytics/baseball_snippets/blob
 if all_swings==False:
     swing_data = swing_data.loc[(swing_data['bat_speed']>=40) &
                                 (swing_data['bat_speed']>swing_data['bat_speed'].groupby(swing_data['Hitter']).transform(lambda x: x.quantile(0.1)))].copy()
-swing_data['ahap'] = swing_data['ahap'].mul(100)
+swing_data['squared_up_frac'] = swing_data['squared_up_frac'].mul(100)
 swing_data['swing_time'] = swing_data['swing_time'].mul(1000)
 
 col1, col2 = st.columns(2)
@@ -57,7 +57,7 @@ stat_name_dict = {
     'swing_length':'Swing Length (ft)',
     'swing_time':'Swing Time (ms)',
     'swing_acceleration':'Swing Acceleration (ft/s^2)',
-    'ahap':'Squared Up%'
+    'squared_up_frac':'Squared Up%'
 }
 
 df_stat_dict = {
@@ -65,13 +65,13 @@ df_stat_dict = {
     'swing_length':'Length (ft)',
     'swing_time':'Time (ms)',
     'swing_acceleration':'Acceleration (ft/s^2)',
-    'ahap':'SU%'
+    'squared_up_frac':'SU%'
 }
 
 st.write('Swing Metrics')
 st.dataframe((swing_data if team=='All' else swing_data.loc[swing_data['Team']==team])
              .groupby(['Hitter'])
-             [['Team','Swings','bat_speed','swing_length','swing_time','swing_acceleration','ahap']]
+             [['Team','Swings','bat_speed','swing_length','swing_time','swing_acceleration','squared_up_frac']]
              .agg({
                  'Team':lambda x: pd.Series.unique(x)[-1],
                  'Swings':'count',
@@ -79,7 +79,7 @@ st.dataframe((swing_data if team=='All' else swing_data.loc[swing_data['Team']==
                  'swing_length':'mean',
                  'swing_time':'mean',
                  'swing_acceleration':'mean',
-                 'ahap':'mean'
+                 'squared_up_frac':'mean'
              })
              .query(f'Swings >={swing_threshold}')
              .sort_values('swing_acceleration',ascending=False)
@@ -161,14 +161,14 @@ def speed_dist(player,stat):
     height_p = np.interp(val, xs_p, ys_p)
     ax.vlines(val, ax.get_ylim()[1]*0.1, height_p, color=player_color)
     
-    measure = '%' if stat == 'ahap' else stat_name_dict[stat].split(' ')[-1][1:-1]
+    measure = '%' if stat == 'squared_up_frac' else stat_name_dict[stat].split(' ')[-1][1:-1]
     ax.text(val,ax.get_ylim()[1]*0.1,f'{val:.1f}{measure}',va='center',ha='center',color=player_color,
             bbox=dict(facecolor=pl_background, alpha=0.9,edgecolor=player_color))
 
-    if stat=='ahap':
+    if stat=='squared_up_frac':
         plt.gca().xaxis.set_major_formatter(mtick.PercentFormatter(100,decimals=0))
     ax.set_yticks([])
-    title_stat = 'Squared Up%' if stat == 'ahap' else ' '.join(stat_name_dict[stat].split(' ')[:-1])
+    title_stat = 'Squared Up%' if stat == 'squared_up_frac' else ' '.join(stat_name_dict[stat].split(' ')[:-1])
     apostrophe_text = "'" if player[-1]=='s' else "'s"
     fig.suptitle(f"{player}{apostrophe_text}\n{title_stat} Distribution",y=1.025)
     sns.despine(left=True)
