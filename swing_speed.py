@@ -154,7 +154,7 @@ col1, col2 = st.columns(2)
 with col1:
     player = st.selectbox('Choose a player:', players)
 with col2:
-    stat = st.selectbox('Choose a metric:', list(stat_name_dict.values()), index=3)
+    stat = st.selectbox('Choose a metric:', list(stat_name_dict.values()))
     stat = list(stat_name_dict.keys())[list(stat_name_dict.values()).index(stat)]
     players = list(swing_data
                    .loc[swing_data['count'].isin(selected_options)]
