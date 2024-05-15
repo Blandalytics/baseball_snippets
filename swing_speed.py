@@ -208,8 +208,8 @@ speed_dist(swing_data,player,stat)
 
 def rolling_chart(df,player,stat):
     rolling_df = (df
-                  .loc[(df['hittername']==player),
-                       ['hittername','game_date',stat]]
+                  .loc[(df['Hitter']==player),
+                       ['Hitter','game_date',stat]]
                   .dropna()
                   .reset_index(drop=True)
                   .reset_index()
@@ -222,8 +222,6 @@ def rolling_chart(df,player,stat):
     rolling_df = rolling_df.loc[rolling_df['swings']==rolling_df['swings'].groupby(rolling_df['game_date']).transform('max')].copy()
     
     chart_thresh_list = (chart_thresh_list
-                         .loc[(chart_thresh_list['bat_speed']>=40) &
-                              (chart_thresh_list['bat_speed']>chart_thresh_list['bat_speed'].groupby(chart_thresh_list['batter']).transform(lambda x: x.quantile(0.1)))]
                          .assign(Swing=1)
                          .groupby('hittername')
                          [['Swing',stat]]
