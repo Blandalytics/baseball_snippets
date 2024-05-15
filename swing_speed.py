@@ -334,8 +334,9 @@ def rolling_chart(df,player,stat):
     metric_text = 'Squared Up%' if stat == 'squared_up_frac' else ' '.join(stat_name_dict [stat].split(' ')[:-1])
     apostrophe_text = "'" if player[-1]=='s' else "'s"
     fig.suptitle(f"{player}{apostrophe_text} {metric_text}\nRolling {swing_thresh} Swings",
-                     fontsize=14
-                    )
+                 fontsize=14,
+                 y=0.95
+                 )
     fig.text(0.9,-0.025,'@blandalytics\nData: Savant',ha='center',fontsize=10)
     fig.text(0.025,-0.02,'mlb-swing-speed.streamlit.app',ha='left',fontsize=10)
     sns.despine()
