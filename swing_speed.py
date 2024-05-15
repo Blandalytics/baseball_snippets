@@ -69,7 +69,7 @@ df_stat_dict = {
     'swing_time':'Time (ms)',
     'swing_acceleration':'Acceleration (ft/s^2)',
     'squared_up_frac':'SU%',
-    'blastitos':'PB'
+    'blastitos':'PB%',
 }
 
 st.write('Swing Metrics')
@@ -78,6 +78,7 @@ st.dataframe((swing_data if team=='All' else swing_data.loc[swing_data['Team']==
              [['Team','Swings','bat_speed','swing_length','swing_time','swing_acceleration','squared_up_frac',
                'blastitos'
               ]]
+             .fillna({'blastitos':0}
              .agg({
                  'Team':lambda x: pd.Series.unique(x)[-1],
                  'Swings':'count',
@@ -86,7 +87,7 @@ st.dataframe((swing_data if team=='All' else swing_data.loc[swing_data['Team']==
                  'swing_time':'mean',
                  'swing_acceleration':'mean',
                  'squared_up_frac':'mean',
-                 'blastitos':'sum'
+                 'blastitos':'mean'
              })
              .query(f'Swings >={swing_threshold}')
              .sort_values('swing_acceleration',ascending=False)
