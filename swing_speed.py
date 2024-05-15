@@ -29,6 +29,21 @@ sns.set_theme(
      }
     )
 
+count_rates = {
+    (0, 0): 0.2562946734218814,
+    (0, 1): 0.1299246884841846,
+    (1, 1): 0.10081336437080651,
+    (1, 0): 0.09744488566342599,
+    (1, 2): 0.09660687388744352,
+    (2, 2): 0.08257428454059976,
+    (0, 2): 0.06793372586608243,
+    (2, 1): 0.052126523346569906,
+    (3, 2): 0.05111871833493085,
+    (2, 0): 0.03293441051622621,
+    (3, 1): 0.022078597836505547,
+    (3, 0): 0.010149253731343283
+}
+
 all_swings = st.toggle('Include Non-Competitive swings?')
 
 swing_data = pd.read_csv('https://github.com/Blandalytics/baseball_snippets/blob/main/swing_speed_data.csv?raw=true',encoding='latin1')
@@ -44,7 +59,7 @@ swing_data['game_date'] = pd.to_datetime(swing_data['game_date'])
 col1, col2 = st.columns(2)
 
 with col1:
-    swing_threshold = st.number_input(f'Min # of Swings:',
+    swing_threshold = st.number_input(f'Min # of Swings (in all situations):',
                                       min_value=0, 
                                       max_value=swing_data.groupby('Hitter')['Swings'].sum().max(),
                                       step=25, 
@@ -55,6 +70,32 @@ with col2:
                          'DET', 'HOU', 'KC', 'LAA', 'LAD', 'MIA', 'MIL', 'MIN', 'NYM',
                          'NYY', 'OAK', 'PHI', 'PIT', 'SD', 'SEA', 'SF', 'STL', 'TB', 'TEX',
                          'TOR', 'WSH'])
+
+count_select = st.radio('Count Group', 
+                        ['All','Hitter-Friendly','Pitcher-Friendly','Even','2-Strike','3-Ball','Custom'],
+                        index=0,
+                        horizontal=True
+                       )
+ 
+if count_select=='All':
+    selected_options = ['0-0', '1-0', '2-0', '3-0', '0-1', '1-1', '2-1', '3-1', '0-2', '1-2', '2-2', '3-2']
+elif count_select=='Hitter-Friendly':
+    selected_options = ['1-0', '2-0', '3-0', '2-1', '3-1']
+elif count_select=='Pitcher-Friendly':
+    selected_options = ['0-1','0-2','1-2','2-2']
+elif count_select=='Even':
+    selected_options = ['0-0','1-1','3-2']
+elif count_select=='2-Strike':
+    selected_options = ['0-2','1-2','2-2','3-2']
+elif count_select=='3-Ball':
+    selected_options = ['3-0','3-1','3-2']
+else:
+    selected_options = st.multiselect('Select the count(s):',
+                                       ['0-0', '1-0', '2-0', '3-0', '0-1', '1-1', '2-1', '3-1', '0-2', '1-2', '2-2', '3-2'],
+                                       ['0-0', '1-0', '2-0', '3-0', '0-1', '1-1', '2-1', '3-1', '0-2', '1-2', '2-2', '3-2'])
+
+count_threshold = sum([count_rates[(int(x[0]),int(x[-1]))] for x in selected_options])
+updated_threshold = int(round(swing_threshold*count_threshold,0))
 
 stat_name_dict = {
     'bat_speed':'Swing Speed (mph)',
@@ -76,6 +117,7 @@ df_stat_dict = {
 
 st.write('Swing Metrics')
 st.dataframe((swing_data if team=='All' else swing_data.loc[swing_data['Team']==team])
+             .loc[swing_data['count'].isin(selected_options)]
              .fillna({'blastitos':0})
              .groupby(['Hitter'])
              [['Team','Swings','bat_speed','swing_length','swing_time','swing_acceleration','squared_up_frac',
@@ -91,21 +133,12 @@ st.dataframe((swing_data if team=='All' else swing_data.loc[swing_data['Team']==
                  'squared_up_frac':'mean',
                  'blastitos':'mean'
              })
-             .query(f'Swings >={swing_threshold}')
+             .query(f'Swings >={updated_threshold}')
              .sort_values('swing_acceleration',ascending=False)
              .round(1)
              .rename(columns=df_stat_dict)
 )
 
-players = list(swing_data
-               .groupby('Hitter')
-               [['Swings','swing_acceleration']]
-               .agg({'Swings':'count','swing_acceleration':'mean'})
-               .query(f'Swings >={swing_threshold}')
-               .reset_index()
-               .sort_values('swing_acceleration', ascending=False)
-               ['Hitter']
-              )
 col1, col2 = st.columns(2)
 
 with col1:
@@ -117,7 +150,7 @@ with col2:
                .groupby('Hitter')
                [['Swings',stat]]
                .agg({'Swings':'count',stat:'mean'})
-               .query(f'Swings >={swing_threshold}')
+               .query(f'Swings >={updated_threshold}')
                .reset_index()
                .sort_values(stat, ascending=False)
                ['Hitter']
@@ -142,7 +175,8 @@ with col2:
 def speed_dist(swing_data,player,stat):
     fig, ax = plt.subplots(figsize=(6,3))
     swing_data = swing_data.loc[(swing_data['game_date'].dt.date>=start_date) &
-                                (swing_data['game_date'].dt.date<=end_date)].copy()
+                                (swing_data['game_date'].dt.date<=end_date) &
+                                (swing_data['count'].isin(selected_options))].copy()
 
     val = swing_data.loc[swing_data['Hitter']==player,stat].mean()
     color_list = sns.color_palette('vlag',n_colors=len(players))
@@ -198,8 +232,9 @@ def speed_dist(swing_data,player,stat):
     ax.set_yticks([])
     title_stat = 'Squared Up%' if stat == 'squared_up_frac' else ' '.join(stat_name_dict[stat].split(' ')[:-1])
     apostrophe_text = "'" if player[-1]=='s' else "'s"
-    date_text = ' Distribution' if (start_date==season_start) & (end_date==season_end) else f' ({start_date:%b %-d} - {end_date:%b %-d})'
-    fig.suptitle(f"{player}{apostrophe_text}\n{title_stat}{date_text}",y=1.025)
+    date_text = '' if (start_date==season_start) & (end_date==season_end) else f' ({start_date:%b %-d} - {end_date:%b %-d})'
+    count_text = '' if count_select=='All' else f'; in {count_select} counts'
+    fig.suptitle(f"{player}{apostrophe_text}\n{title_stat}{date_text}{count_text}",y=1.025)
     sns.despine(left=True)
     fig.text(0.8,-0.15,'@blandalytics\nData: Savant',ha='center',fontsize=10)
     fig.text(0.125,-0.14,'mlb-swing-speed.streamlit.app',ha='left',fontsize=10)
@@ -208,7 +243,8 @@ speed_dist(swing_data,player,stat)
 
 def rolling_chart(df,player,stat):
     rolling_df = (df
-                  .loc[(df['Hitter']==player),
+                  .loc[(df['Hitter']==player) &
+                          (df['count'].isin(selected_options)),
                        ['Hitter','game_date',stat]]
                   .dropna()
                   .reset_index(drop=True)
@@ -222,6 +258,7 @@ def rolling_chart(df,player,stat):
     rolling_df = rolling_df.loc[rolling_df['swings']==rolling_df['swings'].groupby(rolling_df['game_date']).transform('max')].copy()
     
     chart_thresh_list = (df
+                         .loc[(df['count'].isin(selected_options))]
                          .assign(Swing=1)
                          .groupby('Hitter')
                          [['Swing',stat]]
@@ -229,7 +266,7 @@ def rolling_chart(df,player,stat):
                              'Swing':'count',
                              stat:'mean'
                          })
-                         .query(f'Swing >= {swing_thresh}')
+                         .query(f'Swing >= {updated_threshold}')
                          .copy()
                         )
     chart_avg = chart_thresh_list[stat].mean()
@@ -333,7 +370,8 @@ def rolling_chart(df,player,stat):
     ax.xaxis.set_major_formatter(formatter)
     metric_text = 'Squared Up%' if stat == 'squared_up_frac' else ' '.join(stat_name_dict [stat].split(' ')[:-1])
     apostrophe_text = "'" if player[-1]=='s' else "'s"
-    fig.suptitle(f"{player}{apostrophe_text} {metric_text}\nRolling {swing_thresh} Swings",
+    count_text = '' if count_select=='All' else f'; in {count_select} counts'
+    fig.suptitle(f"{player}{apostrophe_text} {metric_text}\nRolling {swing_thresh} Swings{count_text}",
                  fontsize=14,
                  y=0.95
                  )
