@@ -390,6 +390,7 @@ def rolling_chart(df,player,stat):
     fig.text(0.025,-0.02,'mlb-swing-speed.streamlit.app',ha='left',fontsize=10)
     sns.despine()
     st.pyplot(fig)
+st.write('The rolling charts use ~1/4 of the Season Swings threshold above as the rolling window')
 rolling_chart(swing_data,player,stat)
 
 st.header('Assumptions & Formulas')
