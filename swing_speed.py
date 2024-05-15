@@ -1,6 +1,7 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
+import matplotlib.dates as mdates
 import pandas as pd
 import seaborn as sns
 import numpy as np
@@ -204,6 +205,138 @@ def speed_dist(swing_data,player,stat):
     fig.text(0.125,-0.14,'mlb-swing-speed.streamlit.app',ha='left',fontsize=10)
     st.pyplot(fig)
 speed_dist(swing_data,player,stat)
+
+def rolling_chart(df,player,stat):
+    rolling_df = (df
+                  .loc[(df['hittername']==player),
+                       ['hittername','game_date',stat]]
+                  .dropna()
+                  .reset_index(drop=True)
+                  .reset_index()
+                  .rename(columns={'index':'swings'})
+                 )
+    
+    swing_thresh = int(round(swing_threshold/4/5,0))*5
+    season_avg = rolling_df[stat].mean()
+    rolling_df['Rolling_Stat'] = rolling_df[stat].rolling(swing_thresh).mean()
+    rolling_df = rolling_df.loc[rolling_df['swings']==rolling_df['swings'].groupby(rolling_df['game_date']).transform('max')].copy()
+    
+    chart_thresh_list = (chart_thresh_list
+                         .loc[(chart_thresh_list['bat_speed']>=40) &
+                              (chart_thresh_list['bat_speed']>chart_thresh_list['bat_speed'].groupby(chart_thresh_list['batter']).transform(lambda x: x.quantile(0.1)))]
+                         .assign(Swing=1)
+                         .groupby('hittername')
+                         [['Swing',stat]]
+                         .agg({
+                             'Swing':'count',
+                             stat:'mean'
+                         })
+                         .query(f'Swing >= {swing_thresh}')
+                         .copy()
+                        )
+    chart_avg = chart_thresh_list[stat].mean()
+    chart_stdev = chart_thresh_list[stat].std()
+    
+    chart_90 = chart_thresh_list[stat].quantile(0.9)
+    chart_75 = chart_thresh_list[stat].quantile(0.75)
+    chart_25 = chart_thresh_list[stat].quantile(0.25)
+    chart_10 = chart_thresh_list[stat].quantile(0.1)
+    
+    y_pad = (chart_90-chart_10)/5
+    chart_min = min(rolling_df['Rolling_Stat'].min(),chart_10) - y_pad
+    chart_max = max(rolling_df['Rolling_Stat'].max(),chart_90) + y_pad
+    
+    line_text_loc = rolling_df['game_date'].min() + pd.Timedelta(days=(rolling_df['game_date'].max() - rolling_df['game_date'].min()).days * 1.05)
+    
+    fig, ax = plt.subplots(figsize=(6,6))
+    sns.lineplot(data=rolling_df,
+                     x='game_date',
+                     y='Rolling_Stat',
+                     color='w'
+                       )
+    
+    ax.axhline(season_avg, 
+               color='w',
+               linestyle='--')
+    ax.text(line_text_loc,
+            season_avg,
+            'Szn Avg',
+            va='center',
+            color='w')
+    
+    # Threshold Lines
+    ax.axhline(chart_90,
+               color=sns.color_palette('vlag', n_colors=100)[99],
+               alpha=0.6)
+    ax.axhline(chart_75,
+               color=sns.color_palette('vlag', n_colors=100)[79],
+               linestyle='--',
+               alpha=0.5)
+    ax.axhline(chart_avg,
+               color='w',
+               alpha=0.5)
+    ax.axhline(chart_25,
+               color=sns.color_palette('vlag', n_colors=100)[19],
+               linestyle='--',
+               alpha=0.5)
+    ax.axhline(chart_10,
+               color=sns.color_palette('vlag', n_colors=100)[0],
+               alpha=0.6)
+    
+    ax.text(line_text_loc,
+            chart_90,
+            '90th %' if abs(chart_90 - season_avg) > (ax.get_ylim()[1] - ax.get_ylim()[0])/25 else '',
+            va='center',
+            color=sns.color_palette('vlag', n_colors=100)[99],
+            alpha=1)
+    ax.text(line_text_loc,
+            chart_75,
+            '75th %' if abs(chart_75 - season_avg) > (ax.get_ylim()[1] - ax.get_ylim()[0])/25 else '',
+            va='center',
+            color=sns.color_palette('vlag', n_colors=100)[74],
+            alpha=1)
+    ax.text(line_text_loc,
+            chart_avg,
+            'MLB Avg' if abs(chart_avg - season_avg) > (ax.get_ylim()[1] - ax.get_ylim()[0])/25 else '',
+            va='center',
+            color='w',
+            alpha=0.75)
+    ax.text(line_text_loc,
+            chart_25,
+            '25th %' if abs(chart_25 - season_avg) > (ax.get_ylim()[1] - ax.get_ylim()[0])/25 else '',
+            va='center',
+            color=sns.color_palette('vlag', n_colors=100)[24],
+            alpha=1)
+    ax.text(line_text_loc,
+            chart_10,
+            '10th %' if abs(chart_10 - season_avg) > (ax.get_ylim()[1] - ax.get_ylim()[0])/25 else '',
+            va='center',
+            color=sns.color_palette('vlag', n_colors=100)[9],
+            alpha=1)
+    
+    ax.set(xlabel='Game Date',
+           ylabel=stat_name_dict[stat],
+           ylim=(chart_min, 
+                 chart_max)           
+          )
+    locator = mdates.AutoDateLocator(minticks=3, maxticks=7)
+    formatter = mdates.ConciseDateFormatter(locator,
+                                            show_offset=False,
+                                           formats=['%Y', '%#m/1', '%#m/%#d', '%H:%M', '%H:%M', '%S.%f'])
+    if stat=='squared_up_frac':
+        plt.gca().yaxis.set_major_formatter(mtick.PercentFormatter(100,decimals=0))
+    ax.xaxis.set_major_locator(locator)
+    ax.xaxis.set_major_formatter(formatter)
+    metric_text = 'Squared Up%' if stat == 'squared_up_frac' else ' '.join(stat_name_dict [stat].split(' ')[:-1])
+    apostrophe_text = "'" if player[-1]=='s' else "'s"
+    fig.suptitle(f"{player}{apostrophe_text} {metric_text}\nRolling {swing_thresh} Swings",
+                     fontsize=14
+                    )
+    fig.text(0.9,-0.025,'@blandalytics\nData: Savant',ha='center',fontsize=10)
+    fig.text(0.025,-0.02,'mlb-swing-speed.streamlit.app',ha='left',fontsize=10)
+    sns.despine()
+    st.pyplot(fig)
+rolling_chart(swing_data,player,stat)
 
 st.header('Assumptions & Formulas')
 st.write('Assumptions:')
