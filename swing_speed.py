@@ -234,7 +234,7 @@ def rolling_chart(df,player,stat):
                         )
     chart_avg = chart_thresh_list[stat].mean()
     chart_stdev = chart_thresh_list[stat].std()
-    
+
     chart_90 = chart_thresh_list[stat].quantile(0.9)
     chart_75 = chart_thresh_list[stat].quantile(0.75)
     chart_25 = chart_thresh_list[stat].quantile(0.25)
@@ -243,6 +243,12 @@ def rolling_chart(df,player,stat):
     y_pad = (chart_90-chart_10)/5
     chart_min = min(rolling_df['Rolling_Stat'].min(),chart_10) - y_pad
     chart_max = max(rolling_df['Rolling_Stat'].max(),chart_90) + y_pad
+
+    if stat in ['swing_length','swing_time']:
+        chart_90 = chart_thresh_list[stat].quantile(0.1)
+        chart_75 = chart_thresh_list[stat].quantile(0.25)
+        chart_25 = chart_thresh_list[stat].quantile(0.75)
+        chart_10 = chart_thresh_list[stat].quantile(0.9)
     
     line_text_loc = rolling_df['game_date'].min() + pd.Timedelta(days=(rolling_df['game_date'].max() - rolling_df['game_date'].min()).days * 1.05)
     
