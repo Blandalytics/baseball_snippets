@@ -37,7 +37,7 @@ if all_swings==False:
 swing_data['squared_up_frac'] = swing_data['squared_up_frac'].mul(100)
 swing_data['swing_time'] = swing_data['swing_time'].mul(1000)
 # swing_data['game_date'] = pd.to_datetime(swing_data['game_date'])
-swing_data['game_date'] = swing_data['game_date'].dt.date
+# swing_data['game_date'] = swing_data['game_date'].dt.date
 
 col1, col2 = st.columns(2)
 
