@@ -129,14 +129,11 @@ with col2:
                              min_value=season_start,
                              max_value=season_end,
                              format="MM/DD/YYYY")
-
-swing_data = swing_data.loc[(swing_data['game_date']>=start_date) &
-                            (swing_data['game_date']<=end_date)].copy()
     
 def speed_dist(player,stat):
     fig, ax = plt.subplots(figsize=(6,3))
-    swing_data = swing_data.loc[(swing_data['game_date']>=start_date) &
-                                (swing_data['game_date']<=end_date)].copy()
+    swing_data = swing_data.loc[(swing_data['game_date'].dt.date>=start_date) &
+                                (swing_data['game_date'].dt.date<=end_date)].copy()
 
     val = swing_data.loc[swing_data['Hitter']==player,stat].mean()
     color_list = sns.color_palette('vlag',n_colors=len(players))
