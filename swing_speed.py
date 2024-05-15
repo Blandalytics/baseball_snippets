@@ -223,7 +223,7 @@ def rolling_chart(df,player,stat):
     
     chart_thresh_list = (df
                          .assign(Swing=1)
-                         .groupby('hittername')
+                         .groupby('Hitter')
                          [['Swing',stat]]
                          .agg({
                              'Swing':'count',
