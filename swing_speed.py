@@ -139,6 +139,16 @@ st.dataframe((swing_data if team=='All' else swing_data.loc[swing_data['Team']==
              .rename(columns=df_stat_dict)
 )
 
+players = list(swing_data
+               .groupby('Hitter')
+               [['Swings','swing_acceleration']]
+               .agg({'Swings':'count','swing_acceleration':'mean'})
+               .query(f'Swings >={swing_threshold}')
+               .reset_index()
+               .sort_values('swing_acceleration', ascending=False)
+               ['Hitter']
+              )
+
 col1, col2 = st.columns(2)
 
 with col1:
