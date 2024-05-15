@@ -60,7 +60,7 @@ stat_name_dict = {
     'swing_time':'Swing Time (ms)',
     'swing_acceleration':'Swing Acceleration (ft/s^2)',
     'squared_up_frac':'Squared Up%',
-    'blastitos':'Partial Blasts / Swing'
+    # 'blastitos':'Partial Blasts / Swing'
 }
 
 df_stat_dict = {
@@ -69,7 +69,7 @@ df_stat_dict = {
     'swing_time':'Time (ms)',
     'swing_acceleration':'Acceleration (ft/s^2)',
     'squared_up_frac':'SU%',
-    'blastitos':'PB'
+    # 'blastitos':'PB'
 }
 
 st.write('Swing Metrics')
@@ -186,14 +186,14 @@ def speed_dist(swing_data,player,stat):
     height_p = np.interp(val, xs_p, ys_p)
     ax.vlines(val, ax.get_ylim()[1]*0.1, height_p, color=player_color)
     
-    measure = '%' if stat == 'squared_up_frac' else 'PB' if stat=='blastitos' else stat_name_dict[stat].split(' ')[-1][1:-1]
+    measure = '%' if stat == 'squared_up_frac' else stat_name_dict[stat].split(' ')[-1][1:-1]
     ax.text(val,ax.get_ylim()[1]*0.1,f'{val:.1f}{measure}',va='center',ha='center',color=player_color,
             bbox=dict(facecolor=pl_background, alpha=0.9,edgecolor=player_color))
 
     if stat=='squared_up_frac':
         plt.gca().xaxis.set_major_formatter(mtick.PercentFormatter(100,decimals=0))
     ax.set_yticks([])
-    title_stat = 'Squared Up%' if stat == 'squared_up_frac' else 'Partial Blasts' if stat == 'blastitos' else ' '.join(stat_name_dict[stat].split(' ')[:-1])
+    title_stat = 'Squared Up%' if stat == 'squared_up_frac' else ' '.join(stat_name_dict[stat].split(' ')[:-1])
     apostrophe_text = "'" if player[-1]=='s' else "'s"
     date_text = ' Distribution' if (start_date==season_start) & (end_date==season_end) else f' ({start_date:%b %-d} - {end_date:%b %-d})'
     fig.suptitle(f"{player}{apostrophe_text}\n{title_stat}{date_text}",y=1.025)
