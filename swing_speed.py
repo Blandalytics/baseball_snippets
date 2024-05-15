@@ -35,6 +35,7 @@ if all_swings==False:
     swing_data = swing_data.loc[(swing_data['bat_speed']>=40) &
                                 (swing_data['bat_speed']>swing_data['bat_speed'].groupby(swing_data['Hitter']).transform(lambda x: x.quantile(0.1)))].copy()
 swing_data['squared_up_frac'] = swing_data['squared_up_frac'].mul(100)
+swing_data['blastitos'] = swing_data['blastitos'].mul(100)
 swing_data['swing_time'] = swing_data['swing_time'].mul(1000)
 swing_data['game_date'] = pd.to_datetime(swing_data['game_date'])
 # swing_data['game_date'] = swing_data['game_date'].dt.date
