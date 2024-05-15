@@ -189,8 +189,8 @@ def speed_dist(swing_data,player,stat):
     ax.set_yticks([])
     title_stat = 'Squared Up%' if stat == 'squared_up_frac' else ' '.join(stat_name_dict[stat].split(' ')[:-1])
     apostrophe_text = "'" if player[-1]=='s' else "'s"
-    date_text = '' if (start_date==season_start) & (end_date==season_end) else f'\n({start_date:%b %-d} - {end_date:%b %-d})'
-    fig.suptitle(f"{player}{apostrophe_text}\n{title_stat} Distribution{date_text}",y=1.025 if date_text=='' else 1.05)
+    date_text = '' if (start_date==season_start) & (end_date==season_end) else f' ({start_date:%b %-d} - {end_date:%b %-d})'
+    fig.suptitle(f"{player}{apostrophe_text}\n{title_stat} Distribution{date_text}",y=1.025)
     sns.despine(left=True)
     fig.text(0.8,-0.15,'@blandalytics\nData: Savant',ha='center',fontsize=10)
     fig.text(0.125,-0.14,'mlb-swing-speed.streamlit.app',ha='left',fontsize=10)
