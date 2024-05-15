@@ -69,7 +69,7 @@ df_stat_dict = {
     'swing_time':'Time (ms)',
     'swing_acceleration':'Acceleration (ft/s^2)',
     'squared_up_frac':'SU%',
-    # 'blastitos':'PB'
+    'blastitos':'PB'
 }
 
 st.write('Swing Metrics')
