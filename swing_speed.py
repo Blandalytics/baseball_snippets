@@ -221,7 +221,7 @@ def rolling_chart(df,player,stat):
     rolling_df['Rolling_Stat'] = rolling_df[stat].rolling(swing_thresh).mean()
     rolling_df = rolling_df.loc[rolling_df['swings']==rolling_df['swings'].groupby(rolling_df['game_date']).transform('max')].copy()
     
-    chart_thresh_list = (chart_thresh_list
+    chart_thresh_list = (df
                          .assign(Swing=1)
                          .groupby('hittername')
                          [['Swing',stat]]
