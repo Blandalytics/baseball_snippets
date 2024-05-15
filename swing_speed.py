@@ -130,7 +130,7 @@ with col2:
                              max_value=season_end,
                              format="MM/DD/YYYY")
     
-def speed_dist(player,stat):
+def speed_dist(swing_data,player,stat):
     fig, ax = plt.subplots(figsize=(6,3))
     swing_data = swing_data.loc[(swing_data['game_date'].dt.date>=start_date) &
                                 (swing_data['game_date'].dt.date<=end_date)].copy()
@@ -194,7 +194,7 @@ def speed_dist(player,stat):
     fig.text(0.8,-0.15,'@blandalytics\nData: Savant',ha='center',fontsize=10)
     fig.text(0.125,-0.14,'mlb-swing-speed.streamlit.app',ha='left',fontsize=10)
     st.pyplot(fig)
-speed_dist(player,stat)
+speed_dist(swing_data,player,stat)
 
 st.header('Assumptions & Formulas')
 st.write('Assumptions:')
