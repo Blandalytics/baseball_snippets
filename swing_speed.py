@@ -78,7 +78,7 @@ st.dataframe((swing_data if team=='All' else swing_data.loc[swing_data['Team']==
              [['Team','Swings','bat_speed','swing_length','swing_time','swing_acceleration','squared_up_frac',
                'blastitos'
               ]]
-             .fillna({'blastitos':0}
+             .fillna({'blastitos':0})
              .agg({
                  'Team':lambda x: pd.Series.unique(x)[-1],
                  'Swings':'count',
