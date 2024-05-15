@@ -157,6 +157,7 @@ with col2:
     stat = st.selectbox('Choose a metric:', list(stat_name_dict.values()), index=3)
     stat = list(stat_name_dict.keys())[list(stat_name_dict.values()).index(stat)]
     players = list(swing_data
+                   .loc[(swing_data['count'].isin(selected_options)]
                .groupby('Hitter')
                [['Swings',stat]]
                .agg({'Swings':'count',stat:'mean'})
