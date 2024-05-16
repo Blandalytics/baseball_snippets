@@ -444,7 +444,7 @@ def heatmap_data(df):
     return heatmap_df
 
 def swing_heatmap(df,hitter,stat):
-    b_hand = df.loc[(df['hittername']==hitter),'stand'].unique()[0]
+    b_hand = df.loc[(df['Hitter']==hitter),'stand'].unique()[0]
     stat_dict = {
         'bs_oa':['Bat Speed',pitch_data['bat_speed'].mean()/40],
         'sl_oa':['Swing Length',pitch_data['swing_length'].mean()/40],
@@ -459,8 +459,8 @@ def swing_heatmap(df,hitter,stat):
                         0.2,
                         0.25)
     
-    sz_top = round(df.loc[df['hittername']==hitter,'sz_top'].median()*12)
-    sz_bot = round(df.loc[df['hittername']==hitter,'sz_bot'].median()*12)
+    sz_top = round(df.loc[df['Hitter']==hitter,'sz_top'].median()*12)
+    sz_bot = round(df.loc[df['Hitter']==hitter,'sz_bot'].median()*12)
     sz_range = sz_top-sz_bot
     sz_mid = sz_bot + sz_range/2
     
@@ -469,7 +469,7 @@ def swing_heatmap(df,hitter,stat):
         v_center = df[stat].mean()
         kde_df = pd.merge(zone_df,
                           (df
-                           .loc[(df['hittername']==hitter)]
+                           .loc[(df['Hitter']==hitter)]
                            .dropna(subset=[stat,'plate_x','sz_z'])
                            [['kde_x','kde_z',stat]]
                           ),
