@@ -413,28 +413,23 @@ def heatmap_data(df):
     heatmap_df['base_bat_speed'] = heatmap_df['bat_speed'].groupby([heatmap_df['stand'],
                                                     heatmap_df['kde_x'],
                                                     heatmap_df['kde_z'],
-                                                    heatmap_df['balls'],
-                                                    heatmap_df['strikes']]).transform('mean')
+                                                    heatmap_df['count']]).transform('mean')
     heatmap_df['base_swing_length'] = heatmap_df['swing_length'].groupby([heatmap_df['stand'],
                                                     heatmap_df['kde_x'],
                                                     heatmap_df['kde_z'],
-                                                    heatmap_df['balls'],
-                                                    heatmap_df['strikes']]).transform('mean')
+                                                    heatmap_df['count']]).transform('mean')
     heatmap_df['base_swing_time'] = heatmap_df['swing_time'].groupby([heatmap_df['stand'],
                                                     heatmap_df['kde_x'],
                                                     heatmap_df['kde_z'],
-                                                    heatmap_df['balls'],
-                                                    heatmap_df['strikes']]).transform('mean')
+                                                    heatmap_df['count']]).transform('mean')
     heatmap_df['base_swing_acceleration'] = heatmap_df['swing_acceleration'].groupby([heatmap_df['stand'],
                                                     heatmap_df['kde_x'],
                                                     heatmap_df['kde_z'],
-                                                    heatmap_df['balls'],
-                                                    heatmap_df['strikes']]).transform('mean')
+                                                    heatmap_df['count']]).transform('mean')
     heatmap_df['base_squared_up'] = heatmap_df['squared_up_frac'].groupby([heatmap_df['stand'],
                                                     heatmap_df['kde_x'],
                                                     heatmap_df['kde_z'],
-                                                    heatmap_df['balls'],
-                                                    heatmap_df['strikes']]).transform('mean')
+                                                    heatmap_df['count']]).transform('mean')
     
     heatmap_df['bs_oa'] = heatmap_df['bat_speed'].sub(heatmap_df['base_bat_speed'])
     heatmap_df['sl_oa'] = heatmap_df['base_swing_length'].sub(heatmap_df['swing_length'])
