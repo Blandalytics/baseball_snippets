@@ -442,7 +442,7 @@ def swing_heatmap(df,hitter,base_stat):
         heatmap_stat_dict[base_stat][0]:[heatmap_stat_dict[base_stat][1],swing_data[base_stat].mean()/(20 if base_stat=='swing_acceleration' else 40)]
     }
     
-    bandwidth = 0.25
+    bandwidth = 0.2
     
     sz_top = round(df.loc[df['Hitter']==hitter,'sz_top'].median()*12)
     sz_bot = round(df.loc[df['Hitter']==hitter,'sz_bot'].median()*12)
