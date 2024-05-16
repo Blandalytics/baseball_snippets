@@ -2,9 +2,11 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import matplotlib.dates as mdates
+import numpy as np
 import pandas as pd
 import seaborn as sns
-import numpy as np
+import urllib
+
 from PIL import Image
 from statsmodels.nonparametric.kernel_regression import KernelReg
 
