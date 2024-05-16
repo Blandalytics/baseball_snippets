@@ -400,7 +400,15 @@ for x in range(-20,21):
     for y in range(0,55):
         zone_df.loc[len(zone_df)] = [x/12,y/12]
 
-def heatmap_data(df):
+heatmap_stat_dict = {
+        'bat_speed':['bs_oa','Bat Speed'],
+        'swing_length':['sl_oa','Swing Length'],
+        'swing_acceleration':['sa_oa','Swing Acceleration'],
+        'swing_time':['st_oa','Swing Time'],
+        'squared_up_frac':['su_oa','Squared Up%']
+    }
+
+def heatmap_data(df,stat):
     heatmap_df = df.loc[(df['plate_x'].abs()<=2) &
                         (df['sz_z'].abs()<=1.5)].dropna(subset=['bat_speed']).copy()
     heatmap_df.loc[heatmap_df['plate_x'].notna(),'kde_x'] = np.clip(heatmap_df.loc[heatmap_df['plate_x'].notna(),'plate_x'].astype('float').mul(12).round(0).astype('int').div(12),
@@ -437,20 +445,15 @@ def heatmap_data(df):
     heatmap_df['sa_oa'] = heatmap_df['swing_acceleration'].sub(heatmap_df['base_swing_acceleration'])
     heatmap_df['su_oa'] = heatmap_df['squared_up_frac'].sub(heatmap_df['base_squared_up'])
     
-    
     heatmap_df.loc[heatmap_df['sz_z'].notna(),'kde_z'] = np.clip(heatmap_df.loc[heatmap_df['sz_z'].notna(),'plate_z'].astype('float').mul(12).round(0).astype('int').div(12),
                                                  0,
                                                  4.5)
-    return heatmap_df
+    return heatmap_df[heatmap_stat_dict[stat][0],'plate_x','sz_z']
 
 def swing_heatmap(df,hitter,stat):
     b_hand = df.loc[(df['Hitter']==hitter),'stand'].unique()[0]
     stat_dict = {
-        'bs_oa':['Bat Speed',swing_data['bat_speed'].mean()/40],
-        'sl_oa':['Swing Length',swing_data['swing_length'].mean()/40],
-        'sa_oa':['Swing Acceleration',swing_data['swing_acceleration'].mean()/40],
-        'st_oa':['Swing Time',swing_data['swing_time'].mean()/40],
-        'su_oa':['Squared Up%',swing_data['squared_up_frac'].mean()/40]
+        heatmap_stat_dict[stat][0]:[heatmap_stat_dict[stat][1],swing_data[stat].mean()/40]
     }
     
     bandwidth = np.clip(df
@@ -546,7 +549,7 @@ def swing_heatmap(df,hitter,stat):
         fig.suptitle(f"{hitter}{apostrophe_text}\n{stat_dict[stat][0]} Heatmap",y=0.9)
         sns.despine(left=True,bottom=True)
         st.pyplot(fig)
-swing_heatmap(heatmap_data(swing_data),player,stat)
+swing_heatmap(heatmap_data(swing_data,stat),player,stat)
 
 st.header('Assumptions & Formulas')
 st.write('Assumptions:')
