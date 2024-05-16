@@ -551,7 +551,7 @@ def swing_heatmap(df,hitter,stat):
         fig.suptitle(f"{hitter}{apostrophe_text}\n{stat_dict[stat][0]} Heatmap",y=0.9)
         sns.despine(left=True,bottom=True)
         st.pyplot(fig)
-swing_heatmap(heatmap_df,player,stat)
+swing_heatmap(heatmap_data(swing_data),player,stat)
 
 st.header('Assumptions & Formulas')
 st.write('Assumptions:')
