@@ -271,7 +271,7 @@ def rolling_chart(df,player,stat):
                   .rename(columns={'index':'swings'})
                  )
     
-    swing_thresh = int(round(swing_threshold/4/5,0))*5
+    swing_thresh = max(25,int(round(swing_threshold/2/5,0))*5)
     season_avg = rolling_df[stat].mean()
     rolling_df['Rolling_Stat'] = rolling_df[stat].rolling(swing_thresh).mean()
     rolling_df = rolling_df.loc[rolling_df['swings']==rolling_df['swings'].groupby(rolling_df['game_date']).transform('max')].copy()
@@ -398,7 +398,7 @@ def rolling_chart(df,player,stat):
     fig.text(0.025,-0.02,'mlb-swing-speed.streamlit.app',ha='left',fontsize=10)
     sns.despine()
     st.pyplot(fig)
-st.write('The rolling charts use ~1/4 of the Season Swings threshold above as the rolling window')
+st.write('The rolling charts uses either 25 swings or ~1/2 of the Swings seen in that count, whichever is larger')
 rolling_chart(swing_data,player,stat)
 
 zone_df = pd.DataFrame(columns=['x','z'])
