@@ -402,7 +402,7 @@ for x in range(-20,21):
 
 def heatmap_data(df):
     heatmap_df = df.loc[(df['plate_x'].abs()<=2) &
-                        (df['sz_z'].abs()<=1.5)].dropna(subset=['sw_acc_ratio']).copy()
+                        (df['sz_z'].abs()<=1.5)].dropna(subset=['bat_speed']).copy()
     heatmap_df.loc[heatmap_df['plate_x'].notna(),'kde_x'] = np.clip(heatmap_df.loc[heatmap_df['plate_x'].notna(),'plate_x'].astype('float').mul(12).round(0).astype('int').div(12),
                                                 -20/12,
                                                 20/12)
