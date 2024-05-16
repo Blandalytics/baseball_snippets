@@ -437,7 +437,7 @@ def swing_heatmap(df,hitter,base_stat):
     }
     
     bandwidth = np.clip(df
-                        .loc[(df['hittername']==hitter)]
+                        .loc[(df['Hitter']==hitter)]
                         .shape[0]/100,
                         0.2,
                         0.25)
