@@ -395,6 +395,164 @@ def rolling_chart(df,player,stat):
 st.write('The rolling charts use ~1/4 of the Season Swings threshold above as the rolling window')
 rolling_chart(swing_data,player,stat)
 
+zone_df = pd.DataFrame(columns=['x','z'])
+for x in range(-20,21):
+    for y in range(0,55):
+        zone_df.loc[len(zone_df)] = [x/12,y/12]
+
+def heatmap_data(df):
+    heatmap_df = df.loc[(df['plate_x'].abs()<=2) &
+                        (df['sz_z'].abs()<=1.5)].dropna(subset=['sw_acc_ratio']).copy()
+    heatmap_df.loc[heatmap_df['plate_x'].notna(),'kde_x'] = np.clip(heatmap_df.loc[heatmap_df['plate_x'].notna(),'plate_x'].astype('float').mul(12).round(0).astype('int').div(12),
+                                                -20/12,
+                                                20/12)
+    heatmap_df.loc[heatmap_df['sz_z'].notna(),'kde_z'] = np.clip(heatmap_df.loc[heatmap_df['sz_z'].notna(),'sz_z'].astype('float').mul(24).round(0).astype('int').div(24),
+                                                 -1.5,
+                                                 1.25)
+    
+    heatmap_df['base_bat_speed'] = heatmap_df['bat_speed'].groupby([heatmap_df['stand'],
+                                                    heatmap_df['kde_x'],
+                                                    heatmap_df['kde_z'],
+                                                    heatmap_df['balls'],
+                                                    heatmap_df['strikes']]).transform('mean')
+    heatmap_df['base_swing_length'] = heatmap_df['swing_length'].groupby([heatmap_df['stand'],
+                                                    heatmap_df['kde_x'],
+                                                    heatmap_df['kde_z'],
+                                                    heatmap_df['balls'],
+                                                    heatmap_df['strikes']]).transform('mean')
+    heatmap_df['base_swing_time'] = heatmap_df['swing_time'].groupby([heatmap_df['stand'],
+                                                    heatmap_df['kde_x'],
+                                                    heatmap_df['kde_z'],
+                                                    heatmap_df['balls'],
+                                                    heatmap_df['strikes']]).transform('mean')
+    heatmap_df['base_swing_acceleration'] = heatmap_df['swing_acceleration'].groupby([heatmap_df['stand'],
+                                                    heatmap_df['kde_x'],
+                                                    heatmap_df['kde_z'],
+                                                    heatmap_df['balls'],
+                                                    heatmap_df['strikes']]).transform('mean')
+    heatmap_df['base_squared_up'] = heatmap_df['squared_up_frac'].groupby([heatmap_df['stand'],
+                                                    heatmap_df['kde_x'],
+                                                    heatmap_df['kde_z'],
+                                                    heatmap_df['balls'],
+                                                    heatmap_df['strikes']]).transform('mean')
+    
+    heatmap_df['bs_oa'] = heatmap_df['bat_speed'].sub(heatmap_df['base_bat_speed'])
+    heatmap_df['sl_oa'] = heatmap_df['base_swing_length'].sub(heatmap_df['swing_length'])
+    heatmap_df['st_oa'] = heatmap_df['swing_time'].sub(heatmap_df['base_swing_time'])
+    heatmap_df['sa_oa'] = heatmap_df['swing_acceleration'].sub(heatmap_df['base_swing_acceleration'])
+    heatmap_df['su_oa'] = heatmap_df['squared_up_frac'].sub(heatmap_df['base_squared_up'])
+    
+    
+    heatmap_df.loc[heatmap_df['sz_z'].notna(),'kde_z'] = np.clip(heatmap_df.loc[heatmap_df['sz_z'].notna(),'plate_z'].astype('float').mul(12).round(0).astype('int').div(12),
+                                                 0,
+                                                 4.5)
+    return heatmap_df
+
+def swing_heatmap(df,hitter,stat):
+    b_hand = df.loc[(df['hittername']==hitter),'stand'].unique()[0]
+    stat_dict = {
+        'bs_oa':['Bat Speed',pitch_data['bat_speed'].mean()/40],
+        'sl_oa':['Swing Length',pitch_data['swing_length'].mean()/40],
+        'sa_oa':['Swing Acceleration',pitch_data['swing_acceleration'].mean()/40],
+        'st_oa':['Swing Time',pitch_data['swing_time'].mean()/40],
+        'su_oa':['Squared Up%',pitch_data['squared_up_frac'].mean()/40]
+    }
+    
+    bandwidth = np.clip(df
+                        .loc[(df['hittername']==hitter)]
+                        .shape[0]/100,
+                        0.2,
+                        0.25)
+    
+    sz_top = round(df.loc[df['hittername']==hitter,'sz_top'].median()*12)
+    sz_bot = round(df.loc[df['hittername']==hitter,'sz_bot'].median()*12)
+    sz_range = sz_top-sz_bot
+    sz_mid = sz_bot + sz_range/2
+    
+    for stat in stat_dict.keys():
+        fig, ax = plt.subplots(figsize=(5,6))
+        v_center = df[stat].mean()
+        kde_df = pd.merge(zone_df,
+                          (df
+                           .loc[(df['hittername']==hitter)]
+                           .dropna(subset=[stat,'plate_x','sz_z'])
+                           [['kde_x','kde_z',stat]]
+                          ),
+                          how='left',
+                          left_on=['x','z'],
+                          right_on=['kde_x','kde_z']).fillna({stat:v_center})
+        
+        kernel_regression = KernelReg(endog=kde_df[stat], 
+                                      exog= [kde_df['x'], kde_df['z']], 
+                                      bw=[bandwidth,bandwidth],
+                                      var_type='cc')
+        kde_df['kernel_stat'] = kernel_regression.fit([kde_df['x'], kde_df['z']])[0]
+        kde_df = kde_df.pivot_table(columns='x',index='z',values=['kernel_stat'], aggfunc='mean')
+
+        sns.heatmap(data=kde_df['kernel_stat'].astype('float'),
+                    cmap=kde_palette,
+                    center=v_center,
+                    vmin=v_center-stat_dict[stat][1],
+                    vmax=v_center+stat_dict[stat][1],
+                    ax=ax,
+                    cbar=False
+                   )
+
+        ax.set(xlabel=None, ylabel=None)
+        ax.set_xticklabels([])
+        ax.set_yticklabels([])
+        ax.tick_params(left=False, bottom=False)
+
+        ax.set(xlim=(40,0),
+               ylim=(14,54),
+               aspect=1)
+
+        # Strikezone
+        ax.axhline(sz_bot, xmin=1/4, xmax=3/4, color='black', linewidth=2)
+        ax.axhline(sz_top, xmin=1/4, xmax=3/4, color='black', linewidth=2)
+        ax.axvline(10, ymin=(sz_bot-14)/40, ymax=(sz_top-14)/40, color='black', linewidth=2)
+        ax.axvline(30, ymin=(sz_bot-14)/40, ymax=(sz_top-14)/40, color='black', linewidth=2)
+
+        # Inner Strikezone
+        ax.axhline(sz_bot+sz_range/3, xmin=1/4, xmax=3/4, color='black', linewidth=1)
+        ax.axhline(sz_bot+2*sz_range/3, xmin=1/4, xmax=3/4, color='black', linewidth=1)
+        ax.axvline(10+20/3, ymin=(sz_bot-14)/40, ymax=(sz_top-14)/40, color='black', linewidth=1)
+        ax.axvline(30-20/3, ymin=(sz_bot-14)/40, ymax=(sz_top-14)/40, color='black', linewidth=1)
+
+        # Plate
+        ax.plot([11.27,27.73], [1,1], color='k', linewidth=1)
+        ax.plot([11.25,11.5], [1,2], color='k', linewidth=1)
+        ax.plot([27.75,27.5], [1,2], color='k', linewidth=1)
+        ax.plot([27.43,20], [2,3], color='k', linewidth=1)
+        ax.plot([11.57,20], [2,3], color='k', linewidth=1)
+        
+        ax.text(37.5 if b_hand=='L' else 2.5,
+                                sz_mid,
+                                'Stands Here',
+                                rotation=270 if b_hand=='L' else 90,
+                                fontsize=14,
+                                color='k',
+                                ha='center',
+                                va='center',
+                                bbox=dict(boxstyle='round',
+                                          color='w',
+                                          alpha=0.5,
+                                          pad=0.2))
+        
+        kde_thresh=0.05
+        # Add PL logo
+        logo_loc = 'https://github.com/Blandalytics/PLV_viz/blob/main/data/PL-text-wht.png?raw=true'
+        logo = Image.open(urllib.request.urlopen(logo_loc))
+        pl_ax = fig.add_axes([0.34,-0.13,0.32,0.32], anchor='NE', zorder=1)
+        pl_ax.imshow(logo)
+        pl_ax.set(ylim=(390,0))
+        pl_ax.axis('off')
+        apostrophe_text = "'" if hitter[-1]=='s' else "'s"
+        fig.suptitle(f"{hitter}{apostrophe_text}\n{stat_dict[stat][0]} Heatmap",y=0.9)
+        sns.despine(left=True,bottom=True)
+        st.pyplot(fig)
+swing_heatmap(heatmap_df,player,stat)
+
 st.header('Assumptions & Formulas')
 st.write('Assumptions:')
 st.write('- Initial speed is 0mph')
