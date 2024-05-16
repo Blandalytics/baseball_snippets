@@ -418,42 +418,22 @@ def heatmap_data(df,stat):
                                                  -1.5,
                                                  1.25)
     
-    heatmap_df['base_bat_speed'] = heatmap_df['bat_speed'].groupby([heatmap_df['stand'],
+    heatmap_df['base_'+stat] = heatmap_df[stat].groupby([heatmap_df['stand'],
                                                     heatmap_df['kde_x'],
                                                     heatmap_df['kde_z'],
                                                     heatmap_df['count']]).transform('mean')
-    heatmap_df['base_swing_length'] = heatmap_df['swing_length'].groupby([heatmap_df['stand'],
-                                                    heatmap_df['kde_x'],
-                                                    heatmap_df['kde_z'],
-                                                    heatmap_df['count']]).transform('mean')
-    heatmap_df['base_swing_time'] = heatmap_df['swing_time'].groupby([heatmap_df['stand'],
-                                                    heatmap_df['kde_x'],
-                                                    heatmap_df['kde_z'],
-                                                    heatmap_df['count']]).transform('mean')
-    heatmap_df['base_swing_acceleration'] = heatmap_df['swing_acceleration'].groupby([heatmap_df['stand'],
-                                                    heatmap_df['kde_x'],
-                                                    heatmap_df['kde_z'],
-                                                    heatmap_df['count']]).transform('mean')
-    heatmap_df['base_squared_up'] = heatmap_df['squared_up_frac'].groupby([heatmap_df['stand'],
-                                                    heatmap_df['kde_x'],
-                                                    heatmap_df['kde_z'],
-                                                    heatmap_df['count']]).transform('mean')
+
     
-    heatmap_df['bs_oa'] = heatmap_df['bat_speed'].sub(heatmap_df['base_bat_speed'])
-    heatmap_df['sl_oa'] = heatmap_df['base_swing_length'].sub(heatmap_df['swing_length'])
-    heatmap_df['st_oa'] = heatmap_df['swing_time'].sub(heatmap_df['base_swing_time'])
-    heatmap_df['sa_oa'] = heatmap_df['swing_acceleration'].sub(heatmap_df['base_swing_acceleration'])
-    heatmap_df['su_oa'] = heatmap_df['squared_up_frac'].sub(heatmap_df['base_squared_up'])
-    
+    heatmap[heatmap_stat_dict[stat][0]] = heatmap_df['base_'+stat].sub(heatmap_df[stat]) if stat in ['swing_time','swing_acceleration'] else heatmap_df[stat].sub(heatmap_df['base_'+stat])
     heatmap_df.loc[heatmap_df['sz_z'].notna(),'kde_z'] = np.clip(heatmap_df.loc[heatmap_df['sz_z'].notna(),'plate_z'].astype('float').mul(12).round(0).astype('int').div(12),
                                                  0,
                                                  4.5)
-    return heatmap_df[heatmap_stat_dict[stat][0],'plate_x','sz_z','kde_x','kde_z']
+    return heatmap_df[[heatmap_stat_dict[stat][0],'plate_x','sz_z','kde_x','kde_z']]
 
-def swing_heatmap(df,hitter,stat):
+def swing_heatmap(df,hitter,base_stat):
     b_hand = df.loc[(df['Hitter']==hitter),'stand'].unique()[0]
     stat_dict = {
-        heatmap_stat_dict[stat][0]:[heatmap_stat_dict[stat][1],swing_data[stat].mean()/40]
+        heatmap_stat_dict[base_stat][0]:[heatmap_stat_dict[base_stat][1],swing_data[base_stat].mean()/40]
     }
     
     bandwidth = np.clip(df
