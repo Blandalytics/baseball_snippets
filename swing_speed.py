@@ -424,7 +424,7 @@ def heatmap_data(df,stat):
                                                     heatmap_df['count']]).transform('mean')
 
     
-    heatmap[heatmap_stat_dict[stat][0]] = heatmap_df['base_'+stat].sub(heatmap_df[stat]) if stat in ['swing_time','swing_acceleration'] else heatmap_df[stat].sub(heatmap_df['base_'+stat])
+    heatmap_df[heatmap_stat_dict[stat][0]] = heatmap_df['base_'+stat].sub(heatmap_df[stat]) if stat in ['swing_time','swing_acceleration'] else heatmap_df[stat].sub(heatmap_df['base_'+stat])
     heatmap_df.loc[heatmap_df['sz_z'].notna(),'kde_z'] = np.clip(heatmap_df.loc[heatmap_df['sz_z'].notna(),'plate_z'].astype('float').mul(12).round(0).astype('int').div(12),
                                                  0,
                                                  4.5)
