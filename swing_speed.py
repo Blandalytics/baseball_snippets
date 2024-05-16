@@ -533,7 +533,7 @@ def swing_heatmap(df,hitter,base_stat):
         pl_ax.set(ylim=(390,0))
         pl_ax.axis('off')
         apostrophe_text = "'" if hitter[-1]=='s' else "'s"
-        fig.suptitle(f"{hitter}{apostrophe_text}\n{stat_dict[stat][0]} Heatmap",y=0.96)
+        fig.suptitle(f"{hitter}{apostrophe_text}\n{stat_dict[stat][0]} Heatmap (vs Lg Avg)",y=0.96)
         fig.text(0.785,0.06,'@blandalytics\nData: Baseball Savant',ha='center',fontsize=6)
         fig.text(0.215,0.06,'mlb-swing-speed.\nstreamlit.app',ha='center',fontsize=6)
         sns.despine(left=True,bottom=True)
