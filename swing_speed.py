@@ -504,11 +504,11 @@ def swing_heatmap(df,hitter,base_stat):
         ax.axvline(30-20/3, ymin=(sz_bot-6)/48, ymax=(sz_top-6)/48, color='black', linewidth=1)
 
         # Plate
-        ax.plot([11.27,27.73], [1,1], color='k', linewidth=1)
-        ax.plot([11.25,11.5], [1,2], color='k', linewidth=1)
-        ax.plot([27.75,27.5], [1,2], color='k', linewidth=1)
-        ax.plot([27.43,20], [2,3], color='k', linewidth=1)
-        ax.plot([11.57,20], [2,3], color='k', linewidth=1)
+        ax.plot([11.27,27.73], [7,7], color='k', linewidth=1)
+        ax.plot([11.25,11.5], [7,8], color='k', linewidth=1)
+        ax.plot([27.75,27.5], [7,8], color='k', linewidth=1)
+        ax.plot([27.43,20], [8,9], color='k', linewidth=1)
+        ax.plot([11.57,20], [8,9], color='k', linewidth=1)
         
         ax.text(37.5 if b_hand=='L' else 2.5,
                                 sz_mid,
