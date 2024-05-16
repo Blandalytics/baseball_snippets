@@ -224,7 +224,7 @@ def speed_dist(swing_data,player,stat):
         xlim = (ax.get_xlim()[0],ax.get_xlim()[1])
 
     if stat=='squared_up_frac':
-        xlim = (0.4,xlim[1])
+        xlim = (38,xlim[1])
     
     ax.set(xlim=xlim,
            xlabel=stat_name_dict[stat],
@@ -528,7 +528,7 @@ def swing_heatmap(df,hitter,base_stat):
         # Add PL logo
         logo_loc = 'https://github.com/Blandalytics/PLV_viz/blob/main/data/PL-text-wht.png?raw=true'
         logo = Image.open(urllib.request.urlopen(logo_loc))
-        pl_ax = fig.add_axes([0.34,-0.19,0.32,0.32], anchor='NE', zorder=1)
+        pl_ax = fig.add_axes([0.36,-0.19,0.32,0.32], anchor='NE', zorder=1)
         pl_ax.imshow(logo)
         pl_ax.set(ylim=(390,0))
         pl_ax.axis('off')
