@@ -5,6 +5,8 @@ import matplotlib.dates as mdates
 import pandas as pd
 import seaborn as sns
 import numpy as np
+from PIL import Image
+from statsmodels.nonparametric.kernel_regression import KernelReg
 
 st.title('MLB Swing Speed App')
 st.write('Find me [@Blandalytics](https://twitter.com/blandalytics) and check out the data at [Baseball Savant](https://baseballsavant.mlb.com/leaderboard/bat-tracking)')
