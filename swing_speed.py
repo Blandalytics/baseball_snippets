@@ -471,6 +471,7 @@ def swing_heatmap(df,hitter,base_stat):
                                       bw=[bandwidth,bandwidth],
                                       var_type='cc')
         kde_df['kernel_stat'] = kernel_regression.fit([kde_df['x'], kde_df['z']])[0]
+        del kernel_regression
         kde_df = kde_df.pivot_table(columns='x',index='z',values=['kernel_stat'], aggfunc='mean')
 
         sns.heatmap(data=kde_df['kernel_stat'].astype('float'),
