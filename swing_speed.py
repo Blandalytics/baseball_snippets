@@ -488,20 +488,20 @@ def swing_heatmap(df,hitter,base_stat):
         ax.tick_params(left=False, bottom=False)
 
         ax.set(xlim=(40,0),
-               ylim=(14,54),
+               ylim=(6,54),
                aspect=1)
 
         # Strikezone
         ax.axhline(sz_bot, xmin=1/4, xmax=3/4, color='black', linewidth=2)
         ax.axhline(sz_top, xmin=1/4, xmax=3/4, color='black', linewidth=2)
-        ax.axvline(10, ymin=(sz_bot-14)/40, ymax=(sz_top-14)/40, color='black', linewidth=2)
-        ax.axvline(30, ymin=(sz_bot-14)/40, ymax=(sz_top-14)/40, color='black', linewidth=2)
+        ax.axvline(10, ymin=(sz_bot-6)/48, ymax=(sz_top-6)/48, color='black', linewidth=2)
+        ax.axvline(30, ymin=(sz_bot-6)/48, ymax=(sz_top-6)/48, color='black', linewidth=2)
 
         # Inner Strikezone
         ax.axhline(sz_bot+sz_range/3, xmin=1/4, xmax=3/4, color='black', linewidth=1)
         ax.axhline(sz_bot+2*sz_range/3, xmin=1/4, xmax=3/4, color='black', linewidth=1)
-        ax.axvline(10+20/3, ymin=(sz_bot-14)/40, ymax=(sz_top-14)/40, color='black', linewidth=1)
-        ax.axvline(30-20/3, ymin=(sz_bot-14)/40, ymax=(sz_top-14)/40, color='black', linewidth=1)
+        ax.axvline(10+20/3, ymin=(sz_bot-6)/48, ymax=(sz_top-6)/48, color='black', linewidth=1)
+        ax.axvline(30-20/3, ymin=(sz_bot-6)/48, ymax=(sz_top-6)/48, color='black', linewidth=1)
 
         # Plate
         ax.plot([11.27,27.73], [1,1], color='k', linewidth=1)
