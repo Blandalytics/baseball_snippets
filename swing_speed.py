@@ -222,6 +222,10 @@ def speed_dist(swing_data,player,stat):
                  max(200,swing_data.loc[swing_data['Hitter']==player,stat].quantile(0.99)) if stat == 'swing_time' else swing_data[stat].max())
     else:
         xlim = (ax.get_xlim()[0],ax.get_xlim()[1])
+
+    if stat=='squared_up_frac':
+        xlim = (0.4,xlim[1])
+    
     ax.set(xlim=xlim,
            xlabel=stat_name_dict[stat],
            ylabel='',
