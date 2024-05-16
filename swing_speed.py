@@ -446,11 +446,11 @@ def heatmap_data(df):
 def swing_heatmap(df,hitter,stat):
     b_hand = df.loc[(df['Hitter']==hitter),'stand'].unique()[0]
     stat_dict = {
-        'bs_oa':['Bat Speed',pitch_data['bat_speed'].mean()/40],
-        'sl_oa':['Swing Length',pitch_data['swing_length'].mean()/40],
-        'sa_oa':['Swing Acceleration',pitch_data['swing_acceleration'].mean()/40],
-        'st_oa':['Swing Time',pitch_data['swing_time'].mean()/40],
-        'su_oa':['Squared Up%',pitch_data['squared_up_frac'].mean()/40]
+        'bs_oa':['Bat Speed',swing_data['bat_speed'].mean()/40],
+        'sl_oa':['Swing Length',swing_data['swing_length'].mean()/40],
+        'sa_oa':['Swing Acceleration',swing_data['swing_acceleration'].mean()/40],
+        'st_oa':['Swing Time',swing_data['swing_time'].mean()/40],
+        'su_oa':['Squared Up%',swing_data['squared_up_frac'].mean()/40]
     }
     
     bandwidth = np.clip(df
