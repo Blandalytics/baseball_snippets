@@ -527,12 +527,12 @@ def swing_heatmap(df,hitter,base_stat):
         # Add PL logo
         logo_loc = 'https://github.com/Blandalytics/PLV_viz/blob/main/data/PL-text-wht.png?raw=true'
         logo = Image.open(urllib.request.urlopen(logo_loc))
-        pl_ax = fig.add_axes([0.34,-0.13,0.32,0.32], anchor='NE', zorder=1)
+        pl_ax = fig.add_axes([0.34,-0.19,0.32,0.32], anchor='NE', zorder=1)
         pl_ax.imshow(logo)
         pl_ax.set(ylim=(390,0))
         pl_ax.axis('off')
         apostrophe_text = "'" if hitter[-1]=='s' else "'s"
-        fig.suptitle(f"{hitter}{apostrophe_text}\n{stat_dict[stat][0]} Heatmap",y=0.9)
+        fig.suptitle(f"{hitter}{apostrophe_text}\n{stat_dict[stat][0]} Heatmap",y=0.96)
         sns.despine(left=True,bottom=True)
         st.pyplot(fig)
 swing_heatmap(heatmap_data(swing_data,stat),player,stat)
