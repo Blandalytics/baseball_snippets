@@ -468,7 +468,7 @@ def swing_heatmap(df,hitter,base_stat):
         kde_df = kde_df.pivot_table(columns='x',index='z',values=['kernel_stat'], aggfunc='mean')
 
         sns.heatmap(data=kde_df['kernel_stat'].astype('float'),
-                    cmap=kde_palette,
+                    cmap='vlag',
                     center=v_center,
                     vmin=v_center-stat_dict[stat][1],
                     vmax=v_center+stat_dict[stat][1],
