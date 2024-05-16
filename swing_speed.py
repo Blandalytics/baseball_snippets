@@ -428,10 +428,10 @@ def heatmap_data(df,stat):
     heatmap_df.loc[heatmap_df['sz_z'].notna(),'kde_z'] = np.clip(heatmap_df.loc[heatmap_df['sz_z'].notna(),'plate_z'].astype('float').mul(12).round(0).astype('int').div(12),
                                                  0,
                                                  4.5)
-    return heatmap_df[[heatmap_stat_dict[stat][0],'plate_x','sz_z','kde_x','kde_z']]
+    return heatmap_df['Hitter','stand',[heatmap_stat_dict[stat][0],'plate_x','sz_z','kde_x','kde_z']]
 
 def swing_heatmap(df,hitter,base_stat):
-    b_hand = df.loc[(df['Hitter']==hitter),'stand'].unique()[0]
+    b_hand = df.loc[(df['Hitter']==hitter),'stand'].value_counts().index[0]
     stat_dict = {
         heatmap_stat_dict[base_stat][0]:[heatmap_stat_dict[base_stat][1],swing_data[base_stat].mean()/40]
     }
