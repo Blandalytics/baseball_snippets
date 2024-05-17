@@ -63,7 +63,7 @@ swing_data['game_date'] = pd.to_datetime(swing_data['game_date'])
 data_start = swing_data['game_date'].min()
 data_end = swing_data['game_date'].max()
 
-st.write(f'(From {data_start.strftime('%b %-d')} to {data_end.strftime('%b %-d'))')
+# st.write(f'(From {data_start.strftime('%b %-d')} to {data_end.strftime('%b %-d'))')
 
 col1, col2 = st.columns(2)
 
