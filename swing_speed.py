@@ -547,7 +547,7 @@ def swing_heatmap(df,hitter,base_stat):
         pl_ax.set(ylim=(390,0))
         pl_ax.axis('off')
         apostrophe_text = "'" if hitter[-1]=='s' else "'s"
-        fig.suptitle(f"{hitter}{apostrophe_text}\n{stat_dict[stat][0]} Heatmap (vs Lg Avg)",x=0.51,y=0.96)
+        fig.suptitle(f"{hitter}{apostrophe_text}\n{stat_dict[stat][0]} Heatmap",x=0.51,y=0.96)
         fig.text(0.785,0.06,'@blandalytics\nData: Baseball Savant',ha='center',fontsize=6)
         fig.text(0.215,0.06,'mlb-swing-speed\n.streamlit.app',ha='center',fontsize=6)
         base_text = ax.text(20,52,f'Blue is {stat_value_dict[stat][0]} than Lg Avg, Red is {stat_value_dict[stat][1]}',
