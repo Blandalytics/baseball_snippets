@@ -179,6 +179,14 @@ with col2:
                ['Hitter']
               )
 
+if len(swing_data.loc[swing_data['Hitter']==player,'stand'].unique())>1:
+    handedness = st.select_slider(
+        'Hitter Handedness',
+        options=['Left', 'All', 'Right'],
+        value='All')
+else:
+    handedness = 'All'
+
 season_start = swing_data.loc[swing_data['Hitter']==player,'game_date'].min()
 season_end = swing_data.loc[swing_data['Hitter']==player,'game_date'].max()
 
@@ -196,11 +204,14 @@ with col2:
                              max_value=season_end,
                              format="MM/DD/YYYY")
     
-def speed_dist(swing_data,player,stat):
+def speed_dist(swing_data,player,stat,handedness):
     fig, ax = plt.subplots(figsize=(6,3))
     swing_data = swing_data.loc[(swing_data['game_date'].dt.date>=start_date) &
                                 (swing_data['game_date'].dt.date<=end_date) &
                                 (swing_data['count'].isin(selected_options))].copy()
+    if handedness!='All':
+        hand = handedness[0]
+        swing_data = swing_data.loc[(swing_data['stand']==hand)].copy()
 
     val = swing_data.loc[swing_data['Hitter']==player,stat].mean()
     color_list = sns.color_palette('vlag',n_colors=len(players))
@@ -260,16 +271,20 @@ def speed_dist(swing_data,player,stat):
     ax.set_yticks([])
     title_stat = 'Squared Up%' if stat == 'squared_up_frac' else ' '.join(stat_name_dict[stat].split(' ')[:-1])
     apostrophe_text = "'" if player[-1]=='s' else "'s"
+    hand_text = '' if handedness=='All' else f'\nAs {hand}HH'
     date_text = '' if (start_date==season_start) & (end_date==season_end) else f' ({start_date:%b %-d} - {end_date:%b %-d})'
-    count_text = '' if count_select=='All' else f'\nin {count_select} counts'
-    fig.suptitle(f"{player}{apostrophe_text}\n{title_stat}{date_text}{count_text}",y=1.025 if count_select=='All' else 1.075)
+    count_text = '' if count_select=='All' else f'\nIn {count_select} counts' if handedness=='All' else f' in {count_select} counts'
+    fig.suptitle(f"{player}{apostrophe_text}\n{title_stat}{date_text}{hand_text}{count_text}",y=1.025 if count_select=='All' else 1.075)
     sns.despine(left=True)
     fig.text(0.8,-0.15,'@blandalytics\nData: Savant',ha='center',fontsize=10)
     fig.text(0.125,-0.14,'mlb-swing-speed.streamlit.app',ha='left',fontsize=10)
     st.pyplot(fig)
-speed_dist(swing_data,player,stat)
+speed_dist(swing_data,player,stat,handedness)
 
-def rolling_chart(df,player,stat):
+def rolling_chart(df,player,stat,handedness):
+    if handedness!='All':
+        hand = handedness[0]
+        df = df.loc[(df['stand']==hand)].copy()
     rolling_df = (df
                   .loc[(df['Hitter']==player) &
                           (df['count'].isin(selected_options)),
@@ -398,8 +413,9 @@ def rolling_chart(df,player,stat):
     ax.xaxis.set_major_formatter(formatter)
     metric_text = 'Squared Up%' if stat == 'squared_up_frac' else ' '.join(stat_name_dict [stat].split(' ')[:-1])
     apostrophe_text = "'" if player[-1]=='s' else "'s"
+    hand_text = '' if handedness=='All' else f' as {hand}HH'
     count_text = '' if count_select=='All' else f'; in {count_select} counts'
-    fig.suptitle(f"{player}{apostrophe_text} {metric_text}\nRolling {swing_thresh} Swings{count_text}",
+    fig.suptitle(f"{player}{apostrophe_text} {metric_text}\nRolling {swing_thresh} Swings{hand_text}{count_text}",
                  fontsize=14,
                  y=0.95
                  )
@@ -408,7 +424,7 @@ def rolling_chart(df,player,stat):
     sns.despine()
     st.pyplot(fig)
 st.write('The rolling chart uses either 25 swings or ~1/2 of the Swings seen in that count, whichever is larger')
-rolling_chart(swing_data,player,stat)
+rolling_chart(swing_data,player,stat,handedness)
 
 zone_df = pd.DataFrame(columns=['x','z'])
 for x in range(-20,21):
@@ -423,7 +439,10 @@ heatmap_stat_dict = {
         'squared_up_frac':['su_oa','Squared Up%']
     }
 
-def heatmap_data(df,stat):
+def heatmap_data(df,stat,handedness):
+    if handedness!='All':
+        hand = handedness[0]
+        df = df.loc[(df['stand']==hand)].copy()
     heatmap_df = df.loc[(df['plate_x'].abs()<=2) &
                         (df['sz_z'].abs()<=1.5)].dropna(subset=['bat_speed']).copy()
     heatmap_df.loc[heatmap_df['plate_x'].notna(),'kde_x'] = np.clip(heatmap_df.loc[heatmap_df['plate_x'].notna(),'plate_x'].astype('float').mul(12).round(0).astype('int').div(12),
@@ -453,8 +472,12 @@ stat_value_dict = {
     'su_oa':['Less','More']
 }
 
-def swing_heatmap(df,hitter,base_stat):
-    b_hand = df.loc[(df['Hitter']==hitter),'stand'].value_counts().index[0]
+def swing_heatmap(df,hitter,base_stat,handedness):
+    if handedness!='All':
+        b_hand = handedness[0]
+        df = df.loc[(df['stand']==hand)].copy()
+    else:
+        b_hand = df.loc[(df['Hitter']==hitter),'stand'].value_counts().index[0]
     stat_dict = {
         heatmap_stat_dict[base_stat][0]:[heatmap_stat_dict[base_stat][1],swing_data[base_stat].mean()/(20 if base_stat=='swing_acceleration' else 40)]
     }
@@ -550,7 +573,8 @@ def swing_heatmap(df,hitter,base_stat):
         pl_ax.set(ylim=(390,0))
         pl_ax.axis('off')
         apostrophe_text = "'" if hitter[-1]=='s' else "'s"
-        fig.suptitle(f"{hitter}{apostrophe_text}\n{stat_dict[stat][0]} Heatmap",x=0.51,y=0.96)
+        hand_text = '' if handedness=='All' else f' as {hand}HH'
+        fig.suptitle(f"{hitter}{apostrophe_text}\n{stat_dict[stat][0]} Heatmap{hand_text}",x=0.51,y=0.96)
         fig.text(0.785,0.06,'@blandalytics\nData: Baseball Savant',ha='center',fontsize=6)
         fig.text(0.215,0.06,'mlb-swing-speed\n.streamlit.app',ha='center',fontsize=6)
         base_text = ax.text(20,52,f'Blue is {stat_value_dict[stat][0]} than Lg Avg, Red is {stat_value_dict[stat][1]}',
