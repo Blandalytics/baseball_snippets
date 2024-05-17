@@ -550,8 +550,8 @@ def swing_heatmap(df,hitter,base_stat):
         fig.suptitle(f"{hitter}{apostrophe_text}\n{stat_dict[stat][0]} Heatmap (vs Lg Avg)",y=0.96)
         fig.text(0.785,0.06,'@blandalytics\nData: Baseball Savant',ha='center',fontsize=6)
         fig.text(0.215,0.06,'mlb-swing-speed\n.streamlit.app',ha='center',fontsize=6)
-        # fig.text(0.5,0.85,f'Blue is {stat_value_dict[stat][0]} than Lg Avg, Red is {stat_value_dict[stat][1]}',ha='center',fontsize=10, color='k')
-        base_text = ax.text(20,52,f'Blue is {stat_value_dict[stat][0]} than Lg Avg, Red is {stat_value_dict[stat][1]}',alpha=0,ha='center', fontsize=10)
+        base_text = ax.text(20,52,f'Blue is {stat_value_dict[stat][0]} than Lg Avg, Red is {stat_value_dict[stat][1]}',
+                            alpha=0, ha='center', fontsize=10)
         scale_text = ax.annotate('Blue',color=sns.color_palette('vlag',n_colors=1000)[0],ha='left',fontweight='bold',
                                  fontsize=10, xycoords=base_text, xy=(0, 0), va="bottom")
         scale_text = ax.annotate(f' is {stat_value_dict[stat][0]} than Lg Avg, ', fontsize=10,
