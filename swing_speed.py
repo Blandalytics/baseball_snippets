@@ -60,10 +60,10 @@ swing_data['swing_time'] = swing_data['swing_time'].mul(1000)
 swing_data['game_date'] = pd.to_datetime(swing_data['game_date'])
 # swing_data['game_date'] = swing_data['game_date'].dt.date
 
-season_start = swing_data.loc[swing_data['Hitter']==player,'game_date'].min()
-season_end = swing_data.loc[swing_data['Hitter']==player,'game_date'].max()
+data_start = swing_data['game_date'].min()
+data_end = swing_data['game_date'].max()
 
-st.write(f'(From {season_start::%b %-d} to {season_end::%b %-d})')
+st.write(f'(From {data_start::%b %-d} to {data_end::%b %-d})')
 
 col1, col2 = st.columns(2)
 
@@ -175,6 +175,9 @@ with col2:
                .sort_values(stat, ascending=False)
                ['Hitter']
               )
+
+season_start = swing_data.loc[swing_data['Hitter']==player,'game_date'].min()
+season_end = swing_data.loc[swing_data['Hitter']==player,'game_date'].max()
 
 col1, col2 = st.columns(2)
 with col1:
