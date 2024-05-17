@@ -50,15 +50,18 @@ count_rates = {
 
 all_swings = st.toggle('Include Non-Competitive swings?')
 
-swing_data = pd.read_csv('https://github.com/Blandalytics/baseball_snippets/blob/main/swing_speed_data.csv?raw=true',encoding='latin1')
-if all_swings==False:
-    swing_data = swing_data.loc[(swing_data['bat_speed']>=40) &
-                                (swing_data['bat_speed']>swing_data['bat_speed'].groupby(swing_data['Hitter']).transform(lambda x: x.quantile(0.1)))].copy()
-swing_data['squared_up_frac'] = swing_data['squared_up_frac'].mul(100)
-swing_data['blastitos'] = swing_data['blastitos'].mul(100)
-swing_data['swing_time'] = swing_data['swing_time'].mul(1000)
-swing_data['game_date'] = pd.to_datetime(swing_data['game_date'])
-# swing_data['game_date'] = swing_data['game_date'].dt.date
+def load_data(all_swings=all_swings):
+    df = pd.read_csv('https://github.com/Blandalytics/baseball_snippets/blob/main/swing_speed_data.csv?raw=true',encoding='latin1')
+    if all_swings==False:
+        df = swing_data.loc[(df['bat_speed']>=40) &
+                            (df['bat_speed']>df['bat_speed'].groupby(df['Hitter']).transform(lambda x: x.quantile(0.1)))].copy()
+    df['squared_up_frac'] = df['squared_up_frac'].mul(100)
+    df['blastitos'] = df['blastitos'].mul(100)
+    df['swing_time'] = df['swing_time'].mul(1000)
+    df['game_date'] = pd.to_datetime(df['game_date'])
+    return df
+    
+swing_data = load_data()
 
 data_start = swing_data['game_date'].min()
 data_end = swing_data['game_date'].max()
