@@ -560,18 +560,6 @@ def swing_heatmap(df,hitter,base_stat):
                                  color=sns.color_palette('vlag',n_colors=1000)[-1], fontweight='bold')
         scale_text = ax.annotate(f' is {stat_value_dict[stat][1]}', xycoords=scale_text, 
                                  xy=(1, 0), va="bottom",color="k")
-
-        text = ax.text(.1, .5, "Matplotlib", color="red")
-        # Subsequent words, positioned with annotate(), relative to the preceding one.
-        text = ax.annotate(
-            " says,", xycoords=text, xy=(1, 0), verticalalignment="bottom",
-            color="gold", weight="bold")  # custom properties
-        text = ax.annotate(
-            " hello", xycoords=text, xy=(1, 0), verticalalignment="bottom",
-            color="green", style="italic")  # custom properties
-        text = ax.annotate(
-            " world!", xycoords=text, xy=(1, 0), verticalalignment="bottom",
-            color="blue", family="serif")  # custom properties
         sns.despine(left=True,bottom=True)
         st.pyplot(fig)
 swing_heatmap(heatmap_data(swing_data,stat),player,stat)
