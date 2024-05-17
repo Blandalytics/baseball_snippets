@@ -60,6 +60,11 @@ swing_data['swing_time'] = swing_data['swing_time'].mul(1000)
 swing_data['game_date'] = pd.to_datetime(swing_data['game_date'])
 # swing_data['game_date'] = swing_data['game_date'].dt.date
 
+season_start = swing_data.loc[swing_data['Hitter']==player,'game_date'].min()
+season_end = swing_data.loc[swing_data['Hitter']==player,'game_date'].max()
+
+st.write(f'(From {season_start::%b %-d} to {season_end::%b %-d})')
+
 col1, col2 = st.columns(2)
 
 with col1:
@@ -172,8 +177,6 @@ with col2:
               )
 
 col1, col2 = st.columns(2)
-season_start = swing_data.loc[swing_data['Hitter']==player,'game_date'].min()
-season_end = swing_data.loc[swing_data['Hitter']==player,'game_date'].max()
 with col1:
     start_date = st.date_input(f"Start Date (Season started: {season_start:%b %d})", 
                                season_start,
