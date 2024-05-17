@@ -475,7 +475,7 @@ stat_value_dict = {
 def swing_heatmap(df,hitter,base_stat,handedness):
     if handedness!='All':
         b_hand = handedness[0]
-        df = df.loc[(df['stand']==hand)].copy()
+        df = df.loc[(df['stand']==b_hand)].copy()
     else:
         b_hand = df.loc[(df['Hitter']==hitter),'stand'].value_counts().index[0]
     stat_dict = {
