@@ -53,7 +53,7 @@ all_swings = st.toggle('Include Non-Competitive swings?')
 def load_data(all_swings=all_swings):
     df = pd.read_csv('https://github.com/Blandalytics/baseball_snippets/blob/main/swing_speed_data.csv?raw=true',encoding='latin1')
     if all_swings==False:
-        df = swing_data.loc[(df['bat_speed']>=40) &
+        df = df.loc[(df['bat_speed']>=40) &
                             (df['bat_speed']>df['bat_speed'].groupby(df['Hitter']).transform(lambda x: x.quantile(0.1)))].copy()
     df['squared_up_frac'] = df['squared_up_frac'].mul(100)
     df['blastitos'] = df['blastitos'].mul(100)
