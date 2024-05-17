@@ -443,11 +443,11 @@ def heatmap_data(df,stat):
     return heatmap_df[['Hitter','stand',heatmap_stat_dict[stat][0],'plate_x','sz_z','kde_x','kde_z','sz_top','sz_bot']]
 
 stat_value_dict = {
-    'bat_speed':['Slower','Faster'],
-    'swing_length':['Longer','Shorter'],
-    'swing_time':['More Time','Less Time'],
-    'swing_acceleration':['Slower','Faster'],
-    'squared_up_frac':['Less','More']
+    'bs_oa':['Slower','Faster'],
+    'sl_oa':['Longer','Shorter'],
+    'st_oa':['More Time','Less Time'],
+    'sa_oa':['Slower','Faster'],
+    'su_oa':['Less','More']
 }
 
 def swing_heatmap(df,hitter,base_stat):
