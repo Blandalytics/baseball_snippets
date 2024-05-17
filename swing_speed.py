@@ -442,6 +442,14 @@ def heatmap_data(df,stat):
                                                  4.5)
     return heatmap_df[['Hitter','stand',heatmap_stat_dict[stat][0],'plate_x','sz_z','kde_x','kde_z','sz_top','sz_bot']]
 
+stat_value_dict = {
+    'bat_speed':['Slower','Faster'],
+    'swing_length':['Longer','Shorter'],
+    'swing_time':['More Time','Less Time'],
+    'swing_acceleration':['Slower','Faster'],
+    'squared_up_frac':['Less','More']
+}
+
 def swing_heatmap(df,hitter,base_stat):
     b_hand = df.loc[(df['Hitter']==hitter),'stand'].value_counts().index[0]
     stat_dict = {
@@ -542,6 +550,7 @@ def swing_heatmap(df,hitter,base_stat):
         fig.suptitle(f"{hitter}{apostrophe_text}\n{stat_dict[stat][0]} Heatmap (vs Lg Avg)",y=0.96)
         fig.text(0.785,0.06,'@blandalytics\nData: Baseball Savant',ha='center',fontsize=6)
         fig.text(0.215,0.06,'mlb-swing-speed\n.streamlit.app',ha='center',fontsize=6)
+        fig.text(0.5,0.85,f'Blue is {stat_value_dict[stat]} than Lg Avg, Red is {stat_value_dict[stat]}',ha='center',fontsize=10)
         sns.despine(left=True,bottom=True)
         st.pyplot(fig)
 swing_heatmap(heatmap_data(swing_data,stat),player,stat)
