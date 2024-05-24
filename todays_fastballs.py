@@ -329,7 +329,7 @@ st.write('**Fan 4+**: modeled Whiff% of a pitch (based on the "Fan-Tastic 4" sta
 
 with open('model_files/fan-4_contact_model.pkl', 'rb') as f:
     whiff_model = pickle.load(f)
-chart_df[['swinging_strike_pred','contact_input']] = whiff_model.predict_proba(chart_df[whiff_model.feature_names_in_])
+chart_df['swinging_strike_pred'] = fan_4_model.predict_proba(chart_df[whiff_model.feature_names_in_])[:,1]
 
 model_df = (chart_df
             .groupby(['Pitcher'])
