@@ -329,7 +329,7 @@ st.write('**Fan 4+**: modeled Whiff% of a pitch (based on the "Fan-Tastic 4" sta
 
 model_df = (chart_df
             .groupby(['Pitcher'])
-            [['#','Velo','Ext','IVB','HAVAA','IHB','VAA','plvLoc+','swinging_strike_pred']]
+            [['#','Velo','Ext','IVB','HAVAA','IHB','VAA','plvLoc+']]
             .agg({
                 '#':'count',
                 'Velo':'mean',
@@ -338,8 +338,7 @@ model_df = (chart_df
                 'HAVAA':'mean',
                 'IHB':'mean',
                 'VAA':'mean',
-                'plvLoc+':'mean',
-                'swinging_strike_pred':'mean'
+                'plvLoc+':'mean'
               })
             .sort_values('#',ascending=False)
            )
