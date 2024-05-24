@@ -13,6 +13,7 @@ from plotly.subplots import make_subplots
 import plotly.offline as py
 import xgboost as xgb
 from xgboost import XGBClassifier
+from sklearn.linear_model import LogisticRegression
 
 def adjusted_vaa(dataframe):
     ## Physical characteristics of pitch
@@ -328,9 +329,11 @@ st.write('**Fan 4+**: modeled Whiff% of a pitch (based on the "Fan-Tastic 4" sta
 
 with open('model_files/fan-4_contact_model.pkl', 'rb') as f:
     whiff_model = pickle.load(f)
+chart_df[['swinging_strike_pred','contact_input']] = whiff_model.predict_proba(chart_df[whiff_model.feature_names_in_])
+
 model_df = (chart_df
             .groupby(['Pitcher'])
-            [['#','Velo','Ext','IVB','HAVAA','IHB','VAA','plvLoc+']]
+            [['#','Velo','Ext','IVB','HAVAA','IHB','VAA','plvLoc+','swinging_strike_pred']]
             .agg({
                 '#':'count',
                 'Velo':'mean',
@@ -339,19 +342,12 @@ model_df = (chart_df
                 'HAVAA':'mean',
                 'IHB':'mean',
                 'VAA':'mean',
-                'plvLoc+':'mean'
+                'plvLoc+':'mean',
+                'swinging_strike_pred':'mean'
               })
             .sort_values('#',ascending=False)
            )
-model_df[['swinging_strike_pred','contact_input']] = whiff_model.predict_proba(model_df
-                                                                               .rename(columns={
-                                                                                   'Velo':'velo',
-                                                                                   'Ext':'pitch_extension',
-                                                                                   'HAVAA':'adj_vaa',
-                                                                                   'VAA':'vaa'
-                                                                                   })
-                                                                               .assign(total_IB = lambda x: (x['IHB'].astype('float')**2+x['IVB'].astype('float')**2)**0.5)
-                                                                               [whiff_model.feature_names_in_])
+
 model_df['Fan 4+'] = model_df['swinging_strike_pred'].div(0.2195).mul(100).astype('int')
 
 st.dataframe(model_df[['#','Velo','Ext','IVB','HAVAA','IHB','VAA','Fan 4+','plvLoc+']]
