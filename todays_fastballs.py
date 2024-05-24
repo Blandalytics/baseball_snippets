@@ -13,7 +13,7 @@ from plotly.subplots import make_subplots
 import plotly.offline as py
 import xgboost as xgb
 from xgboost import XGBClassifier
-from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LinearRegression
 
 def adjusted_vaa(dataframe):
     ## Physical characteristics of pitch
@@ -327,11 +327,6 @@ chart_df = load_savant(date)
 
 st.write('**Fan 4+**: modeled Whiff% of a pitch (based on the "Fan-Tastic 4" stats: Velo, Extension, IVB, and HAVAA), compared to an average 4-Seam Fastball')
 
-with open('model_files/fan-4_contact_model.pkl', 'rb') as f:
-    whiff_model = pickle.load(f)
-chart_df = chart_df.dropna(subset=whiff_model.feature_names_in_).copy()
-chart_df['swinging_strike_pred'] = whiff_model.predict_proba(chart_df[whiff_model.feature_names_in_])[:,1]
-
 model_df = (chart_df
             .groupby(['Pitcher'])
             [['#','Velo','Ext','IVB','HAVAA','IHB','VAA','plvLoc+','swinging_strike_pred']]
@@ -349,6 +344,10 @@ model_df = (chart_df
             .sort_values('#',ascending=False)
            )
 
+with open('model_files/fan-4_contact_model.pkl', 'rb') as f:
+    whiff_model = pickle.load(f)
+
+chart_df['swinging_strike_pred'] = whiff_model.predict(chart_df[whiff_model.feature_names_in_])
 model_df['Fan 4+'] = model_df['swinging_strike_pred'].div(0.165324).mul(100).astype('int')
 
 st.dataframe(model_df[['#','Velo','Ext','IVB','HAVAA','IHB','VAA','Fan 4+','plvLoc+']]
