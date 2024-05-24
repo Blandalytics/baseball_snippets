@@ -347,8 +347,8 @@ model_df = (chart_df
 with open('model_files/fan-4_contact_model.pkl', 'rb') as f:
     whiff_model = pickle.load(f)
 
-chart_df['swinging_strike_pred'] = whiff_model.predict(chart_df[whiff_model.feature_names_in_])
-model_df['Fan 4+'] = model_df['swinging_strike_pred'].div(0.165324).mul(100).astype('int')
+model_df['swinging_strike_pred'] = whiff_model.predict(model_df[whiff_model.feature_names_in_])
+model_df['Fan 4+'] = model_df['swinging_strike_pred'].div(0.1542).mul(100).astype('int')
 
 st.dataframe(model_df[['#','Velo','Ext','IVB','HAVAA','IHB','VAA','Fan 4+','plvLoc+']]
              .style
