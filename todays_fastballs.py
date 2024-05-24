@@ -349,7 +349,7 @@ model_df = (chart_df
             .sort_values('#',ascending=False)
            )
 
-model_df['Fan 4+'] = model_df['swinging_strike_pred'].div(0.2195).mul(100).astype('int')
+model_df['Fan 4+'] = model_df['swinging_strike_pred'].div(0.2195).mul(100)
 
 st.dataframe(model_df[['#','Velo','Ext','IVB','HAVAA','IHB','VAA','Fan 4+','plvLoc+']]
              .style
