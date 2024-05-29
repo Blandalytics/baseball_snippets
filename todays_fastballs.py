@@ -346,7 +346,7 @@ model_df = (chart_df
 with open('model_files/fan-4_contact_model.pkl', 'rb') as f:
     whiff_model = pickle.load(f)
 
-model_df = model_df.dropna(subset=[whiff_model.feature_names_in_])
+model_df = model_df.dropna(subset=whiff_model.feature_names_in_)
 model_df['swinging_strike_pred'] = whiff_model.predict(model_df[whiff_model.feature_names_in_])
 model_df['Fan 4+'] = model_df['swinging_strike_pred'].div(0.1542).mul(100).astype('int')
 
