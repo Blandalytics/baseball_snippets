@@ -594,7 +594,10 @@ swing_heatmap(heatmap_data(swing_data,stat,handedness),player,stat,handedness)
 st.header('Assumptions & Formulas')
 st.write('Assumptions:')
 st.write('- Initial speed is 0mph')
-st.write("- The entirety of a Swing's length is measured (may not be true, as it is recorded ['generally around 150 ms'](https://www.mlb.com/glossary/statcast/swing-length) before Swing Speed is measured)")
+st.write('''
+- The entirety of a swing's length is measured
+  - Tracking starts ['generally around 150 ms'](https://www.mlb.com/glossary/statcast/swing-length) before Swing Speed is measured, which *may* be after the swing starts
+''')
 st.write('''
 - Swing Speed is recorded at the same point & time as final Swing Length
   - Swing Speed is known to be recorded at 6" from the head of the bat, while length is measured at the head of the bat. I am working on adjusting for this difference.
