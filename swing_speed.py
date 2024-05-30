@@ -12,6 +12,7 @@ from statsmodels.nonparametric.kernel_regression import KernelReg
 
 st.title('MLB Swing Speed App')
 st.write('Find me [@Blandalytics](https://twitter.com/blandalytics) and check out the data at [Baseball Savant](https://baseballsavant.mlb.com/leaderboard/bat-tracking)')
+st.write('Please check the assumptions at the bottom of the page, as there are some that are pretty significant for calculating Swing Time & Swing Acceleration')
 
 pl_white = '#FEFEFE'
 pl_background = '#162B50'
