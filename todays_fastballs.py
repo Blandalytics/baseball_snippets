@@ -362,7 +362,7 @@ st.dataframe(model_df[['#','Velo','Ext','IVB','HAVAA','IHB','VAA','Fan 4+','plvL
             column_config={"Pitcher": st.column_config.Column(width="medium")}
 )
 
-players = list(model_df.index)
+players = list(model_df.sort_values('Fan 4+',ascending=False).index)
 player = st.selectbox('Choose a starter:', players)
 
 def location_chart(df,player):
