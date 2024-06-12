@@ -206,7 +206,7 @@ with col2:
     date = st.date_input("Select a game date:", today, min_value=datetime.date(2024, 3, 28), max_value=today)
 
 @st.cache_data(ttl=900,show_spinner=f"Loading data")
-def load_savant(date=date,level=level_code):
+def load_savant(date,level):
     r = requests.get(f'https://statsapi.mlb.com/api/v1/schedule?sportId={level}&date={date}')
     x = r.json()
     
@@ -327,7 +327,7 @@ def load_savant(date=date,level=level_code):
                             # (player_df['Out'].groupby(player_df['MLBAMID']).transform('min')==0)
                         ]
 
-chart_df = load_savant(date)
+chart_df = load_savant(date,level_code)
 
 st.write('**Fan 4+**: modeled Whiff% of a pitch (based on the "Fan-Tastic 4" stats: Velo, Extension, IVB, and HAVAA), compared to an average 4-Seam Fastball')
 
