@@ -197,7 +197,7 @@ def loc_model(df,year=2024):
 
 today = (datetime.datetime.today() - timedelta(hours=6)).date()
 st.header(f"4-Seam Fastballs by Starters")
-col1, col2 = st.columns([1/3,1/3,2/3])
+col1, col2, col3 = st.columns([1/3,1/3,1/3])
 with col1:
     level = st.selectbox('Choose a level:', ['MLB','AAA'])
     level_dict = {'MLB':1,'AAA':14}
