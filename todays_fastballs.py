@@ -328,6 +328,10 @@ def load_savant(date,level):
 
 chart_df = load_savant(date,level_code)
 
+if chart_df.shape[0]==0:
+    st.write('No games played')
+    st.stop()
+
 st.write('**Fan 4+**: modeled Whiff% of a pitch (based on the "Fan-Tastic 4" stats: Velo, Extension, IVB, and HAVAA), compared to an average 4-Seam Fastball')
 
 model_df = (chart_df
