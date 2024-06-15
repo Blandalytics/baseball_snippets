@@ -320,11 +320,12 @@ def load_savant(date,level):
     player_df['IHB'] = np.where(player_df['P Hand']=='R',player_df['IHB'].mul(-1),player_df['IHB'])
     player_df[['VAA','HAVAA']] = adjusted_vaa(player_df)
     player_df['sz_z'] = strikezone_z(player_df,'sz_top','sz_bot')
-    player_df['plvLoc+'] = loc_model(player_df)
+    if player_df.shape[0]==0:
+        player_df['plvLoc+'] = None
+    else:
+        player_df['plvLoc+'] = loc_model(player_df)
   
-    return player_df.loc[(player_df['pitch_type']=='FF') &
-                            (player_df['Inning'].groupby(player_df['MLBAMID']).transform('min')==1)
-                        ]
+    return player_df.loc[(player_df['pitch_type']=='FF') & (player_df['Inning'].groupby(player_df['MLBAMID']).transform('min')==1)]
 
 chart_df = load_savant(date,level_code)
 
