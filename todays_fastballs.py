@@ -205,7 +205,7 @@ with col1:
 with col2:
     date = st.date_input("Select a game date:", today, min_value=datetime.date(2024, 3, 28), max_value=today)
 
-@st.cache_data(ttl=900,show_spinner=f"Loading data")
+@st.cache_data(ttl=90,show_spinner=f"Loading data")
 def load_savant(date,level):
     r = requests.get(f'https://statsapi.mlb.com/api/v1/schedule?sportId={level}&date={date}')
     x = r.json()
