@@ -210,7 +210,7 @@ def load_savant(date,level):
     r = requests.get(f'https://statsapi.mlb.com/api/v1/schedule?sportId={level}&date={date}')
     x = r.json()
     if len(x['dates'][0]['games'])==0:
-        st.write('No games played')
+        st.write('No games today')
         st.stop()
     
     game_list = []
@@ -333,7 +333,7 @@ def load_savant(date,level):
 chart_df = load_savant(date,level_code)
 
 if chart_df.shape[0]==0:
-    st.write('No games played')
+    st.write('No fastballs thrown yet')
     st.stop()
 
 st.write('**Fan 4+**: modeled Whiff% of a pitch (based on the "Fan-Tastic 4" stats: Velo, Extension, IVB, and HAVAA), compared to an average 4-Seam Fastball')
