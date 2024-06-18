@@ -209,7 +209,7 @@ with col2:
 def load_savant(date,level):
     r = requests.get(f'https://statsapi.mlb.com/api/v1/schedule?sportId={level}&date={date}')
     x = r.json()
-    if len(x['dates'][0]['games'])==0:
+    if len(x['dates'])==0:
         st.write('No games today')
         st.stop()
     
