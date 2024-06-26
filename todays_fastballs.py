@@ -263,8 +263,8 @@ def load_savant(date,level):
                     strikes += [x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['strikes']]
                     pitch_id += [pitch]
                     try:
-                        pitch_type += [x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['pitch_type']]
                         velo += [x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['start_speed']]
+                        pitch_type += [x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['pitch_type']]
                         ivb += [x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['inducedBreakZ']]
                         extension += [x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['extension'] if 'extension' in x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch].keys() else None]
                         vx0 += [x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['vx0']]
