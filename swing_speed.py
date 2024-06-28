@@ -51,6 +51,7 @@ count_rates = {
 
 all_swings = st.toggle('Include Non-Competitive swings?')
 
+@st.cache_data(ttl=900,show_spinner=f"Loading data")
 def load_data(all_swings=all_swings):
     df = pd.read_parquet('https://github.com/Blandalytics/baseball_snippets/blob/main/2024_swing_speed_data.parquet?raw=true')
     if all_swings==False:
