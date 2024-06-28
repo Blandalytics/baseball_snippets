@@ -75,7 +75,7 @@ col1, col2 = st.columns(2)
 with col1:
     swing_threshold = st.number_input(f'Min # of Swings (in all situations):',
                                       min_value=0, 
-                                      max_value=swing_data.groupby('Hitter')['Swings'].sum().max(),
+                                      max_value=swing_data.groupby('Hitter')['Swings'].sum().astype('int').max(),
                                       step=25, 
                                       value=100)
 with col2:
