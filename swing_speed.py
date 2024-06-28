@@ -52,7 +52,7 @@ count_rates = {
 all_swings = st.toggle('Include Non-Competitive swings?')
 
 def load_data(all_swings=all_swings):
-    df = pd.read_csv('https://github.com/Blandalytics/baseball_snippets/blob/main/swing_speed_data.csv?raw=true',encoding='latin1')
+    df = pd.read_parquet('https://github.com/Blandalytics/baseball_snippets/blob/main/2024_swing_speed_data.parquet?raw=true')
     if all_swings==False:
         df = df.loc[(df['bat_speed']>=40) &
                             (df['bat_speed']>df['bat_speed'].groupby(df['Hitter']).transform(lambda x: x.quantile(0.1)))].copy()
