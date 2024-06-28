@@ -485,11 +485,7 @@ def swing_heatmap(df,hitter,base_stat,handedness):
         heatmap_stat_dict[base_stat][0]:[heatmap_stat_dict[base_stat][1],swing_data[base_stat].mean()/(20 if base_stat=='swing_acceleration' else 40)]
     }
     
-    bandwidth = np.clip(df
-                        .loc[(df['Hitter']==hitter)]
-                        .shape[0]/500,
-                        0.3,
-                        0.5)
+    bandwidth = 0.25 if stat == 'squared_up_frac' else 0.5
     
     sz_top = round(df.loc[df['Hitter']==hitter,'sz_top'].median()*12)
     sz_bot = round(df.loc[df['Hitter']==hitter,'sz_bot'].median()*12)
