@@ -138,7 +138,7 @@ st.dataframe((swing_data if team=='All' else swing_data.loc[swing_data['Team']==
                'blastitos'
               ]]
              .agg({
-                 'Team':lambda x: pd.Series.unique(x)[-1],
+                 'Team':'last',
                  'Swings':'count',
                  'bat_speed':'mean',
                  'swing_length':'mean',
