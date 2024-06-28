@@ -57,6 +57,7 @@ def load_data(all_swings=all_swings):
     if all_swings==False:
         df = df.loc[(df['bat_speed']>=40) &
                             (df['bat_speed']>df['bat_speed'].groupby(df['Hitter']).transform(lambda x: x.quantile(0.1)))].copy()
+    df['Hitter'] = df['Hitter'].astype('string')
     df['squared_up_frac'] = df['squared_up_frac'].mul(100)
     df['blastitos'] = df['blastitos'].mul(100)
     df['swing_time'] = df['swing_time'].mul(1000)
