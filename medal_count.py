@@ -11,24 +11,23 @@ def load_data():
 
 medal_df = load_data().rename(columns={'NOC':'Country','Total':'Medal Count'})
 
-gold_vs_silver_weight = st.slider(
-  """
-  How much more valuable is a Gold Medal vs a Silver Medal?
-  (2: 🥇 = 🥈🥈)
-  """,
-  min_value=1,
-  max_value=50,
-  value=2,
-)
-silver_vs_bronze_weight =  st.slider(
-  """
-  How much more valuable is a Silver Medal vs a Bronze Medal?
-  (2: 🥈 = 🥉🥉)
-  """,
-  min_value=1,
-  max_value=50,
-  value=2
-)
+col1, col2 = st.columns(2)
+
+with col1:
+    gold_vs_silver_weight = st.slider(
+      "How much more valuable is a Gold Medal vs a Silver Medal? (2: 🥇 = 🥈🥈)",
+      min_value=1,
+      max_value=50,
+      value=2,
+    )
+with col2:
+    silver_vs_bronze_weight =  st.slider(
+      "How much more valuable is a Silver Medal vs a Bronze Medal? (2: 🥈 = 🥉🥉)",
+      min_value=1,
+      max_value=50,
+      value=2
+    )
+
 gold_vs_bronze_weight = gold_vs_silver_weight * silver_vs_bronze_weight
 
 medal_df['weighted_Silver'] = medal_df['Silver'].div(gold_vs_silver_weight)
