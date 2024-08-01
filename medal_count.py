@@ -14,7 +14,7 @@ medal_df = load_data().rename(columns={'NOC':'Country','Total':'Medal Count'})
 col1, col2 = st.columns(2)
 
 with col1:
-    gold_vs_silver_weight = st.select_slider(
+    gold_vs_silver_weight = st.slider(
       "How much more valuable is a Gold Medal vs a Silver Medal? (🥇 = x * 🥈)",
       min_value=1,
       max_value=25,
