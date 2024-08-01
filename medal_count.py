@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-
+st.set_page_config(page_title='Olympic Medal Counts', page_icon='🥇')
 st.title('Olympic Medal Counts')
 
 @st.cache_data(ttl=10*60,show_spinner="Loading medal data")
