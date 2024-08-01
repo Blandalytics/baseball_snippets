@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
+st.title('Olympic Medal Counts')
+
 @st.cache_data(ttl=10*60,show_spinner="Loading medal data")
 def load_data():
   tables=pd.read_html("https://en.wikipedia.org/wiki/2024_Summer_Olympics_medal_table")
@@ -10,13 +12,19 @@ def load_data():
 medal_df = load_data().rename(columns={'NOC':'Country','Total':'Medal Count'})
 
 gold_vs_silver_weight = st.slider(
-  "How much more valuable is a Gold Medal vs a Silver Medal?\n(2: Gold = 2x Silver)",
+  """
+  How much more valuable is a Gold Medal vs a Silver Medal?
+  (2: 🥇 = 🥈🥈)
+  """,
   min_value=1,
   max_value=50,
   value=2,
 )
 silver_vs_bronze_weight =  st.slider(
-  "How much more valuable is a Gold Medal vs a Silver Medal?\n(2: Silver = 2x Bronze)",
+  """
+  How much more valuable is a Silver Medal vs a Bronze Medal?
+  (2: 🥈 = 🥉🥉)
+  """,
   min_value=1,
   max_value=50,
   value=2
