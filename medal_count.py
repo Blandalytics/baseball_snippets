@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
+@st.cache_data(ttl=10*60,show_spinner="Loading medal data")
 def load_data():
   tables=pd.read_html("https://en.wikipedia.org/wiki/2024_Summer_Olympics_medal_table")
   return tables[3].iloc[:-1].copy()
