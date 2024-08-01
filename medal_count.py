@@ -35,4 +35,5 @@ medal_df['weighted_Bronze'] = medal_df['Bronze'].div(gold_vs_bronze_weight)
 medal_df['Weighted Count'] = medal_df[['Gold','weighted_Silver','weighted_Bronze']].astype('float').sum(axis=1)
 
 st.dataframe(medal_df[['Country','Gold','Silver','Bronze','Medal Count','Weighted Count']].sort_values('Weighted Count',ascending=False).round({'Weighted Count':1}),
-             hide_index=True)
+             hide_index=True,
+             height=(medal_df.shape[0] + 1) * 35 + 3)
