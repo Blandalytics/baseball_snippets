@@ -14,7 +14,7 @@ def load_data():
   tables=pd.read_html("https://en.wikipedia.org/wiki/2024_Summer_Olympics_medal_table")
   return tables[3].iloc[:-1].copy()
 
-medal_df = load_data().rename(columns={'NOC':'Country','Total':'Medal Count'})
+medal_df = load_data().rename(columns={'NOC':'Country','Total':'Medals'})
 
 col1, col2 = st.columns(2)
 
@@ -39,7 +39,7 @@ medal_df['weighted_Gold'] = medal_df['Gold'].copy()
 medal_df['weighted_Silver'] = medal_df['Silver'].div(gold_vs_silver_weight)
 medal_df['weighted_Bronze'] = medal_df['Bronze'].div(gold_vs_bronze_weight)
 medal_df['Weighted Count'] = medal_df[['weighted_Gold','weighted_Silver','weighted_Bronze']].astype('float').sum(axis=1)
-count_adjust = medal_df['Medal Count'].sum() / medal_df['Weighted Count'].sum()
+count_adjust = medal_df['Medals'].sum() / medal_df['Weighted Count'].sum()
 for medal_count in ['weighted_Bronze','weighted_Silver','weighted_Gold','Weighted Count']:
   medal_df[medal_count] = medal_df[medal_count].mul(count_adjust)
 
@@ -80,6 +80,6 @@ plt.xticks(rotation=0)
 sns.despine(left=True,bottom=True)
 st.pyplot(fig)
 
-st.dataframe(medal_df[['Country','Gold','Silver','Bronze','Medal Count','Weighted Count']].sort_values('Weighted Count',ascending=False).round({'Weighted Count':1}),
+st.dataframe(medal_df[['Country','Gold','Silver','Bronze','Medals','Weighted Count']].sort_values('Weighted Count',ascending=False).round({'Weighted Count':1}),
              hide_index=True,
              height=(medal_df.shape[0] + 1) * 35 + 3)
