@@ -77,7 +77,7 @@ ax.set(xlabel='',
 fig.suptitle('Olympic Medal Leaders',fontsize=18)
 fig.text(0.5,0.925,f'(Weights: Gold = {gold_vs_silver_weight}x Silver, Silver = {silver_vs_bronze_weight}x Bronze)',ha='center',va='top')
 fig.text(0.04,0.025,'Data: Wikipedia',ha='left',va='center',fontsize=8)
-fig.text(0.96,0.025,'* Host Nation',ha='right',va='center',fontsize=8)
+fig.text(0.9,0.025,'* Host Nation',ha='right',va='center',fontsize=8)
 plt.xticks(rotation=0)
 sns.despine(left=True,bottom=True)
 st.pyplot(fig)
