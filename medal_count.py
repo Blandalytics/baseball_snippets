@@ -35,18 +35,19 @@ with col2:
 
 gold_vs_bronze_weight = gold_vs_silver_weight * silver_vs_bronze_weight
 
+medal_df['weighted_Gold'] = medal_df['Gold'].copy()
 medal_df['weighted_Silver'] = medal_df['Silver'].div(gold_vs_silver_weight)
 medal_df['weighted_Bronze'] = medal_df['Bronze'].div(gold_vs_bronze_weight)
-medal_df['Weighted Count'] = medal_df[['Gold','weighted_Silver','weighted_Bronze']].astype('float').sum(axis=1)
+medal_df['Weighted Count'] = medal_df[['weighted_Gold','weighted_Silver','weighted_Bronze']].astype('float').sum(axis=1)
 count_adjust = medal_df['Medal Count'].sum() / medal_df['Weighted Count'].sum()
-for medal_count in ['weighted_Bronze','weighted_Silver','Gold','Weighted Count']:
+for medal_count in ['weighted_Bronze','weighted_Silver','weighted_Gold','Weighted Count']:
   medal_df[medal_count] = medal_df[medal_count].mul(count_adjust)
 
 
 cmap = colors.LinearSegmentedColormap.from_list('medal_colors', ['#977547','#d6d6d6','#fcb434'], N=3)
 
 fig, ax = plt.subplots(figsize=(6,5))
-medal_df.sort_values('Weighted Count',ascending=False).set_index('Country')[['weighted_Bronze','weighted_Silver','Gold']].head(5).round(1).plot(kind='bar', 
+medal_df.sort_values('Weighted Count',ascending=False).set_index('Country')[['weighted_Bronze','weighted_Silver','weighted_Gold']].head(5).round(1).plot(kind='bar', 
                                                                            cmap=cmap, 
                                                                             stacked=True,
                                                                                                                               edgecolor='w',
