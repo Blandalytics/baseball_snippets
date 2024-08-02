@@ -46,7 +46,7 @@ for medal_count in ['weighted_Bronze','weighted_Silver','weighted_Gold','Weighte
 
 cmap = colors.LinearSegmentedColormap.from_list('medal_colors', ['#977547','#d6d6d6','#fcb434'], N=3)
 
-col3, col4 = st.columns([0.75,0.25)
+col3, col4 = st.columns([0.75,0.25])
 with col3:
     fig, ax = plt.subplots(figsize=(6,5))
     medal_df.sort_values('Weighted Count',ascending=False).set_index('Country')[['weighted_Bronze','weighted_Silver','weighted_Gold']].head(5).round(1).plot(kind='bar', 
