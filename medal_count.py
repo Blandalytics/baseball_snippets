@@ -71,19 +71,12 @@ for patch in reversed(ax.patches):
     new_patches.append(p_bbox)
 for patch in new_patches:
     ax.add_patch(patch)
-
-ax.set(xlabel='',
-      ylabel='Weighted Medals')
-fig.suptitle('Olympic Medal Leaders',fontsize=18)
-fig.text(0.5,0.925,f'(Weights: Gold = {gold_vs_silver_weight}x Silver, Silver = {silver_vs_bronze_weight}x Bronze)',ha='center',va='top')
-fig.text(0.04,0.025,'Data: Wikipedia',ha='left',va='center',fontsize=8)
-fig.text(0.9,0.025,'* Host Nation',ha='right',va='center',fontsize=8)
-plt.xticks(rotation=0)
+  
 
 medal_dict = {
-    'Gold':[fig.add_axes([0,.8,0.2,0.2], anchor='SW', zorder=1), 1, '#fcb434'],
+    'Gold':[fig.add_axes([0.2,.8,0.2,0.2], anchor='SW', zorder=1), 1, '#fcb434'],
     'Silver':[fig.add_axes([0.4,.8,0.2,0.2], anchor='SW', zorder=1), gold_vs_silver_weight, '#d6d6d6'],
-    'Bronze':[fig.add_axes([0.8,.8,0.2,0.2], anchor='SW', zorder=1), gold_vs_silver_weight*silver_vs_bronze_weight, '#977547']
+    'Bronze':[fig.add_axes([0.6,.8,0.2,0.2], anchor='SW', zorder=1), gold_vs_silver_weight*silver_vs_bronze_weight, '#977547']
 }
 for color in medal_dict.keys():
     medal_ax = medal_dict[color][0]
@@ -103,6 +96,14 @@ for color in medal_dict.keys():
                  ylim=(medal_ax.get_ylim()[0]-1,medal_ax.get_ylim()[1]+1))
     medal_ax.axis('off')
     sns.despine(left=True, bottom=True)
+
+ax.set(xlabel='',
+      ylabel='Weighted Medals')
+fig.suptitle('Olympic Medal Leaders',fontsize=18)
+fig.text(0.5,0.925,f'(Weights: Gold = {gold_vs_silver_weight}x Silver, Silver = {silver_vs_bronze_weight}x Bronze)',ha='center',va='top')
+fig.text(0.04,0.025,'Data: Wikipedia',ha='left',va='center',fontsize=8)
+fig.text(0.9,0.025,'* Host Nation',ha='right',va='center',fontsize=8)
+plt.xticks(rotation=0)
 
 sns.despine(left=True,bottom=True)
 st.pyplot(fig)
