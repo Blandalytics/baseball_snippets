@@ -79,6 +79,30 @@ fig.text(0.5,0.925,f'(Weights: Gold = {gold_vs_silver_weight}x Silver, Silver = 
 fig.text(0.04,0.025,'Data: Wikipedia',ha='left',va='center',fontsize=8)
 fig.text(0.9,0.025,'* Host Nation',ha='right',va='center',fontsize=8)
 plt.xticks(rotation=0)
+
+medal_dict = {
+    'Gold':[fig.add_axes([0,.9,0.2,0.2], anchor='SW', zorder=1),1,'#fcb434'],
+    'Silver':[gold_vs_silver_weight,'#d6d6d6'],
+    'Bronze':[fig.add_axes([1,.9,0.2,0.2], anchor='SE', zorder=1),gold_vs_silver_weight*silver_vs_bronze_weight,'#977547']
+}
+for color in ['Gold']
+    medal_ax = medal_dict[color][0]
+    medals = medal_dict[color][1]
+    row_medals = (int((medals-1)**0.5)+1)
+    rows = (medals - medals%row_medals) / row_medals
+    medal_x = [x for x in range(row_medals)] * int(rows) + [x+(row_medals-(medals%row_medals))/2 for x in range(medals%row_medals)]
+    medal_y = [rows-int(y/row_medals) for y in range(len(medal_x))]
+    sns.scatterplot(x=medal_x,
+                    y=medal_y,
+                   color=medal_dict[color][2],
+                    linewidth=0.5,
+                    edgecolor='#666666',
+                   s=40000/(row_medals**2),
+                   ax=medal_ax)
+    medal_ax.set(xlim=(ax.get_xlim()[0]-0.5,ax.get_xlim()[1]+0.5),
+                 ylim=(ax.get_ylim()[0]-0.5,ax.get_ylim()[1]+0.5))
+    medal_ax.axis('off')
+
 sns.despine(left=True,bottom=True)
 st.pyplot(fig)
 
