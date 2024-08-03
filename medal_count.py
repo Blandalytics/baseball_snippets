@@ -74,9 +74,9 @@ for patch in new_patches:
   
 
 medal_dict = {
-    'Gold':[fig.add_axes([0.19,.825,0.2,0.2], anchor='SW', zorder=2), 1, '#fcb434'],
-    'Silver':[fig.add_axes([0.4,.825,0.2,0.2], anchor='SW', zorder=2), gold_vs_silver_weight, '#d6d6d6'],
-    'Bronze':[fig.add_axes([0.625,.825,0.2,0.2], anchor='SW', zorder=2), gold_vs_silver_weight*silver_vs_bronze_weight, '#977547']
+    'Gold':[fig.add_axes([0.19,.8,0.2,0.2], anchor='SW', zorder=2), 1, '#fcb434'],
+    'Silver':[fig.add_axes([0.4,.8,0.2,0.2], anchor='SW', zorder=2), gold_vs_silver_weight, '#d6d6d6'],
+    'Bronze':[fig.add_axes([0.625,.8,0.2,0.2], anchor='SW', zorder=2), gold_vs_silver_weight*silver_vs_bronze_weight, '#977547']
 }
 for color in medal_dict.keys():
     medal_ax = medal_dict[color][0]
@@ -100,7 +100,7 @@ for color in medal_dict.keys():
 ax.set(xlabel='',
       ylabel='Weighted Medals')
 fig.suptitle('Olympic Medal Leaders',fontsize=18,y=1.05)
-fig.text(0.5,0.97,'=      =',ha='center',va='top',fontsize=36)
+fig.text(0.5,0.945,'=      =',ha='center',va='top',fontsize=36)
 fig.text(0.04,0.025,'Data: Wikipedia',ha='left',va='center',fontsize=8)
 fig.text(0.9,0.025,'* Host Nation',ha='right',va='center',fontsize=8)
 plt.xticks(rotation=0)
