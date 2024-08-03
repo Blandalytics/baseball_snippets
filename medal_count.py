@@ -103,7 +103,7 @@ ax.set(xlabel='',
 fig.suptitle('Weighted Olympic Medal Leaders',fontsize=18,y=1.05)
 fig.text(0.325,0.95,'=       =',ha='left',va='top',fontsize=32)
 fig.text(0.04,0.02,'Data: Wikipedia',ha='left',va='center',fontsize=8)
-fig.text(0.5,0.02,'@Blandalytics',ha='center',va='center',fontsize=8)
+fig.text(0.5,0.02,'@Blandalytics\nolympic-medal-counts.streamlit.app',ha='center',va='center',fontsize=8)
 fig.text(0.9,0.02,'* Host Nation',ha='right',va='center',fontsize=8)
 
 sns.despine(left=True,bottom=True)
