@@ -81,11 +81,11 @@ fig.text(0.9,0.025,'* Host Nation',ha='right',va='center',fontsize=8)
 plt.xticks(rotation=0)
 
 medal_dict = {
-    'Gold':[fig.add_axes([0,.8,0.2,0.2], anchor='SW', zorder=1),1,'#fcb434'],
-    'Silver':[fig.add_axes([0.4,.8,0.2,0.2], anchor='SW', zorder=1),gold_vs_silver_weight,'#d6d6d6'],
-    'Bronze':[fig.add_axes([1,.8,0.2,0.2], anchor='SE', zorder=1),gold_vs_silver_weight*silver_vs_bronze_weight,'#977547']
+    'Gold':[fig.add_axes([0,.8,0.2,0.2], anchor='SW', zorder=1), 1, '#fcb434'],
+    'Silver':[fig.add_axes([0.4,.8,0.2,0.2], anchor='SW', zorder=1), gold_vs_silver_weight, '#d6d6d6'],
+    'Bronze':[fig.add_axes([1,.8,0.2,0.2], anchor='SE', zorder=1), gold_vs_silver_weight*silver_vs_bronze_weight, '#977547']
 }
-for color in [medal_dict.keys()]:
+for color in medal_dict.keys():
     medal_ax = medal_dict[color][0]
     medals = medal_dict[color][1]
     row_medals = (int((medals-1)**0.5)+1)
