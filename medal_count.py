@@ -98,6 +98,7 @@ for color in medal_dict.keys():
     medal_ax.axis('off')
     sns.despine(left=True, bottom=True)
 ax.set(xlabel='',
+       ylim=(0,ax.get_ylim()[1]*1.05),
       ylabel='Weighted Medals')
 fig.suptitle('Olympic Medal Leaders',fontsize=18,y=1.05)
 fig.text(0.35,0.95,'=       =',ha='left',va='top',fontsize=32)
