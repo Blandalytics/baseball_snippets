@@ -81,11 +81,11 @@ fig.text(0.9,0.025,'* Host Nation',ha='right',va='center',fontsize=8)
 plt.xticks(rotation=0)
 
 medal_dict = {
-    'Gold':[fig.add_axes([0,.9,0.2,0.2], anchor='SW', zorder=1),1,'#fcb434'],
-    'Silver':[gold_vs_silver_weight,'#d6d6d6'],
-    'Bronze':[fig.add_axes([1,.9,0.2,0.2], anchor='SE', zorder=1),gold_vs_silver_weight*silver_vs_bronze_weight,'#977547']
+    'Gold':[fig.add_axes([0,.8,0.2,0.2], anchor='SW', zorder=1),1,'#fcb434'],
+    'Silver':[fig.add_axes([0.4,.8,0.2,0.2], anchor='SW', zorder=1),gold_vs_silver_weight,'#d6d6d6'],
+    'Bronze':[fig.add_axes([1,.8,0.2,0.2], anchor='SE', zorder=1),gold_vs_silver_weight*silver_vs_bronze_weight,'#977547']
 }
-for color in ['Gold']:
+for color in [medal_dict.keys()]:
     medal_ax = medal_dict[color][0]
     medals = medal_dict[color][1]
     row_medals = (int((medals-1)**0.5)+1)
@@ -97,11 +97,12 @@ for color in ['Gold']:
                    color=medal_dict[color][2],
                     linewidth=0.5,
                     edgecolor='#666666',
-                   s=40000/(row_medals**2),
+                   s=10000/(row_medals**2),
                    ax=medal_ax)
     medal_ax.set(xlim=(medal_ax.get_xlim()[0]-0.5,medal_ax.get_xlim()[1]+0.5),
                  ylim=(medal_ax.get_ylim()[0]-0.5,medal_ax.get_ylim()[1]+0.5))
     medal_ax.axis('off')
+    sns.despine(left=True, bottom=True)
 
 sns.despine(left=True,bottom=True)
 st.pyplot(fig)
