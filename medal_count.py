@@ -74,9 +74,9 @@ for patch in new_patches:
   
 
 medal_dict = {
-    'Gold':[fig.add_axes([0.2,.85,0.2,0.2], anchor='SW', zorder=2), 1, '#fcb434'],
+    'Gold':[fig.add_axes([0.175,.85,0.2,0.2], anchor='SW', zorder=2), 1, '#fcb434'],
     'Silver':[fig.add_axes([0.4,.85,0.2,0.2], anchor='SW', zorder=2), gold_vs_silver_weight, '#d6d6d6'],
-    'Bronze':[fig.add_axes([0.6,.85,0.2,0.2], anchor='SW', zorder=2), gold_vs_silver_weight*silver_vs_bronze_weight, '#977547']
+    'Bronze':[fig.add_axes([0.625,.85,0.2,0.2], anchor='SW', zorder=2), gold_vs_silver_weight*silver_vs_bronze_weight, '#977547']
 }
 for color in medal_dict.keys():
     medal_ax = medal_dict[color][0]
