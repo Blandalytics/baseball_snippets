@@ -100,7 +100,7 @@ for color in medal_dict.keys():
 ax.set(xlabel='',
       ylabel='Weighted Medals')
 fig.suptitle('Olympic Medal Leaders',fontsize=18,y=1.05)
-fig.text(0.35,0.945,'=     =',ha='left',va='top',fontsize=30)
+fig.text(0.35,0.94,'=      =',ha='left',va='top',fontsize=30)
 fig.text(0.04,0.025,'Data: Wikipedia',ha='left',va='center',fontsize=8)
 fig.text(0.9,0.025,'* Host Nation',ha='right',va='center',fontsize=8)
 plt.xticks(rotation=0)
