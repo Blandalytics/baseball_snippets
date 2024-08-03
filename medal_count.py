@@ -85,7 +85,7 @@ medal_dict = {
     'Silver':[gold_vs_silver_weight,'#d6d6d6'],
     'Bronze':[fig.add_axes([1,.9,0.2,0.2], anchor='SE', zorder=1),gold_vs_silver_weight*silver_vs_bronze_weight,'#977547']
 }
-for color in ['Gold']
+for color in ['Gold']:
     medal_ax = medal_dict[color][0]
     medals = medal_dict[color][1]
     row_medals = (int((medals-1)**0.5)+1)
