@@ -82,6 +82,6 @@ plt.xticks(rotation=0)
 sns.despine(left=True,bottom=True)
 st.pyplot(fig)
 
-st.dataframe(medal_df[['Country','Gold','Silver','Bronze','Medals','Weighted Count']].sort_values('Weighted Count',ascending=False).round({'Weighted Count':1}),
+st.dataframe(medal_df[['Country','Weighted Count','Gold','Silver','Bronze','Medals']].sort_values('Weighted Count',ascending=False).round({'Weighted Count':1}),
              hide_index=True,
              height=(medal_df.shape[0] + 1) * 35 + 3)   
