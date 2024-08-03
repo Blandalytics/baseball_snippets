@@ -92,8 +92,8 @@ for color in medal_dict.keys():
                     edgecolor='#666666',
                    s=1000/(row_medals**2),
                    ax=medal_ax)
-    medal_ax.set(xlim=(medal_ax.get_xlim()[0]-1,medal_ax.get_xlim()[1]+1),
-                 ylim=(medal_ax.get_ylim()[0]-1,medal_ax.get_ylim()[1]+1))
+    medal_ax.set(xlim=(medal_ax.get_xlim()[0]-0.5,medal_ax.get_xlim()[1]+0.5),
+                 ylim=(medal_ax.get_ylim()[0]-0.5,medal_ax.get_ylim()[1]+0.5))
     medal_ax.axis('off')
     sns.despine(left=True, bottom=True)
 
