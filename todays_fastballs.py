@@ -11,6 +11,7 @@ import plotly.graph_objs as go
 from plotly import tools
 from plotly.subplots import make_subplots
 import plotly.offline as py
+import pytz
 import xgboost as xgb
 from xgboost import XGBClassifier
 from sklearn.linear_model import LinearRegression
@@ -195,7 +196,7 @@ def loc_model(df,year=2024):
 
     return df['wOBA_effect'].sub(-0.004253050593194383).div(0.05179234832326223).mul(-50).add(100)
 
-today = (datetime.datetime.today() - timedelta(hours=11)).date()
+today = (datetime.datetime.now(pytz.utc)-timedelta(hours=16)).date()
 st.header(f"4-Seam Fastballs by Starters")
 col1, col2, col3 = st.columns([1/3,1/3,1/3])
 with col1:
