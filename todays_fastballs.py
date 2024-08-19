@@ -195,7 +195,7 @@ def loc_model(df,year=2024):
 
     return df['wOBA_effect'].sub(-0.004253050593194383).div(0.05179234832326223).mul(-50).add(100)
 
-today = (datetime.datetime.today().dt.tz_localize(tz='US/Eastern') - timedelta(hours=11)).date()
+today = (datetime.datetime.today() - timedelta(hours=11)).date()
 st.header(f"4-Seam Fastballs by Starters")
 col1, col2, col3 = st.columns([1/3,1/3,1/3])
 with col1:
@@ -203,7 +203,7 @@ with col1:
     level_dict = {'MLB':1,'AAA':11,'A (FSL)':14}
     level_code = level_dict[level]
 with col2:
-    date = st.date_input("Select a game date:", today, min_value=datetime.date(2024, 3, 28), max_value=today)
+    date = st.date_input("Select a game date:", today.dt.tz_localize(tz='US/Eastern'), min_value=datetime.date(2024, 3, 28), max_value=today)
 
 @st.cache_data(ttl=90,show_spinner=f"Loading data")
 def load_savant(date,level):
