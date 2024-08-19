@@ -195,7 +195,7 @@ def loc_model(df,year=2024):
 
     return df['wOBA_effect'].sub(-0.004253050593194383).div(0.05179234832326223).mul(-50).add(100)
 
-today = (datetime.datetime.today().tz_localize(tz='US/Eastern') - timedelta(hours=11)).date()
+today = (datetime.datetime.today().dt.tz_localize(tz='US/Eastern') - timedelta(hours=11)).date()
 st.header(f"4-Seam Fastballs by Starters")
 col1, col2, col3 = st.columns([1/3,1/3,1/3])
 with col1:
