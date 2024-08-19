@@ -203,7 +203,7 @@ with col1:
     level_dict = {'MLB':1,'AAA':11,'A (FSL)':14}
     level_code = level_dict[level]
 with col2:
-    date = st.date_input("Select a game date:", today.tz_localize(tz='US/Eastern'), min_value=datetime.date(2024, 3, 28), max_value=today)
+    date = st.date_input("Select a game date:", today, min_value=datetime.date(2024, 3, 28), max_value=today)
 
 @st.cache_data(ttl=90,show_spinner=f"Loading data")
 def load_savant(date,level):
