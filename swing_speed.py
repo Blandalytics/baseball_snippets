@@ -482,7 +482,7 @@ def swing_heatmap(df,hitter,base_stat,handedness):
     else:
         b_hand = df.loc[(df['Hitter']==hitter),'stand'].value_counts().index[0]
     stat_dict = {
-        heatmap_stat_dict[base_stat][0]:[heatmap_stat_dict[base_stat][1],swing_data[base_stat].mean()/(20 if base_stat=='swing_acceleration' else 80)]
+        heatmap_stat_dict[base_stat][0]:[heatmap_stat_dict[base_stat][1],swing_data[base_stat].mean()/(20 if base_stat=='swing_acceleration' else 20)]
     }
     
     bandwidth = 0.25 if base_stat == 'squared_up_frac' else 1
