@@ -130,16 +130,6 @@ df_stat_dict = {
     'blastitos':'PB%',
 }
 
-Team=('Team', 'last'),
-Swings=('Swings', 'count'),
-bat_speed=('bat_speed', 'mean'),
-bat_stdev=('bat_speed', 'std'),
-swing_length=('swing_length', 'mean'),
-swing_time=('swing_time', 'mean'),
-swing_acceleration=('swing_acceleration', 'mean'),
-squared_up_frac=('squared_up_frac', 'mean'),
-blastitos=('blastitos', 'mean')
-
 st.write('Swing Metrics')
 st.dataframe((swing_data if team=='All' else swing_data.loc[swing_data['Team']==team])
              .loc[swing_data['count'].isin(selected_options)]
