@@ -130,6 +130,16 @@ df_stat_dict = {
     'blastitos':'PB%',
 }
 
+Team=('Team', 'last'),
+Swings=('Swings', 'count'),
+bat_speed=('bat_speed', 'mean'),
+bat_stdev=('bat_speed', 'std'),
+swing_length=('swing_length', 'mean'),
+swing_time=('swing_time', 'mean'),
+swing_acceleration=('swing_acceleration', 'mean'),
+squared_up_frac=('squared_up_frac', 'mean'),
+blastitos=('blastitos', 'mean')
+
 st.write('Swing Metrics')
 st.dataframe((swing_data if team=='All' else swing_data.loc[swing_data['Team']==team])
              .loc[swing_data['count'].isin(selected_options)]
@@ -138,18 +148,21 @@ st.dataframe((swing_data if team=='All' else swing_data.loc[swing_data['Team']==
              [['Team','Swings','bat_speed','swing_length','swing_time','swing_acceleration','squared_up_frac',
                'blastitos'
               ]]
-             .agg({
-                 'Team':'last',
-                 'Swings':'count',
-                 'bat_speed':'mean',
-                 'swing_length':'mean',
-                 'swing_time':'mean',
-                 'swing_acceleration':'mean',
-                 'squared_up_frac':'mean',
-                 'blastitos':'mean'
-             })
+             .agg(
+                 Team=('Team', 'last'),
+                 Swings=('Swings', 'count'),
+                 bat_speed=('bat_speed', 'mean'),
+                 bat_stdev=('bat_speed', 'std'),
+                 swing_length=('swing_length', 'mean'),
+                 swing_time=('swing_time', 'mean'),
+                 swing_acceleration=('swing_acceleration', 'mean'),
+                 squared_up_frac=('squared_up_frac', 'mean'),
+                 blastitos=('blastitos', 'mean')
+             )
+             .assign(CoV = lambda x: x['bat_stdev'].div(x['bat_speed']).mul(100))
+             .drop(columns=['bat_stdev'])
              .query(f'Swings >={updated_threshold}')
-             .sort_values('swing_acceleration',ascending=False)
+             .sort_values('bat_speed',ascending=False)
              .round(1)
              .rename(columns=df_stat_dict)
 )
@@ -157,10 +170,10 @@ st.dataframe((swing_data if team=='All' else swing_data.loc[swing_data['Team']==
 players = list(swing_data
                .groupby('Hitter')
                [['Swings','swing_acceleration']]
-               .agg({'Swings':'count','swing_acceleration':'mean'})
+               .agg({'Swings':'count','bat_speed':'mean'})
                .query(f'Swings >={swing_threshold}')
                .reset_index()
-               .sort_values('swing_acceleration', ascending=False)
+               .sort_values('bat_speed', ascending=False)
                ['Hitter']
               )
 
