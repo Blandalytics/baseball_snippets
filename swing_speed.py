@@ -159,7 +159,7 @@ st.dataframe((swing_data if team=='All' else swing_data.loc[swing_data['Team']==
 
 players = list(swing_data
                .groupby('Hitter')
-               [['Swings','swing_acceleration']]
+               [['Swings','bat_speed']]
                .agg({'Swings':'count','bat_speed':'mean'})
                .query(f'Swings >={swing_threshold}')
                .reset_index()
