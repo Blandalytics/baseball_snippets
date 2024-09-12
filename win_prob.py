@@ -1,3 +1,4 @@
+import streamlit as st
 import datetime
 import random
 from datetime import timedelta
@@ -50,19 +51,6 @@ game_list = []
 for game in range(len(x['dates'][0]['games'])):
     game_list += [x['dates'][0]['games'][game]['gamePk']]
 
-game_choice = random.choice(game_list)
-r = requests.get(f'https://baseballsavant.mlb.com/gf?game_pk={game_choice}')
-x = r.json()
-
-home_name = x['scoreboard']['teams']['home']['teamName']
-away_name = x['scoreboard']['teams']['away']['teamName']
-
-home_abbr = x['scoreboard']['teams']['home']['abbreviation']
-away_abbr = x['scoreboard']['teams']['away']['abbreviation']
-
-home_score = x['scoreboard']['linescore']['teams']['home']['runs']
-away_score = x['scoreboard']['linescore']['teams']['away']['runs']
-
 delta_home_win_exp = []
 home_win_prob = []
 win_prob_game_pk = []
@@ -104,7 +92,6 @@ for game_id in game_list:
 
 player_df = pd.DataFrame()
 player_df['game_pk'] = game_pk
-player_df['game_pk'] = player_df['game_pk'].astype('int')
 player_df['game_date'] = game_date
 player_df['year_played'] = 2024
 player_df['MLBAMID'] = pitcher_id_list
@@ -113,13 +100,10 @@ player_df['inning'] = inning
 player_df['total_pitches'] = total_pitches
 player_df['post_outs'] = out
 player_df['ab_index'] = ab_index
-player_df['ab_index'] = player_df['ab_index'].astype('int')
 
 wpa_df = pd.DataFrame()
 wpa_df['game_pk'] = win_prob_game_pk
-wpa_df['game_pk'] = wpa_df['game_pk'].astype('int')
 wpa_df['ab_index'] = win_prob_abs
-wpa_df['ab_index'] = wpa_df['ab_index'].astype('int')
 wpa_df['delta_home_win_exp'] = delta_home_win_exp
 wpa_df['home_win_prob'] = home_win_prob
 
@@ -135,7 +119,21 @@ scraped_game_df = (
     .reset_index()
 )
 
-single_game_df = scraped_game_df.loc[scraped_game_df['game_pk']==game_choice].copy()
+game_choice = random.choice(game_list)
+r = requests.get(f'https://baseballsavant.mlb.com/gf?game_pk={game_choice}')
+x = r.json()
+
+home_name = x['scoreboard']['teams']['home']['teamName']
+away_name = x['scoreboard']['teams']['away']['teamName']
+
+home_abbr = x['scoreboard']['teams']['home']['abbreviation']
+away_abbr = x['scoreboard']['teams']['away']['abbreviation']
+
+home_score = x['scoreboard']['linescore']['teams']['home']['runs']
+away_score = x['scoreboard']['linescore']['teams']['away']['runs']
+
+single_game_df = scraped_game_df.loc[scraped_game_df['game_pk']==game_choice
+                                    ].copy()
 single_game_df['outs_made'] = np.where(single_game_df['post_outs'].shift(1)<3,
                                         single_game_df['post_outs'].sub(single_game_df['post_outs'].shift(1).fillna(0)),
                                         single_game_df['post_outs'])
@@ -151,7 +149,7 @@ single_game_df['home_win_prob'] = np.clip(single_game_df['home_win_prob'].div(10
 # Excitement
 # https://lukebenz.com/post/gei/
 # 20th percentile of 2021-2023 is ~1.2, 80th is ~4
-excite_index = (54/game_outs * single_game_df['delta_home_win_exp'].div(100).abs().sum() - 1) / (4-1)
+excite_index = (54/game_outs * single_game_df['delta_home_win_exp'].div(100).abs().sum()) / (4-0)
 excite_index = np.clip(excite_index*10,0,10)
 
 x = single_game_df['game_outs'].values
