@@ -337,8 +337,8 @@ def game_chart(game_choice_id):
         ax.axvline((inning+1)*6,linestyle='--',alpha=0.25,ymin=(0.25+0.1)/1.4,ymax=(0.75+0.1)/1.4,color='k')
 
     dydx = 0.5 * (yinterp[:-1] + yinterp[1:])
-    sns.lineplot(x=np.array(xvals), 
-                 y=yinterp, color='#aaaaaa', linewidth=6.5,
+    sns.lineplot(x=np.array(xvals)[:-1], 
+                 y=yinterp[:-1], color='#aaaaaa', linewidth=6.5,
                         )
 
     lines = colored_line_between_pts(np.array(xvals), 
