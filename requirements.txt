@@ -1,4 +1,5 @@
 streamlit
+st_aggrid
 matplotlib
 numpy
 pandas
