@@ -215,6 +215,7 @@ all_games_df = (
         'delta_home_win_exp':'sum',
         'win_swing':'max'
     })
+    .reset_index()
 )
 all_games_df['win_prob_index'] = (54/all_games_df['game_outs'] * np.log(all_games_df['delta_home_win_exp']) + 0.2) / (1 + 0.2)
 all_games_df['win_swing_index'] = (np.log(all_games_df['win_swing']) + 1.6) / (-0.4 + 1.6)
@@ -229,7 +230,7 @@ games = st.dataframe(all_games_df
                  'win_swing':'Biggest Win Exp Swing (%)',
                  'excitement_index':'Wheeee! Index'
              })
-             [['Total Win Exp Change (%)','Biggest Win Exp Swing (%)','Wheeee! Index']]
+             [['game_name','Total Win Exp Change (%)','Biggest Win Exp Swing (%)','Wheeee! Index']]
              .style
              .format(precision=1)
              .background_gradient(axis=None, vmin=0, vmax=10, cmap="vlag",
@@ -240,8 +241,7 @@ games = st.dataframe(all_games_df
              use_container_width=1)
 
 game_choice = games.selection.rows
-st.write(all_games_df.sort_values('excitement_index').iloc[game_choice[0]][-6:])
-game_choice_id = int(all_games_df.sort_values('excitement_index').iloc[game_choice[0]][-6:])
+game_choice_id = int(all_games_df.sort_values('excitement_index').iloc[game_choice[0]]['game_name'][-6:])
 
 def game_chart(game_choice_id):
     r_game = requests.get(f'https://baseballsavant.mlb.com/gf?game_pk={game_choice_id}')
