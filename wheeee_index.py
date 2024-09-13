@@ -236,6 +236,7 @@ games = st.dataframe(all_games_df
                                   subset=['Wheeee! Index']
                                  ), 
                      on_select="rerun",
+                     selection_mode='single-row',
              use_container_width=1)
 
 game_choice = games.selection.rows
