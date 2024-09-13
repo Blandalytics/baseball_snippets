@@ -229,46 +229,54 @@ all_games_df = all_games_df.assign(delta_home_win_exp = lambda x: x['delta_home_
                  'excitement_index':'Wheeee! Index'
     })
 
-# games = st.dataframe(all_games_df
-#              .sort_values('excitement_index',ascending=False)
-#              .assign(delta_home_win_exp = lambda x: x['delta_home_win_exp'].mul(100),
-#                      win_swing = lambda x: x['win_swing'].mul(100))
-#              .rename(columns={
-#                  'delta_home_win_exp':'Total Win Exp Change (%)',
-#                  'win_swing':'Biggest Win Exp Swing (%)',
-#                  'excitement_index':'Wheeee! Index'
-#              })
-#              [['game_name','Total Win Exp Change (%)','Biggest Win Exp Swing (%)','Wheeee! Index']]
-#              .style
-#              .format(precision=1)
-#              .background_gradient(axis=None, vmin=0, vmax=10, cmap="vlag",
-#                                   subset=['Wheeee! Index']
-#                                  ), 
-#                      on_select="rerun",
-#                      selection_mode='single-row',
-#              use_container_width=1)
+# games = 
+st.dataframe(all_games_df
+             .sort_values('excitement_index',ascending=False)
+             .assign(delta_home_win_exp = lambda x: x['delta_home_win_exp'].mul(100),
+                     win_swing = lambda x: x['win_swing'].mul(100))
+             .rename(columns={
+                 'delta_home_win_exp':'Total Win Exp Change (%)',
+                 'win_swing':'Biggest Win Exp Swing (%)',
+                 'excitement_index':'Wheeee! Index'
+             })
+             [['game_name','Total Win Exp Change (%)','Biggest Win Exp Swing (%)','Wheeee! Index']]
+             .style
+             .format(precision=1)
+             .background_gradient(axis=None, vmin=0, vmax=10, cmap="vlag",
+                                  subset=['Wheeee! Index']
+                                 ), 
+             use_container_width=1)
 
-gb = GridOptionsBuilder.from_dataframe(all_games_df[['game_name','Total Win Exp Change (%)','Biggest Win Exp Swing (%)','Wheeee! Index']])
-# configure selection
-gb.configure_selection(selection_mode="single", use_checkbox=False)
-gb.configure_side_bar()
-gridOptions = gb.build()
+# gb = GridOptionsBuilder.from_dataframe(all_games_df[['game_name','Total Win Exp Change (%)','Biggest Win Exp Swing (%)','Wheeee! Index']])
+# # configure selection
+# gb.configure_selection(selection_mode="single", use_checkbox=False)
+# gb.configure_side_bar()
+# gridOptions = gb.build()
 
-data = AgGrid(all_games_df,
-              gridOptions=gridOptions,
-              enable_enterprise_modules=True,
-              allow_unsafe_jscode=True,
-              update_mode=GridUpdateMode.SELECTION_CHANGED,
-              columns_auto_size_mode=ColumnsAutoSizeMode.FIT_CONTENTS,
-             fit_columns_on_grid_load=True,
-       height=700,
-       theme="streamlit",
-       key=None,
-)
+# data = AgGrid(all_games_df,
+#               formatter={,
+#     'game_name': ('Game', {'width': 110}),
+#     'Total Win Exp Change (%)': ('RAPTOR', {**PRECISION_TWO, 'width': 100}),
+#     'war_total': ('WAR', {**PRECISION_TWO, 'width': 80}),
+#     'pace_impact': ('Pace Impact', {**PRECISION_TWO, 'width': 120})
+# }
+# ,
+#               gridOptions=gridOptions,
+#               enable_enterprise_modules=True,
+#               allow_unsafe_jscode=True,
+#               update_mode=GridUpdateMode.SELECTION_CHANGED,
+#               columns_auto_size_mode=ColumnsAutoSizeMode.FIT_CONTENTS,
+#              fit_columns_on_grid_load=True,
+#        height=700,
+#        theme="streamlit",
+#        key=None,
+# )
 
-st.write(data.selected_rows['game_name'][-6:])
+# st.write(data.selected_rows['game_name'][-6:])
+# game_choice_id = int(data.selected_rows['game_name'].values[0][-6:])
 
-game_choice_id = int(data.selected_rows['game_name'].values[0][-6:])
+game_choice = st.select_box('Choose a game:',game_list)
+game_choice_id = int(game_choice[-6:])
 
 def game_chart(game_choice_id):
     r_game = requests.get(f'https://baseballsavant.mlb.com/gf?game_pk={game_choice_id}')
