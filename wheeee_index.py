@@ -202,7 +202,7 @@ all_games_df['game_outs'] = all_games_df.groupby('game_name')['outs_made'].trans
 all_games_df = (all_games_df.groupby(['game_name','game_outs'])[['delta_home_win_exp','home_win_prob']].agg({
     'delta_home_win_exp':'sum','home_win_prob':'mean'
 }).reset_index())
-all_games_df['home_win_prob'] = np.clip(all_games_df.groupby('game_name')['delta_home_win_exp'].transform(lambda x: x.expanding().sum()).add(0.5),0,1)
+all_games_df['home_win_prob'] = np.clip(all_games_df.groupby('game_name')['delta_home_win_exp'].transform(lambda x: x.expanding().sum()).add(0.5),0,100)
 all_games_df['rolling_away_prob'] = all_games_df.groupby('game_name')['home_win_prob'].transform(lambda x: x.rolling(6, 6).min())
 all_games_df['rolling_home_prob'] = all_games_df.groupby('game_name')['home_win_prob'].transform(lambda x: x.rolling(6, 6).max())
 all_games_df = (
