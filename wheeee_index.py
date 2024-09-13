@@ -240,8 +240,7 @@ games = st.dataframe(all_games_df
              use_container_width=1)
 
 game_choice = games.selection.rows
-st.write(game_choice)
-game_choice_id = int(all_games_df.sort_values('excitement_index').iloc[game_choice][-6:])
+game_choice_id = int(all_games_df.sort_values('excitement_index').iloc[game_choice[0]][-6:])
 
 def game_chart(game_choice_id):
     r_game = requests.get(f'https://baseballsavant.mlb.com/gf?game_pk={game_choice_id}')
