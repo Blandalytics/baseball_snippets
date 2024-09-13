@@ -215,7 +215,6 @@ all_games_df = (
         'delta_home_win_exp':'sum',
         'win_swing':'max'
     })
-    .reset_index()
 )
 all_games_df['win_prob_index'] = (54/all_games_df['game_outs'] * np.log(all_games_df['delta_home_win_exp']) + 0.2) / (1 + 0.2)
 all_games_df['win_swing_index'] = (np.log(all_games_df['win_swing']) + 1.6) / (-0.4 + 1.6)
@@ -226,7 +225,6 @@ st.dataframe(all_games_df
              .assign(delta_home_win_exp = lambda x: x['delta_home_win_exp'].mul(100),
                      win_swing = lambda x: x['win_swing'].mul(100))
              .rename(columns={
-                 'game_name':'Game',
                  'delta_home_win_exp':'Total Win Exp Change (%)',
                  'win_swing':'Biggest Win Exp Swing (%)',
                  'excitement_index':'Wheeee! Index'
@@ -237,7 +235,7 @@ st.dataframe(all_games_df
              .background_gradient(axis=None, vmin=0, vmax=10, cmap="vlag",
                                   subset=['Wheeee! Index']
                                  ), 
-             height=(10 + 1) * 35 + 3, use_container_width=1)
+             use_container_width=1)
 
 game_choice = st.selectbox('Choose a game:', game_list)
 game_choice_id = int(game_choice[-6:])
