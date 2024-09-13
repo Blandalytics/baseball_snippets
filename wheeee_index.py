@@ -192,6 +192,52 @@ game_list = scraped_game_df['game_name'].unique()
 if scraped_game_df.shape[0]==0:
     st.write('No games played')
     st.stop()
+    
+all_games_df = scraped_game_df.copy()
+all_games_df['outs_made'] = np.where(all_games_df['post_outs'].shift(1)<3,
+                                        all_games_df['post_outs'].sub(all_games_df['post_outs'].shift(1).fillna(0)),
+                                        all_games_df['post_outs'])
+all_games_df['game_outs'] = all_games_df.groupby('game_name')['outs_made'].transform(lambda x: x.expanding().sum()).astype('int')
+all_games_df = (all_games_df.groupby(['game_name','game_outs'])[['delta_home_win_exp','home_win_prob']].agg({
+    'delta_home_win_exp':'sum','home_win_prob':'mean'
+}).reset_index())
+all_games_df['home_win_prob'] = all_games_df.groupby('game_name')['delta_home_win_exp'].transform(lambda x: x.expanding().sum()).add(0.5)
+all_games_df['rolling_away_prob'] = all_games_df.groupby('game_name')['home_win_prob'].transform(lambda x: x.rolling(6, 6).min())
+all_games_df['rolling_home_prob'] = all_games_df.groupby('game_name')['home_win_prob'].transform(lambda x: x.rolling(6, 6).max())
+all_games_df = (
+    all_games_df
+    .assign(delta_home_win_exp = lambda x: x['delta_home_win_exp'].abs().div(100),
+            win_swing = lambda x: x['rolling_home_prob'].sub(x['rolling_away_prob']).abs().div(100))
+    .groupby('game_name')
+    [['game_outs','delta_home_win_exp','win_swing']]
+    .agg({
+        'game_outs':'max',
+        'delta_home_win_exp':'sum',
+        'win_swing':'max'
+    })
+    .reset_index()
+)
+all_games_df['win_prob_index'] = (54/all_games_df['game_outs'] * np.log(all_games_df['delta_home_win_exp']) + 0.2) / (1 + 0.2)
+all_games_df['win_swing_index'] = (np.log(all_games_df['win_swing']) + 1.6) / (-0.4 + 1.6)
+all_games_df['excitement_index'] = np.clip(all_games_df[['win_prob_index','win_swing_index']].mean(axis=1),0,1)*10
+
+st.dataframe(all_games_df
+             .sort_values('excitement_index',ascending=False)
+             .assign(delta_home_win_exp = lambda x: x['delta_home_win_exp'].mul(100),
+                     win_swing = lambda x: x['win_swing'].mul(100))
+             .rename(columns={
+                 'game_name':'Game',
+                 'delta_home_win_exp':'Total Win Exp Change (%)',
+                 'win_swing':'Biggest Win Exp Swing (%)',
+                 'excitement_index':'Wheeee! Index'
+             })
+             [['Game','Total Win Exp Change (%)','Biggest Win Exp Swing (%)','Wheeee! Index']]
+             .style
+             .format(precision=1)
+             .background_gradient(axis=None, vmin=0, vmax=10, cmap="vlag",
+                                  subset=['Wheeee! Index']
+                                 ), 
+             height=(10 + 1) * 35 + 3, use_container_width=1)
 
 game_choice = st.selectbox('Choose a game:', game_list)
 game_choice_id = int(game_choice[-6:])
