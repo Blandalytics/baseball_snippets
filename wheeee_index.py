@@ -202,7 +202,7 @@ all_games_df['game_outs'] = all_games_df.groupby('game_name')['outs_made'].trans
 all_games_df = (all_games_df.groupby(['game_name','game_outs'])[['delta_home_win_exp','home_win_prob']].agg({
     'delta_home_win_exp':'sum','home_win_prob':'mean'
 }).reset_index())
-all_games_df['home_win_prob'] = all_games_df.groupby('game_name')['delta_home_win_exp'].transform(lambda x: x.expanding().sum()).add(0.5)
+all_games_df['home_win_prob'] = np.clip(all_games_df.groupby('game_name')['delta_home_win_exp'].transform(lambda x: x.expanding().sum()).add(0.5),0,1)
 all_games_df['rolling_away_prob'] = all_games_df.groupby('game_name')['home_win_prob'].transform(lambda x: x.rolling(6, 6).min())
 all_games_df['rolling_home_prob'] = all_games_df.groupby('game_name')['home_win_prob'].transform(lambda x: x.rolling(6, 6).max())
 all_games_df = (
@@ -223,7 +223,7 @@ all_games_df['win_swing_index'] = (np.log(all_games_df['win_swing']) + 1.6) / (-
 all_games_df['excitement_index'] = np.clip(all_games_df[['win_prob_index','win_swing_index']].mean(axis=1),0,1)*10
 
 all_games_df = all_games_df.assign(delta_home_win_exp = lambda x: x['delta_home_win_exp'].mul(100),
-                     win_swing = lambda x: x['win_swing'].mul(100)).rename(columns={
+                                   win_swing = lambda x: x['win_swing'].mul(100)).rename(columns={
                  'delta_home_win_exp':'Total Win Exp Change (%)',
                  'win_swing':'Biggest Win Exp Swing (%)',
                  'excitement_index':'Wheeee! Index'
@@ -295,7 +295,7 @@ def game_chart(game_choice_id):
     single_game_df = single_game_df.groupby('game_outs').last().reset_index()
     game_outs = single_game_df['game_outs'].max()
 
-    # single_game_df.loc[100] = [-1,game_choice_id,'','',-1,0,0,0,50,0,'']
+    single_game_df.loc[100] = [-1,game_choice_id,'','',-1,0,0,0,50,0,'']
     single_game_df = single_game_df.sort_values('game_outs').reset_index(drop=True)
     single_game_df['home_win_prob'] = np.clip(single_game_df['home_win_prob'].div(100),0,1)
 
