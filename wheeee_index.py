@@ -268,7 +268,7 @@ st.dataframe(all_games_df
 # st.write(data.selected_rows['game_name'][-6:])
 # game_choice_id = int(data.selected_rows['game_name'].values[0][-6:])
 
-game_choice = st.select_box('Choose a game:',game_list)
+game_choice = st.selectbox('Choose a game:',game_list)
 game_choice_id = int(game_choice[-6:])
 
 def game_chart(game_choice_id):
