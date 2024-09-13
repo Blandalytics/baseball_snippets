@@ -321,7 +321,7 @@ def game_chart(game_choice_id):
     yinterp = np.interp(xvals, x, y)
 
     # Create a figure and plot the line on it
-    fig, ax = plt.subplots(figsize=(5,5))
+    fig, ax = plt.subplots(figsize=(6,6))
     ax.axhline(1,color='k',alpha=0.25)
     ax.axhline(0,color='k',alpha=0.25)
     custom_map = colors.ListedColormap(sns.light_palette(color_dict[away_abbr], n_colors=50, reverse=True) + 
