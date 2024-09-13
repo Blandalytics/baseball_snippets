@@ -231,14 +231,7 @@ all_games_df = all_games_df.assign(delta_home_win_exp = lambda x: x['delta_home_
 
 # games = 
 st.dataframe(all_games_df
-             .sort_values('excitement_index',ascending=False)
-             .assign(delta_home_win_exp = lambda x: x['delta_home_win_exp'].mul(100),
-                     win_swing = lambda x: x['win_swing'].mul(100))
-             .rename(columns={
-                 'delta_home_win_exp':'Total Win Exp Change (%)',
-                 'win_swing':'Biggest Win Exp Swing (%)',
-                 'excitement_index':'Wheeee! Index'
-             })
+             .sort_values('Wheeee! Index',ascending=False)
              [['game_name','Total Win Exp Change (%)','Biggest Win Exp Swing (%)','Wheeee! Index']]
              .style
              .format(precision=1)
