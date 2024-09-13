@@ -259,9 +259,14 @@ data = AgGrid(all_games_df,
               enable_enterprise_modules=True,
               allow_unsafe_jscode=True,
               update_mode=GridUpdateMode.SELECTION_CHANGED,
-              columns_auto_size_mode=ColumnsAutoSizeMode.FIT_CONTENTS)
+              columns_auto_size_mode=ColumnsAutoSizeMode.FIT_CONTENTS,
+             fit_columns_on_grid_load=True,
+       height=700,
+       theme="streamlit",
+       key=None,
+)
 
-game_choice_id = int(data.selected_rows['game_name'][-6:])
+game_choice_id = int(data.selected_rows['game_name'])
 
 def game_chart(game_choice_id):
     r_game = requests.get(f'https://baseballsavant.mlb.com/gf?game_pk={game_choice_id}')
