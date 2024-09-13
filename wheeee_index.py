@@ -220,7 +220,7 @@ all_games_df['win_prob_index'] = (54/all_games_df['game_outs'] * np.log(all_game
 all_games_df['win_swing_index'] = (np.log(all_games_df['win_swing']) + 1.6) / (-0.4 + 1.6)
 all_games_df['excitement_index'] = np.clip(all_games_df[['win_prob_index','win_swing_index']].mean(axis=1),0,1)*10
 
-st.dataframe(all_games_df
+games = st.dataframe(all_games_df
              .sort_values('excitement_index',ascending=False)
              .assign(delta_home_win_exp = lambda x: x['delta_home_win_exp'].mul(100),
                      win_swing = lambda x: x['win_swing'].mul(100))
@@ -235,10 +235,11 @@ st.dataframe(all_games_df
              .background_gradient(axis=None, vmin=0, vmax=10, cmap="vlag",
                                   subset=['Wheeee! Index']
                                  ), 
+                     on_select="rerun",
              use_container_width=1)
 
-game_choice = st.selectbox('Choose a game:', game_list)
-game_choice_id = int(game_choice[-6:])
+game_choice = games.selection.rows
+game_choice_id = int(all_games_df.sort_values('excitement_index').iloc[game_choice][-6:])
 
 def game_chart(game_choice_id):
     r_game = requests.get(f'https://baseballsavant.mlb.com/gf?game_pk={game_choice_id}')
