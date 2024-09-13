@@ -383,7 +383,7 @@ def game_chart(game_choice_id):
     away_team_ax.imshow(image)
     away_team_ax.axis('off')
 
-    url_ax = fig.add_axes([0,0,1,0.1], anchor='NW', zorder=1)
+    url_ax = fig.add_axes([0.5,0,1,0.1], anchor='NW', zorder=1)
     url_ax.text(0,0,'mlb-wheeee-index.streamlit.app',ha='center',va='center',color='k')
     url_ax.axis('off')
 
