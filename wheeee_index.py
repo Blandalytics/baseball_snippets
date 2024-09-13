@@ -384,7 +384,7 @@ def game_chart(game_choice_id):
     away_team_ax.axis('off')
 
     url_ax = fig.add_axes([0.5,0.1,0.3,0.1], anchor='NW', zorder=1)
-    url_ax.text(0,0,'mlb-win-prob.streamlit.app',ha='center',va='center',color='k')
+    url_ax.text(0,0,' mlb-win-prob.streamlit.app ',ha='center',va='center',color='k')
     url_ax.axis('off')
 
     fig.suptitle(f'Win Probability - {date:%#m/%#d/%y}\n{away_name} {away_score:.0f} @ {home_name} {home_score:.0f}',
