@@ -295,7 +295,7 @@ def game_chart(game_choice_id):
     single_game_df = single_game_df.groupby('game_outs').last().reset_index()
     game_outs = single_game_df['game_outs'].max()
 
-    single_game_df.loc[100] = [-1,game_choice_id,'','',-1,0,0,0,50,0,'']
+    # single_game_df.loc[100] = [-1,game_choice_id,'','',-1,0,0,0,50,0,'']
     single_game_df = single_game_df.sort_values('game_outs').reset_index(drop=True)
     single_game_df['home_win_prob'] = np.clip(single_game_df['home_win_prob'].div(100),0,1)
 
