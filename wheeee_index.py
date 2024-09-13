@@ -266,6 +266,8 @@ data = AgGrid(all_games_df,
        key=None,
 )
 
+st.write(data.selected_rows['game_name'][-6:])
+
 game_choice_id = int(str(data.selected_rows['game_name'])[-6:])
 
 def game_chart(game_choice_id):
