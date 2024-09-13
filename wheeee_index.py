@@ -248,7 +248,7 @@ all_games_df = all_games_df.assign(delta_home_win_exp = lambda x: x['delta_home_
 #                      selection_mode='single-row',
 #              use_container_width=1)
 
-gb = GridOptionsBuilder.from_dataframe(all_games_df[["game_name','Total Win Exp Change (%)','Biggest Win Exp Swing (%)','Wheeee! Index"]])
+gb = GridOptionsBuilder.from_dataframe(all_games_df[['game_name','Total Win Exp Change (%)','Biggest Win Exp Swing (%)','Wheeee! Index']])
 # configure selection
 gb.configure_selection(selection_mode="single", use_checkbox=False)
 gb.configure_side_bar()
