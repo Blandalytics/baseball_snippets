@@ -241,6 +241,7 @@ games = st.dataframe(all_games_df
              use_container_width=1)
 
 game_choice = games.selection.rows
+st.write(all_games_df.sort_values('excitement_index').iloc[game_choice[0]]['game_name'])
 game_choice_id = int(all_games_df.sort_values('excitement_index').iloc[game_choice[0]]['game_name'][-6:])
 
 def game_chart(game_choice_id):
