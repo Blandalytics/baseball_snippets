@@ -189,9 +189,9 @@ scraped_game_df['game_name'] = (
     .sum(axis=1)
 )
 game_list = scraped_game_df['game_name'].unique()
-# if scraped_game_df.shape[0]==0:
-#     st.write('No games played')
-#     st.stop()
+if scraped_game_df.shape[0]==0:
+    st.write('No games played')
+    st.stop()
 
 game_choice = st.selectbox('Choose a game:', game_list)
 game_choice_id = int(game_choice[-6:])
