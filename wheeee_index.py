@@ -230,16 +230,16 @@ all_games_df = all_games_df.assign(delta_home_win_exp = lambda x: x['delta_home_
     })
 
 # games = 
-st.dataframe(all_games_df
-             .sort_values('Wheeee! Index',ascending=False)
-             [['game_name','Total Win Exp Change (%)','Biggest Win Exp Swing (%)','Wheeee! Index']]
-             .style
-             .format(precision=1)
-             .background_gradient(axis=None, vmin=0, vmax=10, cmap="vlag",
-                                  subset=['Wheeee! Index']
-                                 ), 
-             hide_index=True,
-             use_container_width=1)
+# st.dataframe(all_games_df
+#              .sort_values('Wheeee! Index',ascending=False)
+#              [['game_name','Total Win Exp Change (%)','Biggest Win Exp Swing (%)','Wheeee! Index']]
+#              .style
+#              .format(precision=1)
+#              .background_gradient(axis=None, vmin=0, vmax=10, cmap="vlag",
+#                                   subset=['Wheeee! Index']
+#                                  ), 
+#              hide_index=True,
+#              use_container_width=1)
 
 # gb = GridOptionsBuilder.from_dataframe(all_games_df[['game_name','Total Win Exp Change (%)','Biggest Win Exp Swing (%)','Wheeee! Index']])
 # # configure selection
