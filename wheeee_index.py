@@ -229,7 +229,7 @@ st.dataframe(all_games_df
                  'win_swing':'Biggest Win Exp Swing (%)',
                  'excitement_index':'Wheeee! Index'
              })
-             [['Game','Total Win Exp Change (%)','Biggest Win Exp Swing (%)','Wheeee! Index']]
+             [['Total Win Exp Change (%)','Biggest Win Exp Swing (%)','Wheeee! Index']]
              .style
              .format(precision=1)
              .background_gradient(axis=None, vmin=0, vmax=10, cmap="vlag",
