@@ -268,7 +268,7 @@ data = AgGrid(all_games_df,
 
 st.write(data.selected_rows['game_name'][-6:])
 
-game_choice_id = int(str(data.selected_rows['game_name'])[-6:])
+game_choice_id = int(data.selected_rows['game_name'].values[0][-6:])
 
 def game_chart(game_choice_id):
     r_game = requests.get(f'https://baseballsavant.mlb.com/gf?game_pk={game_choice_id}')
