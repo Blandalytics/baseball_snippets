@@ -383,6 +383,9 @@ def game_chart(game_choice_id):
     away_team_ax.imshow(image)
     away_team_ax.axis('off')
 
+    url_ax = fig.add_axes([0.6,0,0.2,0.1], anchor='NE', zorder=1)
+    url_ax.text(0,0,'mlb-wheeee-index.streamlit.app',ha='center',va='center',color='k')
+
     fig.suptitle(f'Win Probability - {date:%#m/%#d/%y}\n{away_name} {away_score:.0f} @ {home_name} {home_score:.0f}',
                 fontsize=20,x=0.375,y=0.93)
     sns.despine()
