@@ -15,6 +15,7 @@ from matplotlib.collections import LineCollection
 import urllib
 import cairosvg
 from PIL import Image
+from st_aggrid import GridOptionsBuilder, AgGrid, GridUpdateMode, ColumnsAutoSizeMode
 
 chart_white = '#FEFEFE'
 chart_accent = '#162B50'
@@ -221,27 +222,46 @@ all_games_df['win_prob_index'] = (54/all_games_df['game_outs'] * np.log(all_game
 all_games_df['win_swing_index'] = (np.log(all_games_df['win_swing']) + 1.6) / (-0.4 + 1.6)
 all_games_df['excitement_index'] = np.clip(all_games_df[['win_prob_index','win_swing_index']].mean(axis=1),0,1)*10
 
-games = st.dataframe(all_games_df
-             .sort_values('excitement_index',ascending=False)
-             .assign(delta_home_win_exp = lambda x: x['delta_home_win_exp'].mul(100),
-                     win_swing = lambda x: x['win_swing'].mul(100))
-             .rename(columns={
+all_games_df = all_games_df.assign(delta_home_win_exp = lambda x: x['delta_home_win_exp'].mul(100),
+                     win_swing = lambda x: x['win_swing'].mul(100)).rename(columns={
                  'delta_home_win_exp':'Total Win Exp Change (%)',
                  'win_swing':'Biggest Win Exp Swing (%)',
                  'excitement_index':'Wheeee! Index'
-             })
-             [['game_name','Total Win Exp Change (%)','Biggest Win Exp Swing (%)','Wheeee! Index']]
-             .style
-             .format(precision=1)
-             .background_gradient(axis=None, vmin=0, vmax=10, cmap="vlag",
-                                  subset=['Wheeee! Index']
-                                 ), 
-                     on_select="rerun",
-                     selection_mode='single-row',
-             use_container_width=1)
+    })
 
-game_choice = games.selection.rows
-game_choice_id = int(all_games_df.sort_values('excitement_index',ascending=False).reset_index(drop=True).iloc[game_choice[0]]['game_name'][-6:])
+# games = st.dataframe(all_games_df
+#              .sort_values('excitement_index',ascending=False)
+#              .assign(delta_home_win_exp = lambda x: x['delta_home_win_exp'].mul(100),
+#                      win_swing = lambda x: x['win_swing'].mul(100))
+#              .rename(columns={
+#                  'delta_home_win_exp':'Total Win Exp Change (%)',
+#                  'win_swing':'Biggest Win Exp Swing (%)',
+#                  'excitement_index':'Wheeee! Index'
+#              })
+#              [['game_name','Total Win Exp Change (%)','Biggest Win Exp Swing (%)','Wheeee! Index']]
+#              .style
+#              .format(precision=1)
+#              .background_gradient(axis=None, vmin=0, vmax=10, cmap="vlag",
+#                                   subset=['Wheeee! Index']
+#                                  ), 
+#                      on_select="rerun",
+#                      selection_mode='single-row',
+#              use_container_width=1)
+
+gb = GridOptionsBuilder.from_dataframe(all_games_df[["game_name','Total Win Exp Change (%)','Biggest Win Exp Swing (%)','Wheeee! Index"]])
+# configure selection
+gb.configure_selection(selection_mode="single", use_checkbox=False)
+gb.configure_side_bar()
+gridOptions = gb.build()
+
+data = AgGrid(all_games_df,
+              gridOptions=gridOptions,
+              enable_enterprise_modules=True,
+              allow_unsafe_jscode=True,
+              update_mode=GridUpdateMode.SELECTION_CHANGED,
+              columns_auto_size_mode=ColumnsAutoSizeMode.FIT_CONTENTS)
+
+game_choice_id = int(data.selected_rows['game_name'][-6:])
 
 def game_chart(game_choice_id):
     r_game = requests.get(f'https://baseballsavant.mlb.com/gf?game_pk={game_choice_id}')
