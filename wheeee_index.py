@@ -322,8 +322,8 @@ def game_chart(game_choice_id):
 
     # Create a figure and plot the line on it
     fig, ax = plt.subplots(figsize=(6,5))
-    ax.axhline(1,color='k',alpha=0.25)
-    ax.axhline(0,color='k',alpha=0.25)
+    ax.axhline(1,color='k',alpha=0.25, xmin=0.05)
+    ax.axhline(0,color='k',alpha=0.25, xmin=0.05)
     custom_map = colors.ListedColormap(sns.light_palette(color_dict[away_abbr], n_colors=50, reverse=True) + 
                                        sns.light_palette(color_dict[home_abbr], n_colors=50))
 
