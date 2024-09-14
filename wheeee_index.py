@@ -310,7 +310,8 @@ def game_chart(game_choice_id):
     single_game_df['rolling_away_prob'] = single_game_df['home_win_prob'].rolling(6, 6).min()
     single_game_df['rolling_home_prob'] = single_game_df['home_win_prob'].rolling(6, 6).max()
     single_game_df['win_prob_swing'] = single_game_df['rolling_home_prob'].sub(single_game_df['rolling_away_prob']).abs()
-    win_swing_index = np.log(single_game_df['win_prob_swing'].max()) + 1.6 / (-0.4 + 1.6)
+    biggest_win_swing = single_game_df['win_prob_swing'].max()
+    win_swing_index = np.log(biggest_win_swing) + 1.6 / (-0.4 + 1.6)
 
     excite_index = np.clip((win_prob_index+win_swing_index)/2,0,1) * 10
 
@@ -353,16 +354,16 @@ def game_chart(game_choice_id):
            ylim=(1.1,-.3))
     ax.axis('off')
 
-    excite_ax = fig.add_axes([0.8,0.81,0.1,0.1], anchor='NE', zorder=1)
-    excite_ax.text(0,0.9,'Wheeee!\nIndex',ha='center',va='center')
+    excite_ax = fig.add_axes([0.77,0.81,0.1,0.1], anchor='NE', zorder=1)
+    excite_ax.text(0,0.9,'Wheeee!\nIndex',ha='center',va='center',fontsize=14)
     if excite_index==10:
-        excite_ax.text(0,0,f'{excite_index:.0f}',ha='center',va='center',size=14,
+        excite_ax.text(0,-0.15,f'{excite_index:.0f}',ha='center',va='center',size=16,
                        color='k' if abs(excite_index-5)<2 else chart_white,
                        bbox=dict(boxstyle='circle', pad=0.5,
                                  fc=sns.color_palette('vlag',n_colors=1001)[int(excite_index*100)], 
                                  ec="k"))
     else:
-        excite_ax.text(0,0,f'{excite_index:.1f}',ha='center',va='center',
+        excite_ax.text(0,-0.15,f'{excite_index:.1f}',ha='center',va='center',size=14,
                        color='k' if abs(excite_index-5)<2 else chart_white,
                        bbox=dict(boxstyle='circle', pad=0.5,
                                  fc=sns.color_palette('vlag',n_colors=1001)[int(excite_index*100)], 
@@ -382,13 +383,32 @@ def game_chart(game_choice_id):
     image = Image.open('away.png')
     away_team_ax.imshow(image)
     away_team_ax.axis('off')
-
-    url_ax = fig.add_axes([0.5,0.105,0.3,0.1], anchor='NW', zorder=1)
-    url_ax.text(0,0,'mlb-win-prob.streamlit.app',ha='center',va='center',color='k')
-    url_ax.axis('off')
+    
 
     fig.suptitle(f'Win Probability - {date:%#m/%#d/%y}\n{away_name} {away_score:.0f} @ {home_name} {home_score:.0f}',
-                fontsize=18,x=0.375,y=0.93)
+                fontsize=20,x=0.4,y=0.95)
+    fig.text(0.25,0.785,'Δ Win Prob',
+             ha='center', fontsize=10)
+    fig.text(0.25,0.745,f'{gei:.2f} Wins',
+             ha='center', fontsize=10,
+             color='k' if abs(win_prob_index-.5)<.2 else chart_white,
+             bbox=dict(boxstyle='round', pad=0.25,
+                       fc=sns.color_palette('vlag',n_colors=1001)[int(np.clip(win_prob_index*1000,0,1000))], 
+                       ec="k"))
+
+    fig.text(0.55,0.785,'Biggest Swing',
+             ha='center', fontsize=10)
+    fig.text(0.55,0.745,f'{biggest_win_swing:.1%}',
+             ha='center', fontsize=10,
+             color='k' if abs(win_swing_index-.5)<.2 else chart_white,
+             bbox=dict(boxstyle='round', pad=0.25,
+                       fc=sns.color_palette('vlag',n_colors=1001)[int(np.clip(win_swing_index*1000,0,1000))], 
+                       ec="k"))
+    
+    fig.text(0.5,0.12,'mlb-win-prob.streamlit.app',
+             ha='center', fontsize=12)
+    sns.despine()
+    
     sns.despine()
     st.pyplot(fig)
     
