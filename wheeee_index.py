@@ -338,7 +338,7 @@ def game_chart(game_choice_id):
 
     dydx = 0.5 * (yinterp[:-1] + yinterp[1:])
     sns.lineplot(x=np.array(xvals)[:-1], 
-                 y=yinterp[:-1], color='#aaaaaa', linewidth=6.5,
+                 y=yinterp[:-1], color='#aaaaaa', linewidth=6,
                         )
 
     lines = colored_line_between_pts(np.array(xvals), 
