@@ -387,7 +387,7 @@ def game_chart(game_choice_id):
 
     fig.suptitle(f'Win Probability - {date:%#m/%#d/%y}\n{away_name} {away_score:.0f} @ {home_name} {home_score:.0f}',
                 fontsize=20,x=0.45,y=0.95)
-    fig.text(0.3,0.785,'Δ Win Prob',
+    fig.text(0.3,0.785,'Δ Win Prob/54 OUts',
              ha='center', fontsize=12)
     fig.text(0.3,0.735,f'{gei:.1f} Wins',
              ha='center', fontsize=12,
