@@ -388,18 +388,18 @@ def game_chart(game_choice_id):
     fig.suptitle(f'Win Probability - {date:%#m/%#d/%y}\n{away_name} {away_score:.0f} @ {home_name} {home_score:.0f}',
                 fontsize=20,x=0.45,y=0.95)
     fig.text(0.3,0.785,'Δ Win Prob',
-             ha='center', fontsize=10)
-    fig.text(0.3,0.745,f'{gei:.2f} Wins',
-             ha='center', fontsize=10,
+             ha='center', fontsize=12)
+    fig.text(0.3,0.735,f'{gei:.2f} Wins',
+             ha='center', fontsize=12,
              color='k' if abs(win_prob_index-.5)<.2 else chart_white,
              bbox=dict(boxstyle='round', pad=0.25,
                        fc=sns.color_palette('vlag',n_colors=1001)[int(np.clip(win_prob_index*1000,0,1000))], 
                        ec="k"))
 
     fig.text(0.6,0.785,'Biggest Swing',
-             ha='center', fontsize=10)
-    fig.text(0.6,0.745,f'{biggest_win_swing:.1%}',
-             ha='center', fontsize=10,
+             ha='center', fontsize=12)
+    fig.text(0.6,0.735,f'{biggest_win_swing:.1%}',
+             ha='center', fontsize=12,
              color='k' if abs(win_swing_index-.5)<.2 else chart_white,
              bbox=dict(boxstyle='round', pad=0.25,
                        fc=sns.color_palette('vlag',n_colors=1001)[int(np.clip(win_swing_index*1000,0,1000))], 
