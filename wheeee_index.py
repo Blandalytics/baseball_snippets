@@ -389,7 +389,7 @@ def game_chart(game_choice_id):
                 fontsize=20,x=0.45,y=0.95)
     fig.text(0.3,0.785,'Δ Win Prob',
              ha='center', fontsize=12)
-    fig.text(0.3,0.735,f'{gei:.2f} Wins',
+    fig.text(0.3,0.735,f'{gei:.1f} Wins',
              ha='center', fontsize=12,
              color='k' if abs(win_prob_index-.5)<.2 else chart_white,
              bbox=dict(boxstyle='round', pad=0.25,
@@ -398,7 +398,7 @@ def game_chart(game_choice_id):
 
     fig.text(0.6,0.785,'Biggest Swing',
              ha='center', fontsize=12)
-    fig.text(0.6,0.735,f'{biggest_win_swing:.1%}',
+    fig.text(0.6,0.735,f'{biggest_win_swing:.0%}',
              ha='center', fontsize=12,
              color='k' if abs(win_swing_index-.5)<.2 else chart_white,
              bbox=dict(boxstyle='round', pad=0.25,
