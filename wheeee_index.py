@@ -323,8 +323,8 @@ def game_chart(game_choice_id):
 
     # Create a figure and plot the line on it
     fig, ax = plt.subplots(figsize=(7,5))
-    ax.axhline(1,color='k',alpha=0.25, xmin=0.05)
-    ax.axhline(0,color='k',alpha=0.25, xmin=0.05)
+    ax.axhline(1,color=color_dict[home_abbr],alpha=0.5,xmin=1/9)
+    ax.axhline(0,color=color_dict[away_abbr],alpha=0.5,xmin=1/9)
     custom_map = colors.ListedColormap(sns.light_palette(color_dict[away_abbr], n_colors=50, reverse=True) + 
                                        sns.light_palette(color_dict[home_abbr], n_colors=50))
 
@@ -351,10 +351,10 @@ def game_chart(game_choice_id):
                         )
 
     ax.set(xlim=(-1,game_outs+0.5),
-           ylim=(1.1,-.3))
+           ylim=(1.1,-.4))
     ax.axis('off')
 
-    excite_ax = fig.add_axes([0.77,0.81,0.1,0.1], anchor='NE', zorder=1)
+    excite_ax = fig.add_axes([0.82,0.81,0.1,0.1], anchor='NE', zorder=1)
     excite_ax.text(0,0.9,'Wheeee!\nIndex',ha='center',va='center',fontsize=14)
     if excite_index==10:
         excite_ax.text(0,-0.15,f'{excite_index:.0f}',ha='center',va='center',size=16,
@@ -370,35 +370,35 @@ def game_chart(game_choice_id):
                                  ec="k"))
     excite_ax.axis('off')
 
-    home_team_ax = fig.add_axes([0.025,0.115,0.1,0.1], anchor='NW', zorder=1)
+    home_team_ax = fig.add_axes([0.1,0.115,0.1,0.12], anchor='NW', zorder=1)
     cairosvg.svg2png(url=logo_dict[home_abbr], 
                      write_to="home.png")
     image = Image.open('home.png')
-    home_team_ax.imshow(image)
+    home_team_ax.imshow(image,aspect='equal')
     home_team_ax.axis('off')
 
-    away_team_ax = fig.add_axes([0.025,0.665,0.1,0.1], anchor='NW', zorder=1)
+    away_team_ax = fig.add_axes([0.1,0.625,0.1,0.12], anchor='NW', zorder=1)
     cairosvg.svg2png(url=logo_dict[away_abbr],
                      write_to="away.png")
     image = Image.open('away.png')
-    away_team_ax.imshow(image)
+    away_team_ax.imshow(image,aspect='equal')
     away_team_ax.axis('off')
     
 
     fig.suptitle(f'Win Probability - {date:%#m/%#d/%y}\n{away_name} {away_score:.0f} @ {home_name} {home_score:.0f}',
-                fontsize=20,x=0.4,y=0.95)
-    fig.text(0.25,0.785,'Δ Win Prob/54 Outs',
+                fontsize=20,x=0.45,y=0.95)
+    fig.text(0.3,0.785,'Δ Win Prob',
              ha='center', fontsize=10)
-    fig.text(0.25,0.745,f'{gei:.2f} Wins',
+    fig.text(0.3,0.745,f'{gei:.2f} Wins',
              ha='center', fontsize=10,
              color='k' if abs(win_prob_index-.5)<.2 else chart_white,
              bbox=dict(boxstyle='round', pad=0.25,
                        fc=sns.color_palette('vlag',n_colors=1001)[int(np.clip(win_prob_index*1000,0,1000))], 
                        ec="k"))
 
-    fig.text(0.55,0.785,'Biggest Swing',
+    fig.text(0.6,0.785,'Biggest Swing',
              ha='center', fontsize=10)
-    fig.text(0.55,0.745,f'{biggest_win_swing:.1%}',
+    fig.text(0.6,0.745,f'{biggest_win_swing:.1%}',
              ha='center', fontsize=10,
              color='k' if abs(win_swing_index-.5)<.2 else chart_white,
              bbox=dict(boxstyle='round', pad=0.25,
