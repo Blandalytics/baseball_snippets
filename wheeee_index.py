@@ -370,7 +370,7 @@ def game_chart(game_choice_id):
     #                          norm=normalize,
     #                         )
 
-    ax.set(xlim=(0,chart_outs+0.25),
+    ax.set(xlim=(-0.5,chart_outs+0.25),
            ylim=(1.1,-.4))
     ax.axis('off')
 
@@ -390,14 +390,14 @@ def game_chart(game_choice_id):
                                  ec="k"))
     excite_ax.axis('off')
 
-    home_team_ax = fig.add_axes([0.1,0.115,0.1,0.12], anchor='NW', zorder=1)
+    home_team_ax = fig.add_axes([0.11,0.115,0.1,0.12], anchor='NW', zorder=1)
     cairosvg.svg2png(url=logo_dict[home_abbr], 
                      write_to="home.png")
     image = Image.open('home.png')
     home_team_ax.imshow(image,aspect='equal')
     home_team_ax.axis('off')
 
-    away_team_ax = fig.add_axes([0.1,0.625,0.1,0.12], anchor='NW', zorder=1)
+    away_team_ax = fig.add_axes([0.11,0.625,0.1,0.12], anchor='NW', zorder=1)
     cairosvg.svg2png(url=logo_dict[away_abbr],
                      write_to="away.png")
     image = Image.open('away.png')
