@@ -332,8 +332,6 @@ def game_chart(game_choice_id):
     ax.axhline(0.5,color='k',alpha=0.5)
 
     for inning in range(int(chart_outs/6)+1):
-        if single_game_df['game_outs'].max()<(inning+1)*6-4:
-            continue
         ax.text((inning+0.5)*6,0.5,inning+1,ha='center',va='center',
                 bbox=dict(boxstyle='round', facecolor=chart_white, alpha=0.75,edgecolor='k'))
         ax.axvline((inning+1)*6,linestyle='--',alpha=0.25,ymin=(0.25+0.1)/1.5,ymax=(0.75+0.1)/1.5,color='k')
