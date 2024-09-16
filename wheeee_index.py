@@ -352,7 +352,7 @@ def game_chart(game_choice_id):
             ax.add_patch(p)
     
     plt.plot(xvals, y1, alpha=0)
-    xvals_line = np.linspace(-1, game_outs, int(game_outs) * 200)
+    xvals_line = np.linspace(-1, game_outs, int(game_outs) * 50)
     yinterp_line = np.interp(xvals_line, x, y)
     dydx = 0.5 * (yinterp_line[:-1] + yinterp_line[1:])
     shadow = colored_line_between_pts(np.array(xvals_line), 
