@@ -336,7 +336,7 @@ def game_chart(game_choice_id):
     ax.axhline(0.5,color='k',alpha=0.5)
 
     nc = 50
-    xvals = np.linspace(-1, game_outs, int(game_outs) * 5)
+    xvals = np.linspace(-1, game_outs, int(game_outs) * 3)
     y1 = np.interp(xvals, x, y)
     y_base = np.full(len(xvals), 0.5)
     normalize = colors.Normalize(vmin=0, vmax=1)
