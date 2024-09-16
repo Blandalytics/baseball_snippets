@@ -295,7 +295,7 @@ def game_chart(game_choice_id):
 
     single_game_df = single_game_df.groupby('game_outs').last().reset_index()
     game_outs = single_game_df['game_outs'].max()
-    chart_outs = max(54,game_outs)
+    chart_outs = 54 if game_outs <51 else game_outs
 
     single_game_df.loc[100] = [-1,game_choice_id,'','',-1,0,0,0,50,0,'']
     single_game_df = single_game_df.sort_values('game_outs').reset_index(drop=True)
