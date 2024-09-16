@@ -324,17 +324,18 @@ def game_chart(game_choice_id):
     # yinterp = np.interp(xvals, x, y)
 
     # Create a figure and plot the line on it
+    
     fig, ax = plt.subplots(figsize=(7,5))
     ax.axhline(1,color=color_dict[home_abbr],alpha=0.5,xmin=1/9)
     ax.axhline(0,color=color_dict[away_abbr],alpha=0.5,xmin=1/9)
-    custom_map = colors.ListedColormap(sns.light_palette(color_dict[away_abbr], n_colors=50, reverse=True) + 
-                                       sns.light_palette(color_dict[home_abbr], n_colors=50))
-    # ax.axhline(0.5,color='k',alpha=0.5)
-
     for inning in range(int(chart_outs/6)):
         ax.text((inning+0.5)*6,0.5,inning+1,ha='center',va='center',
                 bbox=dict(boxstyle='round', facecolor=chart_white, alpha=0.75,edgecolor='k'))
         ax.axvline((inning+1)*6,linestyle='--',alpha=0.25,ymin=(0.25+0.1)/1.5,ymax=(0.75+0.1)/1.5,color='k')
+
+    custom_map = colors.ListedColormap(sns.light_palette(color_dict[away_abbr], n_colors=50, reverse=True) + 
+                                       sns.light_palette(color_dict[home_abbr], n_colors=50))
+    # ax.axhline(0.5,color='k',alpha=0.5)
 
     # dydx = 0.5 * (yinterp[:-1] + yinterp[1:])
     # sns.lineplot(x=np.array(xvals)[:-1], 
@@ -355,7 +356,6 @@ def game_chart(game_choice_id):
     y_base = np.full(len(xvals), 0.5)
     normalize = colors.Normalize(vmin=0, vmax=1)
     
-    fig, ax = plt.subplots(1)
     for ii in range(len(xvals)-1):
         y_n = np.linspace(y1[ii], y_base[ii], nc)
         y_n1 = np.linspace(y1[ii+1], y_base[ii+1], nc)
