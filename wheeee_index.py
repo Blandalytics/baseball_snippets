@@ -358,9 +358,9 @@ def game_chart(game_choice_id):
     shadow = colored_line_between_pts(np.array(xvals_line), 
                                          yinterp_line, 
                                          dydx,
-                                         ax, linewidth=2.5,
+                                         ax, linewidth=2.25,
                              cmap=contrast_map,
-                             norm=normalize, alpha=0.1
+                             norm=normalize, alpha=0.5
                             )
     lines = colored_line_between_pts(np.array(xvals_line), 
                                          yinterp_line, 
