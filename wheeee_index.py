@@ -324,7 +324,7 @@ def game_chart(game_choice_id):
     fig, ax = plt.subplots(figsize=(7,5))
     ax.axhline(1,color=color_dict[home_abbr],alpha=0.5,xmin=1/9)
     ax.axhline(0,color=color_dict[away_abbr],alpha=0.5,xmin=1/9)
-    for inning in range(int(chart_outs-1/6)+1):
+    for inning in range(int((chart_outs-1)/6)+1):
         ax.text((inning+0.5)*6,0.5,inning+1,ha='center',va='center',
                 bbox=dict(boxstyle='round', facecolor=chart_white, alpha=0.75,edgecolor='k'))
         ax.axvline((inning+1)*6,linestyle='--',alpha=0.25,ymin=(0.25+0.1)/1.5,ymax=(0.75+0.1)/1.5,color='k')
