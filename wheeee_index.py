@@ -350,7 +350,7 @@ def game_chart(game_choice_id):
                          norm=colors.CenteredNorm(0.5,0.45),
                         )
 
-    ax.set(xlim=(-1,game_outs+0.5),
+    ax.set(xlim=(-0.5,max(54.5,game_outs+0.5)),
            ylim=(1.1,-.4))
     ax.axis('off')
 
