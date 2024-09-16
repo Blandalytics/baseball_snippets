@@ -331,6 +331,8 @@ def game_chart(game_choice_id):
 
     custom_map = colors.ListedColormap(sns.light_palette(color_dict[away_abbr], n_colors=50, reverse=True) + 
                                        sns.light_palette(color_dict[home_abbr], n_colors=50))
+    contrast_map = colors.ListedColormap(sns.dark_palette(color_dict[away_abbr], n_colors=50, reverse=True) + 
+                                       sns.dark_palette(color_dict[home_abbr], n_colors=50))
     ax.axhline(0.5,color='k',alpha=0.5)
 
     nc = 50
@@ -353,13 +355,11 @@ def game_chart(game_choice_id):
     xvals_line = np.linspace(-1, game_outs, int(game_outs) * 100)
     yinterp_line = np.interp(xvals_line, x, y)
     dydx = 0.5 * (yinterp_line[:-1] + yinterp_line[1:])
-    inverse_map = colors.ListedColormap(sns.dark_palette(color_dict[away_abbr], n_colors=n_colors/2, reverse=True) +
-                                        sns.dark_palette(color_dict[home_abbr], n_colors=n_colors/2))
     shadow = colored_line_between_pts(np.array(xvals_line), 
                                          yinterp_line, 
                                          dydx,
                                          ax, linewidth=2.5,
-                             cmap=inverse_map,
+                             cmap=contrast_map,
                              norm=normalize, alpha=0.5
                             )
     lines = colored_line_between_pts(np.array(xvals_line), 
