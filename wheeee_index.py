@@ -362,13 +362,13 @@ def game_chart(game_choice_id):
                              cmap=contrast_map,
                              norm=normalize, alpha=0.5
                             )
-    lines = colored_line_between_pts(np.array(xvals_line), 
-                                         yinterp_line, 
-                                         dydx,
-                                         ax, linewidth=2,
-                             cmap=custom_map,
-                             norm=normalize,
-                            )
+    # lines = colored_line_between_pts(np.array(xvals_line), 
+    #                                      yinterp_line, 
+    #                                      dydx,
+    #                                      ax, linewidth=2,
+    #                          cmap=custom_map,
+    #                          norm=normalize,
+    #                         )
 
     ax.set(xlim=(-0.5,chart_outs+0.5),
            ylim=(1.1,-.4))
