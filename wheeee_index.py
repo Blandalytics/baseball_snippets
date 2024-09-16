@@ -294,6 +294,7 @@ def game_chart(game_choice_id):
 
     single_game_df = single_game_df.groupby('game_outs').last().reset_index()
     game_outs = single_game_df['game_outs'].max()
+    chart_outs = max(54,game_outs)
 
     single_game_df.loc[100] = [-1,game_choice_id,'','',-1,0,0,0,50,0,'']
     single_game_df = single_game_df.sort_values('game_outs').reset_index(drop=True)
@@ -330,7 +331,7 @@ def game_chart(game_choice_id):
 
     ax.axhline(0.5,color='k',alpha=0.5)
 
-    for inning in range(int(single_game_df['game_outs'].max()/6)+1):
+    for inning in range(int(chart_outs/6)+1):
         if single_game_df['game_outs'].max()<(inning+1)*6-4:
             continue
         ax.text((inning+0.5)*6,0.5,inning+1,ha='center',va='center',
@@ -350,7 +351,7 @@ def game_chart(game_choice_id):
                          norm=colors.CenteredNorm(0.5,0.45),
                         )
 
-    ax.set(xlim=(-0.5,max(54.5,game_outs+0.5)),
+    ax.set(xlim=(-0.5,chart_outs+0.5),
            ylim=(1.1,-.4))
     ax.axis('off')
 
