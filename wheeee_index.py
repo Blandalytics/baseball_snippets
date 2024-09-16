@@ -335,7 +335,7 @@ def game_chart(game_choice_id):
 
     custom_map = colors.ListedColormap(sns.light_palette(color_dict[away_abbr], n_colors=50, reverse=True) + 
                                        sns.light_palette(color_dict[home_abbr], n_colors=50))
-    # ax.axhline(0.5,color='k',alpha=0.5)
+    ax.axhline(0.5,color='k',alpha=0.5)
 
     # dydx = 0.5 * (yinterp[:-1] + yinterp[1:])
     # sns.lineplot(x=np.array(xvals)[:-1], 
@@ -366,7 +366,7 @@ def game_chart(game_choice_id):
                                  [xvals[ii], y_n[kk+1]]], color=custom_map(normalize((y_n[kk]+y_n1[kk])/2)))
             ax.add_patch(p)
     
-    plt.plot(xvals, y_base, 'k', lw=1,linestyle='--')
+    # plt.plot(xvals, y_base, 'k', lw=1,linestyle='--')
     plt.plot(xvals, y1, '#aaaaaa', lw=2,alpha=1)
 
     ax.set(xlim=(-0.5,chart_outs+0.5),
