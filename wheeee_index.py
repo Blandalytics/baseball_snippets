@@ -40,56 +40,56 @@ color_df = pd.read_csv('https://github.com/Blandalytics/PLV_viz/blob/main/mlb_te
 color_dict = color_df[['Short Code','Color 1']].set_index('Short Code').to_dict()['Color 1']
 logo_dict = color_df[['Short Code','Logo']].set_index('Short Code').to_dict()['Logo']
 
-# def colored_line_between_pts(x, y, c, ax, **lc_kwargs):
-#     """
-#     Plot a line with a color specified between (x, y) points by a third value.
+def colored_line_between_pts(x, y, c, ax, **lc_kwargs):
+    """
+    Plot a line with a color specified between (x, y) points by a third value.
 
-#     It does this by creating a collection of line segments between each pair of
-#     neighboring points. The color of each segment is determined by the
-#     made up of two straight lines each connecting the current (x, y) point to the
-#     midpoints of the lines connecting the current point with its two neighbors.
-#     This creates a smooth line with no gaps between the line segments.
+    It does this by creating a collection of line segments between each pair of
+    neighboring points. The color of each segment is determined by the
+    made up of two straight lines each connecting the current (x, y) point to the
+    midpoints of the lines connecting the current point with its two neighbors.
+    This creates a smooth line with no gaps between the line segments.
 
-#     Parameters
-#     ----------
-#     x, y : array-like
-#         The horizontal and vertical coordinates of the data points.
-#     c : array-like
-#         The color values, which should have a size one less than that of x and y.
-#     ax : Axes
-#         Axis object on which to plot the colored line.
-#     **lc_kwargs
-#         Any additional arguments to pass to matplotlib.collections.LineCollection
-#         constructor. This should not include the array keyword argument because
-#         that is set to the color argument. If provided, it will be overridden.
+    Parameters
+    ----------
+    x, y : array-like
+        The horizontal and vertical coordinates of the data points.
+    c : array-like
+        The color values, which should have a size one less than that of x and y.
+    ax : Axes
+        Axis object on which to plot the colored line.
+    **lc_kwargs
+        Any additional arguments to pass to matplotlib.collections.LineCollection
+        constructor. This should not include the array keyword argument because
+        that is set to the color argument. If provided, it will be overridden.
 
-#     Returns
-#     -------
-#     matplotlib.collections.LineCollection
-#         The generated line collection representing the colored line.
-#     """
-#     if "array" in lc_kwargs:
-#         warnings.warn('The provided "array" keyword argument will be overridden')
+    Returns
+    -------
+    matplotlib.collections.LineCollection
+        The generated line collection representing the colored line.
+    """
+    if "array" in lc_kwargs:
+        warnings.warn('The provided "array" keyword argument will be overridden')
 
-#     # Check color array size (LineCollection still works, but values are unused)
-#     if len(c) != len(x) - 1:
-#         warnings.warn(
-#             "The c argument should have a length one less than the length of x and y. "
-#             "If it has the same length, use the colored_line function instead."
-#         )
+    # Check color array size (LineCollection still works, but values are unused)
+    if len(c) != len(x) - 1:
+        warnings.warn(
+            "The c argument should have a length one less than the length of x and y. "
+            "If it has the same length, use the colored_line function instead."
+        )
 
-#     # Create a set of line segments so that we can color them individually
-#     # This creates the points as an N x 1 x 2 array so that we can stack points
-#     # together easily to get the segments. The segments array for line collection
-#     # needs to be (numlines) x (points per line) x 2 (for x and y)
-#     points = np.array([x, y]).T.reshape(-1, 1, 2)
-#     segments = np.concatenate([points[:-1], points[1:]], axis=1)
-#     lc = LineCollection(segments, **lc_kwargs)
+    # Create a set of line segments so that we can color them individually
+    # This creates the points as an N x 1 x 2 array so that we can stack points
+    # together easily to get the segments. The segments array for line collection
+    # needs to be (numlines) x (points per line) x 2 (for x and y)
+    points = np.array([x, y]).T.reshape(-1, 1, 2)
+    segments = np.concatenate([points[:-1], points[1:]], axis=1)
+    lc = LineCollection(segments, **lc_kwargs)
 
-#     # Set the values used for colormapping
-#     lc.set_array(c)
+    # Set the values used for colormapping
+    lc.set_array(c)
 
-#     return ax.add_collection(lc)
+    return ax.add_collection(lc)
 
 today = (datetime.datetime.now(pytz.utc)-timedelta(hours=16)).date()
 date = st.date_input("Select a game date:", today, min_value=datetime.date(2024, 3, 28), max_value=today)
@@ -319,12 +319,8 @@ def game_chart(game_choice_id):
 
     x = single_game_df['game_outs'].values
     y = single_game_df['home_win_prob'].values
-
-    # xvals = np.linspace(-1, game_outs, int(game_outs+1) * 20)
-    # yinterp = np.interp(xvals, x, y)
-
-    # Create a figure and plot the line on it
     
+    # Create a figure and plot the line on it
     fig, ax = plt.subplots(figsize=(7,5))
     ax.axhline(1,color=color_dict[home_abbr],alpha=0.5,xmin=1/9)
     ax.axhline(0,color=color_dict[away_abbr],alpha=0.5,xmin=1/9)
@@ -336,19 +332,6 @@ def game_chart(game_choice_id):
     custom_map = colors.ListedColormap(sns.light_palette(color_dict[away_abbr], n_colors=50, reverse=True) + 
                                        sns.light_palette(color_dict[home_abbr], n_colors=50))
     ax.axhline(0.5,color='k',alpha=0.5)
-
-    # dydx = 0.5 * (yinterp[:-1] + yinterp[1:])
-    # sns.lineplot(x=np.array(xvals)[:-1], 
-    #              y=yinterp[:-1], color='#aaaaaa', linewidth=6,
-    #                     )
-
-    # lines = colored_line_between_pts(np.array(xvals), 
-    #                                  yinterp, 
-    #                                  dydx,
-    #                                  ax, linewidth=5,
-    #                      cmap=custom_map,
-    #                      norm=colors.CenteredNorm(0.5,0.45),
-    #                     )
 
     nc = 50
     xvals = np.linspace(-1, game_outs, int(game_outs) * 5)
@@ -366,8 +349,26 @@ def game_chart(game_choice_id):
                                  [xvals[ii], y_n[kk+1]]], color=custom_map(normalize((y_n[kk]+y_n1[kk])/2)))
             ax.add_patch(p)
     
-    # plt.plot(xvals, y_base, 'k', lw=1,linestyle='--')
-    plt.plot(xvals, y1, '#aaaaaa', lw=2,alpha=1)
+    plt.plot(xvals, y1, alpha=0)
+    xvals_line = np.linspace(-1, game_outs, int(game_outs) * 100)
+    yinterp_line = np.interp(xvals_line, x, y)
+    dydx = 0.5 * (yinterp_line[:-1] + yinterp_line[1:])
+    inverse_map = colors.ListedColormap(sns.dark_palette(color_dict[away_abbr], n_colors=n_colors/2, reverse=True) +
+                                        sns.dark_palette(color_dict[home_abbr], n_colors=n_colors/2))
+    shadow = colored_line_between_pts(np.array(xvals_line), 
+                                         yinterp_line, 
+                                         dydx,
+                                         ax, linewidth=2.5,
+                             cmap=inverse_map,
+                             norm=normalize, alpha=0.5
+                            )
+    lines = colored_line_between_pts(np.array(xvals_line), 
+                                         yinterp_line, 
+                                         dydx,
+                                         ax, linewidth=2,
+                             cmap=custom_map,
+                             norm=normalize,
+                            )
 
     ax.set(xlim=(-0.5,chart_outs+0.5),
            ylim=(1.1,-.4))
