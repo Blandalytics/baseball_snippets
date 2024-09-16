@@ -9,6 +9,7 @@ import requests
 import pytz
 import matplotlib as mpl
 import matplotlib.colors as colors
+from  matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 from matplotlib.collections import LineCollection
