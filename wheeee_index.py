@@ -370,7 +370,7 @@ def game_chart(game_choice_id):
     #                          norm=normalize,
     #                         )
 
-    ax.set(xlim=(-0.5,chart_outs+0.25),
+    ax.set(xlim=(-1,chart_outs+0.25),
            ylim=(1.1,-.4))
     ax.axis('off')
 
