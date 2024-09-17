@@ -425,7 +425,7 @@ def game_chart(game_choice_id):
                        fc=sns.color_palette('vlag',n_colors=1001)[int(np.clip(win_swing_index*1000,0,1000))], 
                        ec="k"))
     
-    fig.text(0.41,0.12,'mlb-win-prob.streamlit.app',
+    fig.text(0.41,0.1,'mlb-win-prob.streamlit.app',
              ha='center', fontsize=12)
 
     logo_loc = 'https://github.com/Blandalytics/baseball_snippets/blob/main/PitcherList_Full_Black.png?raw=true'
