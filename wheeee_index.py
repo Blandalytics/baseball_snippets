@@ -433,7 +433,7 @@ def game_chart(game_choice_id):
     
     # Add PL logo
     pl_ax = fig.add_axes([0.65,-0.02,0.2,0.2], anchor='NE', zorder=1)
-    pl_ax.imshow(logo[:, 100:544, :])
+    pl_ax.imshow(logo)#[:, 100:544, :])
     pl_ax.axis('off')
     
     sns.despine()
