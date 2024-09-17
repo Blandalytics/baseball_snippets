@@ -427,6 +427,15 @@ def game_chart(game_choice_id):
     
     fig.text(0.5,0.12,'mlb-win-prob.streamlit.app',
              ha='center', fontsize=12)
+
+    logo_loc = 'https://github.com/Blandalytics/baseball_snippets/blob/main/PitcherList_Full_Black.png?raw=true'
+    logo = Image.open(urllib.request.urlopen(logo_loc))
+    
+    # Add PL logo
+    pl_ax = fig.add_axes([0.8,0.12,0.2,0.2], anchor='NE', zorder=1)
+    pl_ax.imshow(logo)
+    pl_ax.axis('off')
+    
     sns.despine()
     st.pyplot(fig)
     
