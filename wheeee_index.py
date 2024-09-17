@@ -432,7 +432,7 @@ def game_chart(game_choice_id):
     logo = Image.open(urllib.request.urlopen(logo_loc))
     
     # Add PL logo
-    pl_ax = fig.add_axes([0.675,0.09,0.2,0.1], anchor='NE', zorder=1)
+    pl_ax = fig.add_axes([0.675,0.085,0.2,0.1], anchor='NE', zorder=1)
     width, height = logo.size
     pl_ax.imshow(logo.crop((0, 0, width, height-150)))
     pl_ax.axis('off')
