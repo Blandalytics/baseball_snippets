@@ -31,7 +31,7 @@ pivot_df = pd.pivot_table(
 
 st.dataframe(pivot_df,
              hide_index=True,
-             height=(10 + 1) * 35 + 3)
+             height=(8 + 1) * 35 + 3)
 
 players = list(pivot_df['name'].unique())
 default_val = players.index('Aaron Judge')
