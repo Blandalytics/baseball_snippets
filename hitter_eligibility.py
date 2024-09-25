@@ -48,12 +48,12 @@ pivot_df = (
     # .replace({0:'E'})
 )
 pivot_df.columns = ['Name','MLBAMID',
-                   'C_s','C_p',
-                   '1B_s','1B_p',
-                   '2B_s','2B_p',
-                   '3B_s','3B_p',
-                   'SS_s','SS_p',
-                   'OF_s','OF_p',]
+                   'C_s','C_a',
+                   '1B_s','1B_a',
+                   '2B_s','2B_a',
+                   '3B_s','3B_a',
+                   'SS_s','SS_a',
+                   'OF_s','OF_a',]
 
 players = list(pivot_df['Name'].unique())
 default_val = players.index('Aaron Judge')
@@ -69,13 +69,13 @@ st.write(f"""
 
 fill_val = games_started_thresh+1
 st.header('Games remaining until eligible')
-st.write('s=Started; p=Played')
+st.write('s=Starts; a=Appearances')
 st.dataframe(pivot_df
              .fillna(fill_val)
              .style
              .format(precision=0, thousands='')
              .background_gradient(axis=0, vmin=-3, vmax=games_started_thresh, cmap="Greens_r", subset=['C_s','1B_s','2B_s','3B_s','SS_s','OF_s'])
-             .background_gradient(axis=0, vmin=-3, vmax=games_played_thresh, cmap="Greens_r", subset=['C_p','1B_p','2B_p','3B_p','SS_p','OF_p'])
+             .background_gradient(axis=0, vmin=-3, vmax=games_played_thresh, cmap="Greens_r", subset=['C_a','1B_a','2B_a','3B_a','SS_a','OF_a'])
              .map(lambda x: 'color: transparent; background-color: transparent' if x==fill_val else '')
              .map(lambda x: 'color: white; background-color: green' if x==0 else ''),
              hide_index=True,
