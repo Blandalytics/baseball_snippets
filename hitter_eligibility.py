@@ -88,7 +88,7 @@ st.write(f"""
 
 """)
 
-fill_val = games_started_thresh
+fill_val = games_played_thresh
 st.header('Games remaining until eligible')
 st.write('s=Starts; a=Appearances')
 st.dataframe(pivot_df
