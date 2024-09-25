@@ -23,7 +23,7 @@ with col2:
                                         value=10)
 
 if games_played_thresh<games_started_thresh:
-    print('Games Played threshold lower than Games Started threshold. Using Games Played for all')
+    print('Games Played threshold lower than Games Started threshold. Using Games Played threshold for both.')
     games_started_thresh = games_played_thresh
 
 pivot_df = (
