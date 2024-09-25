@@ -37,8 +37,8 @@ player_data['games_played'] = player_data['games_played'].fillna(player_data['ga
 pivot_df = (
     pd.pivot_table(
         player_data
-        .assign(games_started = lambda x: np.clip(games_started_thresh-x['games_started'],0,games_played_thresh+1),
-                games_played = lambda x: np.clip(games_played_thresh-x['games_played'],0,games_played_thresh+1))
+        .assign(games_started = lambda x: np.clip(games_started_thresh-x['games_started'],0,games_played_thresh),
+                games_played = lambda x: np.clip(games_played_thresh-x['games_played'],0,games_played_thresh))
         .assign(games_started = lambda x: np.where(x['games_played']==0,0,x['games_started']),
                 games_played = lambda x: np.where(x['games_started']==0,0,x['games_played'])),
         values=['games_started','games_played'], 
@@ -88,7 +88,7 @@ st.write(f"""
 
 """)
 
-fill_val = games_started_thresh+1
+fill_val = games_started_thresh
 st.header('Games remaining until eligible')
 st.write('s=Starts; a=Appearances')
 st.dataframe(pivot_df
