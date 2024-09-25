@@ -1,6 +1,9 @@
 import streamlit as st
 import pandas as pd
 
+st.set_page_config(page_title='Hitter Eligibility', page_icon='⚾')
+st.title('MLB Hitter Eligibility (2024)')
+
 player_data = pd.read_csv('https://github.com/Blandalytics/baseball_snippets/blob/main/hitter_position_eligibility.csv?raw=true',encoding='latin1')
 
 col1, col2 = st.columns(2)
