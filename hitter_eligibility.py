@@ -4,12 +4,12 @@ import numpy as np
 import urllib
 from PIL import Image
 from scipy import stats
+st.set_page_config(page_title='Hitter Eligibility', page_icon='⚾')
 
 logo_loc = 'https://github.com/Blandalytics/PLV_viz/blob/main/data/PL-text-wht.png?raw=true'
 logo = Image.open(urllib.request.urlopen(logo_loc))
 st.image(logo, width=200)
 
-st.set_page_config(page_title='Hitter Eligibility', page_icon='⚾')
 st.title('MLB Hitter Eligibility (2024)')
 
 player_data = pd.read_csv('https://github.com/Blandalytics/baseball_snippets/blob/main/hitter_position_eligibility.csv?raw=true',encoding='latin1')
