@@ -60,7 +60,7 @@ st.write(f"""
 {pos_text}
 """)
 
-st.write('Games remaining until eligible')
+st.write('Games remaining until eligible (E)')
 st.dataframe(pivot_df,
              hide_index=True,
              height=(8 + 1) * 35 + 3)
