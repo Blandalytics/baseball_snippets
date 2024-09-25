@@ -40,7 +40,7 @@ pivot_df = (
      ('games_started', 'SS'),('games_played', 'SS'),
      ('games_started', 'OF'),('games_played', 'OF')]]
     .reset_index()
-    .replace({0:'E'})
+    # .replace({0:'E'})
 )
 pivot_df.columns = ['Name','MLBAMID',
                    'st_C','pl_C',
@@ -60,14 +60,15 @@ st.write(f"""
 {pos_text}
 """)
 
+fill_val = games_started_thresh+1
 st.write('Games remaining until eligible (E)')
 st.dataframe(pivot_df
-             .fillna('F')
+             .fillna(fill_val)
              .style
              .format(precision=0, thousands='')
              .background_gradient(axis=0, vmin=0, vmax=games_started_thresh, cmap="vlag", subset=['st_C','st_1B','st_2B','st_3B','st_SS','st_OF'])
              # .background_gradient(axis=0, vmin=5.95, vmax=6.95, cmap="vlag", subset=['Ext'])
-             .map(lambda x: 'color: transparent; background-color: transparent' if x=='F' else '')
-             .map(lambda x: 'color: white; background-color: green' if x=='E' else ''),
+             .map(lambda x: 'color: transparent; background-color: transparent' if x==fill_val else '')
+             .map(lambda x: 'color: white; background-color: green' if x==0 else ''),
              hide_index=True,
              height=(8 + 1) * 35 + 3)
