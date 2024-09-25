@@ -69,6 +69,6 @@ st.dataframe(pivot_df
              .background_gradient(axis=0, vmin=-3, vmax=games_started_thresh, cmap="Greens_r", subset=['st_C','st_1B','st_2B','st_3B','st_SS','st_OF'])
              .background_gradient(axis=0, vmin=-3, vmax=games_played_thresh, cmap="Greens_r", subset=['pl_C','pl_1B','pl_2B','pl_3B','pl_SS','pl_OF'])
              .map(lambda x: 'color: transparent; background-color: transparent' if x==fill_val else '')
-             .map(lambda x: 'color: white; background-color: blue' if x==0 else ''),
+             .map(lambda x: 'color: white; background-color: green' if x==0 else ''),
              hide_index=True,
              height=(8 + 1) * 35 + 3)
