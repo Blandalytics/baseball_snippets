@@ -63,7 +63,8 @@ st.write(f"""
 """)
 
 fill_val = games_started_thresh+1
-st.header('Games remaining until eligible (s=Started; p=Played)')
+st.header('Games remaining until eligible')
+st.write('s=Started; p=Played')
 st.dataframe(pivot_df
              .fillna(fill_val)
              .style
