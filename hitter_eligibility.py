@@ -23,14 +23,31 @@ with col2:
 
 games_started_thresh = min(games_played_thresh,games_started_thresh)
 
-pivot_df = pd.pivot_table(
-    player_data.loc[(player_data['games_started']>=games_started_thresh) | 
-                    (player_data['games_played']>=games_played_thresh)].assign(eligible = lambda x: ''+x['games_started'].astype('str')+' ('+x['games_played'].astype('str')+')'),
-    values='eligible', 
-    index=['name','mlb_player_id'], 
-    columns=['position'],
-    aggfunc=lambda x: x.mode().iat[0]
-)[['C', '1B', '2B', 'SS', '3B', 'OF','LF',  'CF', 'RF']].reset_index()
+pivot_df = (
+    pd.pivot_table(
+        player_data.assign(games_started = lambda x: np.clip(games_started-x['games_started'],0,200),
+                           games_played = lambda x: np.clip(games_played-x['games_played'],0,200)),
+        values=['games_started','games_played'], 
+        index=['name','mlb_player_id'], 
+        columns=['position'],
+        aggfunc='mean'
+    )
+    [[('games_started', 'C'),('games_played', 'C'),
+     ('games_started', '1B'),('games_played', '1B'),
+     ('games_started', '2B'),('games_played', '2B'), 
+     ('games_started', '3B'),('games_played', '3B'),
+     ('games_started', 'SS'),('games_played', 'SS'),
+     ('games_started', 'OF'),('games_played', 'OF')]]
+    .reset_index()
+    .replace({0:'E'})
+)
+remaining_df.columns = ['Name','MLBAMID',
+                   'st_C','pl_C',
+                   'st_1B','pl_1B',
+                   'st_2B','pl_2B',
+                   'st_3B','pl_3B',
+                   'st_SS','pl_SS',
+                   'st_OF','pl_OF',]
 
 players = list(pivot_df['name'].unique())
 default_val = players.index('Aaron Judge')
@@ -42,6 +59,7 @@ st.write(f"""
 {pos_text}
 """)
 
+st.write('Games remaining until eligible')
 st.dataframe(pivot_df,
              hide_index=True,
              height=(8 + 1) * 35 + 3)
