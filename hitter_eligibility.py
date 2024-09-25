@@ -18,8 +18,8 @@ games_played_thresh = st.number_input('Min # of Appearances:',
 games_started_thresh = min(games_played_thresh,games_started_thresh)
 
 pivot_df = pd.pivot_table(
-    player_data.loc[(player_data['games_started']>=games_started) | 
-                    (player_data['games_played']>=games_played)].assign(eligible = lambda x: ''+x['games_started'].astype('str')+' ('+x['games_played'].astype('str')+')'),
+    player_data.loc[(player_data['games_started']>=games_started_thresh) | 
+                    (player_data['games_played']>=games_played_thresh)].assign(eligible = lambda x: ''+x['games_started'].astype('str')+' ('+x['games_played'].astype('str')+')'),
     values='eligible', 
     index=['name','mlb_player_id'], 
     columns=['position'],
