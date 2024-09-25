@@ -1,6 +1,12 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+from PIL import Image
+from scipy import stats
+
+logo_loc = 'https://github.com/Blandalytics/PLV_viz/blob/main/data/PL-text-wht.png?raw=true'
+logo = Image.open(urllib.request.urlopen(logo_loc))
+st.image(logo, width=200)
 
 st.set_page_config(page_title='Hitter Eligibility', page_icon='⚾')
 st.title('MLB Hitter Eligibility (2024)')
