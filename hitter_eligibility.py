@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 
 st.set_page_config(page_title='Hitter Eligibility', page_icon='⚾')
 st.title('MLB Hitter Eligibility (2024)')
