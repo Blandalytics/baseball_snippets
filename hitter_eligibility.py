@@ -55,10 +55,24 @@ pivot_df.columns = ['Name','MLBAMID',
                    'SS_s','SS_a',
                    'OF_s','OF_a',]
 
+pos_sort = {
+    'C':0,
+    '1B':1,
+    '2B':2,
+    '3B':3,
+    'SS':4,
+    'OF':5,
+    'LF':6,
+    'CF':7,
+    'RF':8
+}
+
 players = list(pivot_df['Name'].unique())
 default_val = players.index('Aaron Judge')
 player_select = st.selectbox('Choose a hitter:', pivot_df['Name'].unique(), index=default_val)
-pos_text = ', '.join(player_data.loc[player_data['name']==player_select,'position'].to_list())
+pos_list = player_data.loc[player_data['name']==player_select,'position'].to_list()
+pos_list.sort(key=lambda x: pos_sort[x])
+pos_text = ', '.join(pos_list)
 st.write(f"""
 {player_select}'s Eligible Positions (min {games_started_thresh} starts or {games_played_thresh} appearances):
 
