@@ -32,10 +32,6 @@ pivot_df = pd.pivot_table(
     aggfunc=lambda x: x.mode().iat[0]
 )[['C', '1B', '2B', 'SS', '3B', 'OF','LF',  'CF', 'RF']].reset_index()
 
-st.dataframe(pivot_df,
-             hide_index=True,
-             height=(8 + 1) * 35 + 3)
-
 players = list(pivot_df['name'].unique())
 default_val = players.index('Aaron Judge')
 player_select = st.selectbox('Choose a hitter:', pivot_df['name'].unique(), index=default_val)
@@ -45,3 +41,7 @@ st.write(f"""
 
 {pos_text}
 """)
+
+st.dataframe(pivot_df,
+             hide_index=True,
+             height=(8 + 1) * 35 + 3)
