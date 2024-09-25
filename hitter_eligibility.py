@@ -65,6 +65,6 @@ st.dataframe(pivot_df
              .fillna('F')
              .style.format(precision=0, thousands='')
              .map(lambda x: 'color: transparent; background-color: transparent' if x=='F' else '')
-             .map(lambda x: 'background-color: g' if x=='E' else ''),
+             .map(lambda x: 'color: white; background-color: green' if x=='E' else ''),
              hide_index=True,
              height=(8 + 1) * 35 + 3)
