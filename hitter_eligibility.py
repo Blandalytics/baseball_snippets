@@ -3,17 +3,20 @@ import pandas as pd
 
 player_data = pd.read_csv('https://github.com/Blandalytics/baseball_snippets/blob/main/hitter_position_eligibility.csv?raw=true',encoding='latin1')
 
-games_started_thresh = st.number_input('Min # of Starts:',
-                               min_value=1, 
-                               max_value=50,
-                               step=1, 
-                               value=5)
+col1, col2 = st.columns(2)
+with col1:
+    games_started_thresh = st.number_input('Min # of Starts:',
+                                           min_value=1, 
+                                           max_value=50,
+                                           step=1, 
+                                           value=5)
 
-games_played_thresh = st.number_input('Min # of Appearances:',
-                               min_value=1, 
-                               max_value=50,
-                               step=1, 
-                               value=10)
+with col2:
+  games_played_thresh = st.number_input('Min # of Appearances:',
+                                        min_value=1, 
+                                        max_value=50,
+                                        step=1, 
+                                        value=10)
 
 games_started_thresh = min(games_played_thresh,games_started_thresh)
 
@@ -27,7 +30,8 @@ pivot_df = pd.pivot_table(
 )[['C', '1B', '2B', 'SS', '3B', 'OF','LF',  'CF', 'RF']].reset_index()
 
 st.dataframe(pivot_df,
-             hide_index=True)
+             hide_index=True,
+             height=(10 + 1) * 35 + 3)
 
 players = list(pivot_df['name'].unique())
 default_val = players.index('Aaron Judge')
