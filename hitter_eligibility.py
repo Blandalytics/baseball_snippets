@@ -31,6 +31,6 @@ st.dataframe(pivot_df,
 
 players = list(pivot_df['name'].unique())
 default_val = players.index('Aaron Judge')
-player_select = st.selectbox('Choose a hitter:', pivot_df['name'].unique(), index=default_player)
+player_select = st.selectbox('Choose a hitter:', pivot_df['name'].unique(), index=default_val)
 st.write(f"{player_select}'s Eligible Positions (min {games_started_thresh} starts or {games_played_thresh} appearances:\n",
         ', '.join(player_data.loc[player_data['name']==player_select,'position'].to_list()))
