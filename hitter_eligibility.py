@@ -26,8 +26,11 @@ games_started_thresh = min(games_played_thresh,games_started_thresh)
 
 pivot_df = (
     pd.pivot_table(
-        player_data.assign(games_started = lambda x: np.clip(games_started_thresh-x['games_started'],0,200),
-                           games_played = lambda x: np.clip(games_played_thresh-x['games_played'],0,200)),
+        player_data
+        .assign(games_started = lambda x: np.clip(games_started_thresh-x['games_started'],0,200),
+                games_played = lambda x: np.clip(games_played_thresh-x['games_played'],0,200))
+        .assign(games_started = lambda x: np.where(x['games_played']==0,0,x['games_started']),
+                games_played = lambda x: np.where(x['games_started']==0,0,x['games_played'])),
         values=['games_started','games_played'], 
         index=['name','mlb_player_id'], 
         columns=['position'],
