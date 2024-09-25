@@ -63,7 +63,10 @@ st.write(f"""
 st.write('Games remaining until eligible (E)')
 st.dataframe(pivot_df
              .fillna('F')
-             .style.format(precision=0, thousands='')
+             .style
+             .format(precision=0, thousands='')
+             .background_gradient(axis=0, vmin=0, vmax=games_started_thresh, cmap="vlag", subset=['st_C','st_1B','st_2B','st_3B','st_SS','st_OF'])
+             # .background_gradient(axis=0, vmin=5.95, vmax=6.95, cmap="vlag", subset=['Ext'])
              .map(lambda x: 'color: transparent; background-color: transparent' if x=='F' else '')
              .map(lambda x: 'color: white; background-color: green' if x=='E' else ''),
              hide_index=True,
