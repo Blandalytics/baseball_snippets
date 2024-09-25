@@ -58,10 +58,12 @@ st.write(f"""
 {player_select}'s Eligible Positions (min {games_started_thresh} starts or {games_played_thresh} appearances):
 
 {pos_text}
+
+
 """)
 
 fill_val = games_started_thresh+1
-st.write('Games remaining until eligible (E)')
+st.header('Games remaining until eligible (E)')
 st.dataframe(pivot_df
              .fillna(fill_val)
              .style
