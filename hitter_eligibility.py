@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-eligibility_df = pd.read_csv('https://github.com/Blandalytics/baseball_snippets/blob/main/hitter_position_eligibility.csv?raw=true',encoding='latin1')
+player_data = pd.read_csv('https://github.com/Blandalytics/baseball_snippets/blob/main/hitter_position_eligibility.csv?raw=true',encoding='latin1')
 
 games_started_thresh = st.number_input('Min # of Starts:',
                                min_value=1, 
@@ -33,4 +33,4 @@ players = list(pivot_df['name'].unique())
 default_val = players.index('Aaron Judge')
 player_select = st.selectbox('Choose a hitter:', pivot_df['name'].unique(), index=default_player)
 st.write(f"{player_select}'s Eligible Positions (min {games_started_thresh} starts or {games_played_thresh} appearances:\n",
-        ', '.join(eligibility_df.loc[eligibility_df['name']==player_select,'position'].to_list()))
+        ', '.join(player_data.loc[player_data['name']==player_select,'position'].to_list()))
