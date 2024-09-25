@@ -26,11 +26,12 @@ if games_played_thresh<games_started_thresh:
     st.write('Games Played threshold lower than Games Started threshold. Using Games Played threshold for both.')
     games_started_thresh = games_played_thresh
 
+player_data['games_played'] = player_data['games_played'].fillna(player_data['games_started'])
 pivot_df = (
     pd.pivot_table(
         player_data
-        .assign(games_started = lambda x: np.clip(games_started_thresh-x['games_started'],0,200),
-                games_played = lambda x: np.clip(games_played_thresh-x['games_played'],0,200))
+        .assign(games_started = lambda x: np.clip(games_started_thresh-x['games_started'],0,games_played_thresh+1),
+                games_played = lambda x: np.clip(games_played_thresh-x['games_played'],0,games_played_thresh+1))
         .assign(games_started = lambda x: np.where(x['games_played']==0,0,x['games_started']),
                 games_played = lambda x: np.where(x['games_started']==0,0,x['games_played'])),
         values=['games_started','games_played'], 
