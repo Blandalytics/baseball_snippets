@@ -42,7 +42,7 @@ pivot_df = (
     .reset_index()
     .replace({0:'E'})
 )
-remaining_df.columns = ['Name','MLBAMID',
+pivot_df.columns = ['Name','MLBAMID',
                    'st_C','pl_C',
                    'st_1B','pl_1B',
                    'st_2B','pl_2B',
@@ -50,9 +50,9 @@ remaining_df.columns = ['Name','MLBAMID',
                    'st_SS','pl_SS',
                    'st_OF','pl_OF',]
 
-players = list(pivot_df['name'].unique())
+players = list(pivot_df['Name'].unique())
 default_val = players.index('Aaron Judge')
-player_select = st.selectbox('Choose a hitter:', pivot_df['name'].unique(), index=default_val)
+player_select = st.selectbox('Choose a hitter:', pivot_df['Name'].unique(), index=default_val)
 pos_text = ', '.join(player_data.loc[player_data['name']==player_select,'position'].to_list())
 st.write(f"""
 {player_select}'s Eligible Positions (min {games_started_thresh} starts or {games_played_thresh} appearances):
