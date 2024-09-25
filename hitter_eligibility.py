@@ -46,7 +46,6 @@ pivot_df = (
      ('games_started', 'SS'),('games_played', 'SS'),
      ('games_started', 'OF'),('games_played', 'OF')]]
     .reset_index()
-    # .replace({0:'E'})
 )
 pivot_df.columns = ['Name','MLBAMID',
                    'C_s','C_a',
