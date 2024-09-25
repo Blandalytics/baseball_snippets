@@ -22,7 +22,9 @@ with col2:
                                         step=1, 
                                         value=10)
 
-games_started_thresh = min(games_played_thresh,games_started_thresh)
+if games_played_thresh<games_started_thresh:
+    print('Games Played threshold lower than Games Started threshold. Using Games Played for all')
+    games_started_thresh = games_played_thresh
 
 pivot_df = (
     pd.pivot_table(
