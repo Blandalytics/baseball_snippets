@@ -92,7 +92,7 @@ def colored_line_between_pts(x, y, c, ax, **lc_kwargs):
     return ax.add_collection(lc)
 
 today = (datetime.datetime.now(pytz.utc)-timedelta(hours=16)).date()
-date = st.date_input("Select a game date:", today, min_value=datetime.date(2024, 3, 28), max_value=today)
+date = st.date_input("Select a game date:", today, min_value=datetime.date(2020, 3, 28), max_value=today)
 
 @st.cache_data(ttl=90,show_spinner=f"Loading data")
 def load_win_prob(date):
