@@ -42,10 +42,9 @@ underdog_rs,underdog_ra = 3.13,5.02
 hfa = 0.04
 
 est_win_prob = log_pythag_win(favorite_rs,favorite_ra,
-                              underdog_rs,underdog_ra,
-                              hfa=hfa)
+                              underdog_rs,underdog_ra)
 fill_dict = {1:est_win_prob+hfa}
-fill_dict.update({x*2+1:best_of_prob(x*2+1,est_win_prob,100000)[0] for x in range(1,6)})
+fill_dict.update({x*2+1:best_of_prob(x*2+1,est_win_prob,100000,hfa=hfa)[0] for x in range(1,6)})
 
 def series_chart(fill_dict=fill_dict):
     fig, ax = plt.subplots(figsize=(6,4))
