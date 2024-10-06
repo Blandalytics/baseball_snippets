@@ -39,9 +39,11 @@ def best_of_prob(games, favorite_win_prob,
 
 favorite_rs,favorite_ra = 5.03,4.12
 underdog_rs,underdog_ra = 3.13,5.02
+hfa = 0.04
 
 est_win_prob = log_pythag_win(favorite_rs,favorite_ra,
-                              underdog_rs,underdog_ra)
+                              underdog_rs,underdog_ra,
+                              hfa=hfa)
 fill_dict = {1:est_win_prob+hfa}
 fill_dict.update({x*2+1:best_of_prob(x*2+1,est_win_prob,100000)[0] for x in range(1,6)})
 
