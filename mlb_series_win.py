@@ -127,21 +127,22 @@ def games_played_chart(series_len):
     font_size = np.clip(120/series_len,6,12)
     fig, ax  = plt.subplots(figsize=(5,4))
     game_space = list(set(games[1]))
-    sns.histplot(x=games[1], 
-                 stat='percent',binrange=(min(game_space)-0.5,max(game_space)+0.5),binwidth=1,
-                 color='k',
-                 edgecolor='w',legend=False)
-    for p in ax.patches:
-        color = 'k'
-        ax.annotate(f"{p.get_height():.1f}%\n", (p.get_x() + p.get_width() / 2, p.get_height()),
-                    fontsize=font_size, color=color,
-                    ha="center", va="center")
+    # sns.histplot(x=games[1], 
+    #              stat='percent',binrange=(min(game_space)-0.5,max(game_space)+0.5),binwidth=1,
+    #              color='k',
+    #              edgecolor='w',legend=False)
+    
     sns.histplot(x=games[1], 
                  hue=games[0],
                  palette=[underdog_color,favored_color],
                  stat='percent',multiple='stack',binrange=(min(game_space)-0.5,max(game_space)+0.5),binwidth=1,
                  alpha=1,
                  edgecolor='w')
+    for p in ax.patches[::2]:
+        color = 'k'
+        ax.annotate(f"{p.get_height():.1f}%\n", (p.get_x() + p.get_width() / 2, p.get_height()),
+                    fontsize=font_size, color=color,
+                    ha="center", va="center")
     ax.legend(labels=[underdog,favored_team])
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(100,0))
     ax.set_xticks(game_space)
