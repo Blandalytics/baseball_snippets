@@ -54,9 +54,9 @@ team_df = pd.read_csv('https://docs.google.com/spreadsheets/d/1zbYqHg685OyP_D-E_
 
 col1, col2 = st.columns(2)
 with col1:
-    team_1 = st.selectbox('Choose a team:',list(team_df['Team']))
+    team_1 = st.selectbox('Choose a team:',list(team_df['Team']),index=5)
 with col2:
-    team_2 = st.selectbox('Choose a team:',list(team_df['Team']),index=29)
+    team_2 = st.selectbox('Choose a team:',list(team_df['Team']),index=14)
 
 favored_team, underdog = (team_1, team_2) if team_df[team_df['Team']==team_1]['Win%'].values[0] >= team_df[team_df['Team']==team_2]['Win%'].values[0] else (team_2, team_1)
 
