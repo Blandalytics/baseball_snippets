@@ -78,7 +78,7 @@ def series_chart(fill_dict):
                          color=team_df[team_df['Team']==favored_team]['Color'].values[0]))
     ax.set_xticks(list(fill_dict.keys()))
     # ax.yaxis.set_major_formatter(mtick.PercentFormatter(1))
-    ax.yaxis.set_visible('off')
+    ax.yaxis.set_visible(False)
     ax.set(xlim=(0,max(fill_dict.keys())+1),
            ylim=(0.5,1),
            xlabel='Series Length ("Best of X")')
