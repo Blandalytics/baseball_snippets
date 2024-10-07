@@ -134,9 +134,13 @@ def games_played_chart(series_len):
                  alpha=1,
                  edgecolor='w')
     for p in ax.patches:
-        ax.annotate(f"{p.get_height():.1f}%\n" if p.get_height() > ax.get_ylim()[1]/8 else '', 
+        height_check = p.get_height() > ax.get_ylim()[1]/8
+        ax.annotate(f"{p.get_height():.1f}%\n", 
                     (p.get_x() + p.get_width() / 2, p.get_y() + p.get_height()/2),
-                    ha="center", va="center",color='w',fontsize=font_size)
+                    ha="center", 
+                     va="center" if height_check else "bottom",
+                     color='w' if height_check else 'k',
+                    fontsize=font_size)
     ax.legend(labels=[favored_team,underdog],edgecolor='w',framealpha=0)
     # ax2.axis('off')
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(100,0))
