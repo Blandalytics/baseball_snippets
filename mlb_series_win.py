@@ -1,4 +1,4 @@
-import streamlit as st
+timport streamlit as st
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -78,14 +78,14 @@ def series_chart(fill_dict):
                 fontsize=8,
                 color='w',
                 ha='center',va='center',
-               bbox=dict(boxstyle="round",pad=0.25,alpha=1))
+               bbox=dict(boxstyle="round",pad=0.1,alpha=1))
     ax.set_xticks(list(fill_dict.keys()))
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(1))
     ax.set(xlim=(0,max(fill_dict.keys())+1),
            ylim=(0.5,1),
            xlabel='Series Length ("Best of X")')
-    fig.suptitle(f'Series Win%, based on length of series\n{favored_team} over {underdog}',
-                y=1.01)
+    fig.suptitle(f'Series Win%, based on length of series\n{favored_team} over {underdog} (Neutral Site Win%: {est_win_prob:.1%}',
+                y=1)
     sns.despine(bottom=True)
     st.pyplot(fig)
 
