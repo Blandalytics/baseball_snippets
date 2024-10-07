@@ -65,7 +65,7 @@ else:
     est_win_prob = log_pythag_win(favorite_rs,favorite_ra,
                                   underdog_rs,underdog_ra)
 
-st.write(f'The {favored_team} are expected to beat the {underdog} {est_win_prob:.1%} of the time.')
+st.write(f'The {favored_team} are expected to beat the {underdog} {est_win_prob:.1%} of the time at a neutral site.')
 fill_dict = {1:est_win_prob+hfa}
 fill_dict.update({x*2+1:sum(best_of_prob(x*2+1,est_win_prob,10000,hfa=hfa)[0])/sims for x in range(1,6)})
 
@@ -84,8 +84,8 @@ def series_chart(fill_dict):
     ax.set(xlim=(0,max(fill_dict.keys())+1),
            ylim=(0.5,1),
            xlabel='Series Length ("Best of X")')
-    fig.suptitle(f'Series Win%, based on length of series\n{favored_team} over {underdog}\n(Neutral-site {favored_team} Win% of {est_win_prob:.1%} w/ HFA of {hfa:.0%})',
-                y=1.03)
+    fig.suptitle(f'Series Win%, based on length of series\n{favored_team} over {underdog}',
+                y=1.01)
     sns.despine()
     st.pyplot(fig)
 
