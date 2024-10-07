@@ -151,7 +151,7 @@ games_played_chart(series_len)
 st.write(f'''
 - [PythagenPat Run Environment exponent](https://legacy.baseballprospectus.com/glossary/index.php?mode=viewstat&stat=136)
 
-pat_exp = ((runs_scored + runs_allowed)/game) ^ .285
+pat_exp = [(runs_scored + runs_allowed) / game] ^ .285
 
 ''')
 st.write(f'''
