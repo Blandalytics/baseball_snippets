@@ -1,5 +1,6 @@
 import streamlit as st
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import seaborn as sns
@@ -20,6 +21,7 @@ def best_of_prob(games, favorite_win_prob,
     series_games = []
     for series in range(sims):
         favored_wins = 0
+        underdog_wins = 0
         series_win = 0
         games_played = 0
         for game in series_schedule:
@@ -30,23 +32,42 @@ def best_of_prob(games, favorite_win_prob,
             games_played += 1
             if np.random.random() <=win_prob:
                 favored_wins += 1
+            else:
+                underdog_wins += 1
             if favored_wins == int(games/2+0.5):
                 series_win = 1
+                break
+            if underdog_wins == int(games/2+0.5):
                 break
         series_games += [games_played]
         series_wins += [series_win]
     return series_wins, series_games
 
-favorite_rs,favorite_ra = 5.03,4.12
-underdog_rs,underdog_ra = 3.13,5.02
+team_df = pd.read_csv('https://docs.google.com/spreadsheets/d/1zbYqHg685OyP_D-E_QO2_oENfEAKx0tpnkWhjlRBAMA/export?gid=0&format=csv')
+
+col1, col2 = st.columns(2)
+with col1:
+    team_1 = st.selectbox('Choose a team:',list(team_df['Team']))
+with col2:
+    team_2 = st.selectbox('Choose a team:',list(team_df['Team']),index=29)
+
+favored_team, underdog = team_1, team_2 if team_df[team_df['Team']==team_1]['Win%'].values[0] >= team_df[team_df['Team']==team_2]['Win%'].values[0] else team_2, team_1
+
+favorite_rs,favorite_ra = team_df[team_df['Team']==favored_team][['Runs Scored','Runs Allowed']].values[0]
+underdog_rs,underdog_ra = team_df[team_df['Team']==underdog][['Runs Scored','Runs Allowed']].values[0]
 hfa = 0.04
 
-est_win_prob = log_pythag_win(favorite_rs,favorite_ra,
-                              underdog_rs,underdog_ra)
+if team_1==team_2:
+    est_win_prob = 0.5
+else:
+    est_win_prob = log_pythag_win(favorite_rs,favorite_ra,
+                                  underdog_rs,underdog_ra)
+
+st.write(f'The {favored_team} are expected to beat the {underdog} {est_win_prob:.1%} of the time.')
 fill_dict = {1:est_win_prob+hfa}
 fill_dict.update({x*2+1:best_of_prob(x*2+1,est_win_prob,100000,hfa=hfa)[0] for x in range(1,6)})
 
-def series_chart(fill_dict=fill_dict):
+def series_chart(fill_dict):
     fig, ax = plt.subplots(figsize=(6,4))
     sns.lineplot(fill_dict)
     for series_len in fill_dict.keys():
@@ -66,7 +87,7 @@ def series_chart(fill_dict=fill_dict):
     sns.despine()
     st.pyplot(fig)
 
-series_chart()
+series_chart(fill_dict)
 
 series_wins, series_games = best_of_prob(games=7,
                                          favorite_win_prob=est_win_prob,
