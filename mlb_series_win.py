@@ -71,7 +71,7 @@ fill_dict.update({x*2+1:sum(best_of_prob(x*2+1,est_win_prob,sims,hfa=hfa)[0])/si
 
 def series_chart(fill_dict):
     fig, ax = plt.subplots(figsize=(6,4))
-    sns.lineplot(fill_dict)
+    sns.lineplot(fill_dict,color='#999999')
     for series_len in fill_dict.keys():
         ax.text(series_len,fill_dict[series_len],
                 f'{fill_dict[series_len]:.1%}',
