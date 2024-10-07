@@ -116,7 +116,7 @@ series_len = st.slider(
 def games_played_chart(series_len):
     games = best_of_prob(series_len,est_win_prob,
                          sims,hfa=hfa)[1]
-  
+    font_size = np.clip(160/series_len,8,12)
     fig, ax  = plt.subplots(figsize=(4,4))
     game_space = list(set(games))
     sns.histplot(x=games, 
@@ -126,6 +126,7 @@ def games_played_chart(series_len):
     for p in ax.patches:
         color = p.get_facecolor()
         ax.annotate(f"{p.get_height():.1f}%\n", (p.get_x() + p.get_width() / 2, p.get_height()),
+                    fontsize=font_size,
                     ha="center", va="center")
     
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(100,0))
