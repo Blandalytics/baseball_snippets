@@ -15,7 +15,7 @@ logo = Image.open(urllib.request.urlopen(logo_loc))
 st.image(logo, use_column_width=True)
 
 st.title('MLB Series Simulator')
-sims = 100000
+sims = 500000
 
 def log_pythag_win(favorite_rs,favorite_ra,
                   underdog_rs,underdog_ra):
