@@ -121,17 +121,6 @@ series_len = st.slider(
       step=2
   )
 
-sns.histplot(x=games_7, 
-             stat='percent',binrange=(min(game_space)-0.5,max(game_space)+0.5),binwidth=1)
-for p in ax.patches:
-    # color = p.get_facecolor()
-    ax.annotate(f"{p.get_height():.1f}%\n", (p.get_x() + p.get_width() / 2, p.get_height()),
-                ha="center", va="center",color='k')
-sns.histplot(x=games_7, 
-             hue=wins_7,
-             stat='percent',multiple='stack',binrange=(min(game_space)-0.5,max(game_space)+0.5),binwidth=1)
-
-
 def games_played_chart(series_len):
     games = best_of_prob(series_len,est_win_prob,
                          sims,hfa=hfa)
@@ -147,7 +136,7 @@ def games_played_chart(series_len):
         ax.annotate(f"{p.get_height():.1f}%\n", (p.get_x() + p.get_width() / 2, p.get_height()),
                     fontsize=font_size, color=color,
                     ha="center", va="center")
-    sns.histplot(x=games, 
+    sns.histplot(x=games[1], 
                  hue=games[0],
                  palette=[underdog_color,favored_color],
                  stat='percent',binrange=(min(game_space)-0.5,max(game_space)+0.5),binwidth=1,
