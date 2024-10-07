@@ -14,7 +14,7 @@ def log_pythag_win(favorite_rs,favorite_ra,
 
     return (favorite_win_prob-(favorite_win_prob*underdog_win_prob))/(favorite_win_prob+underdog_win_prob-(2 * favorite_win_prob*underdog_win_prob))
 def best_of_prob(games, favorite_win_prob, 
-                 sims=10000, hfa=0.04):
+                 sims=100000, hfa=0.04):
     series_schedule = [1,0,1] if games==3 else [1,1,0,0] + [1,0]*int(round((games-5)/2)) + [1]
     series_wins = []
     series_games = []
@@ -35,7 +35,7 @@ def best_of_prob(games, favorite_win_prob,
                 break
         series_games += [games_played]
         series_wins += [series_win]
-    return (sum(series_wins) / sims, series_games)
+    return series_wins, series_games
 
 favorite_rs,favorite_ra = 5.03,4.12
 underdog_rs,underdog_ra = 3.13,5.02
@@ -67,3 +67,9 @@ def series_chart(fill_dict=fill_dict):
     st.pyplot(fig)
 
 series_chart()
+
+series_wins, series_games = best_of_prob(games=7,
+                                         favorite_win_prob=est_win_prob,
+                                         sims=100000,
+                                         hfa=hfa)
+series_win_prob = sum(series_wins) / 100000
