@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import seaborn as sns
 
+st.title('2024 MLB Playoff Series Simulator')
 sims = 100000
 
 def log_pythag_win(favorite_rs,favorite_ra,
