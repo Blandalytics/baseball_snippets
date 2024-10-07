@@ -117,7 +117,7 @@ def games_played_chart(series_len):
     games = best_of_prob(series_len,est_win_prob,
                          sims,hfa=hfa)[1]
     font_size = np.clip(120/series_len,6,12)
-    fig, ax  = plt.subplots(figsize=(4,4))
+    fig, ax  = plt.subplots(figsize=(5,4))
     game_space = list(set(games))
     sns.histplot(x=games, 
                  stat='percent',binrange=(min(game_space)-0.5,max(game_space)+0.5),binwidth=1,
