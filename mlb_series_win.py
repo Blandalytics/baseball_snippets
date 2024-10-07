@@ -136,13 +136,13 @@ def games_played_chart(series_len):
         ax.annotate(f"{p.get_height():.1f}%\n", (p.get_x() + p.get_width() / 2, p.get_height()),
                     fontsize=font_size, color=color,
                     ha="center", va="center")
-    team_hist = sns.histplot(x=games[1], 
+    sns.histplot(x=games[1], 
                  hue=games[0],
                  palette=[underdog_color,favored_color],
                  stat='percent',multiple='stack',binrange=(min(game_space)-0.5,max(game_space)+0.5),binwidth=1,
                  alpha=1,
-                 edgecolor='w')
-    ax.legend(team_hist, [underdog,favored_team])
+                 edgecolor='w',legend=False)
+    plt.legend(labels=[underdog,favored_team])
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(100,0))
     ax.set_xticks(game_space)
     ax.set(xlabel='',ylabel='')
