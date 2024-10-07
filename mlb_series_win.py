@@ -130,7 +130,7 @@ def games_played_chart(series_len):
     sns.histplot(x=games[1], 
                  stat='percent',binrange=(min(game_space)-0.5,max(game_space)+0.5),binwidth=1,
                  color='k',
-                 edgecolor='w')
+                 edgecolor='w',legend=False)
     for p in ax.patches:
         color = 'k'
         ax.annotate(f"{p.get_height():.1f}%\n", (p.get_x() + p.get_width() / 2, p.get_height()),
@@ -141,7 +141,7 @@ def games_played_chart(series_len):
                  palette=[underdog_color,favored_color],
                  stat='percent',multiple='stack',binrange=(min(game_space)-0.5,max(game_space)+0.5),binwidth=1,
                  alpha=1,
-                 edgecolor='w',legend=True)
+                 edgecolor='w')
     ax.legend(labels=[underdog,favored_team])
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(100,0))
     ax.set_xticks(game_space)
