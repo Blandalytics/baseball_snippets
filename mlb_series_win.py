@@ -78,7 +78,7 @@ def series_chart(fill_dict):
                 fontsize=8,
                 color='w',
                 ha='center',va='center',
-               bbox=dict(boxstyle="round",pad=0.1,alpha=1))
+               bbox=dict(boxstyle="round",pad=0.1,alpha=1,edgecolor=None))
     ax.set_xticks(list(fill_dict.keys()))
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(1))
     ax.set(xlim=(0,max(fill_dict.keys())+1),
