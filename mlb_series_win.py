@@ -71,14 +71,14 @@ fill_dict.update({x*2+1:sum(best_of_prob(x*2+1,est_win_prob,sims,hfa=hfa)[0])/si
 
 def series_chart(fill_dict):
     fig, ax = plt.subplots(figsize=(6,4))
-    sns.lineplot(fill_dict,color='#999999')
+    sns.lineplot(fill_dict,color=team_df[team_df['Team']==underdog]['Color'].values[0])
     for series_len in fill_dict.keys():
         ax.text(series_len,fill_dict[series_len],
                 f'{fill_dict[series_len]:.1%}',
                 fontsize=12,
                 color='w',
                 ha='center',va='center',
-               bbox=dict(boxstyle="round",pad=0.25,alpha=1,edgecolor='w',
+               bbox=dict(boxstyle="round",pad=0.25,alpha=1,edgecolor=team_df[team_df['Team']==underdog]['Color'].values[0],
                          color=team_df[team_df['Team']==favored_team]['Color'].values[0]))
     ax.set_xticks(list(fill_dict.keys()))
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(1))
