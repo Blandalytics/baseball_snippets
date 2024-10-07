@@ -61,9 +61,6 @@ if team_1==team_2:
 else:
     est_win_prob = log_pythag_win(favorite_rs,favorite_ra,
                                   underdog_rs,underdog_ra)
-st.write(f'(PythagenPat Run Environement exponent)[https://legacy.baseballprospectus.com/glossary/index.php?mode=viewstat&stat=136]: ((runs_scored + runs_allowed)/game)^.285')
-st.write(f'Neutral Site xWin% vs generic opponent: runs_scored ^ exponent / (runs_scored ^ exponent + runs_allowed ^ exponent)')
-st.write(f'Log 5 Win% Estimate: (favorite_win_prob-(favorite_win_prob*underdog_win_prob))/(favorite_win_prob+underdog_win_prob-(2 * favorite_win_prob*underdog_win_prob))')
 st.write(f'The {favored_team} are expected to beat the {underdog} ~{est_win_prob:.1%} of the time at a neutral site, based on their respective runs scored and allowed. Home Field Advantage is assumed to be worth ~{hfa:.0%}.')
 fill_dict = {1:est_win_prob+hfa}
 fill_dict.update({x*2+1:sum(best_of_prob(x*2+1,est_win_prob,sims,hfa=hfa)[0])/sims for x in range(1,6)})
@@ -90,6 +87,10 @@ def series_chart(fill_dict):
     st.pyplot(fig)
 
 series_chart(fill_dict)
+
+st.write(f'(PythagenPat Run Environement exponent)[https://legacy.baseballprospectus.com/glossary/index.php?mode=viewstat&stat=136]: ((runs_scored + runs_allowed)/game)^.285')
+st.write(f'Neutral Site xWin% vs generic opponent: runs_scored ^ exponent / (runs_scored ^ exponent + runs_allowed ^ exponent)')
+st.write(f'Log 5 Win% Estimate: (favorite_win_prob-(favorite_win_prob*underdog_win_prob))/(favorite_win_prob+underdog_win_prob-(2 * favorite_win_prob*underdog_win_prob))')
 
 series_wins, series_games = best_of_prob(games=7,
                                          favorite_win_prob=est_win_prob,
