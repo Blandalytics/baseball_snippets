@@ -86,7 +86,7 @@ def series_chart(fill_dict):
            xlabel='Series Length ("Best of X")')
     fig.suptitle(f'Series Win%, based on length of series\n{favored_team} over {underdog}',
                 y=1.01)
-    sns.despine()
+    sns.despine(bottom=True)
     st.pyplot(fig)
 
 series_chart(fill_dict)
