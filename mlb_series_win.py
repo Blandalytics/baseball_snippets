@@ -5,6 +5,13 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import seaborn as sns
 
+import urllib
+from PIL import Image
+
+logo_loc = 'https://github.com/Blandalytics/PLV_viz/blob/main/data/PL-text-wht.png?raw=true'
+logo = Image.open(urllib.request.urlopen(logo_loc))
+st.image(logo, use_column_width=True)
+
 st.title('2024 MLB Playoff Series Simulator')
 sims = 100000
 
