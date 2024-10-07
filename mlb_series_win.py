@@ -27,10 +27,7 @@ def best_of_prob(games, favorite_win_prob,
         series_win = 0
         games_played = 0
         for game in series_schedule:
-            if game==0:
-                win_prob = favorite_win_prob-hfa
-            else:
-                win_prob = favorite_win_prob+hfa
+            win_prob = favorite_win_prob+hfa*(game-0.5)*2
             games_played += 1
             if np.random.random() <=win_prob:
                 favored_wins += 1
