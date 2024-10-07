@@ -53,7 +53,9 @@ with col2:
 favored_team, underdog = (team_1, team_2) if team_df[team_df['Team']==team_1]['Win%'].values[0] >= team_df[team_df['Team']==team_2]['Win%'].values[0] else (team_2, team_1)
 
 favorite_rs,favorite_ra = team_df[team_df['Team']==favored_team][['Runs Scored','Runs Allowed']].values[0]
+favored_color = team_df[team_df['Team']==favored_team]['Color'].values[0]
 underdog_rs,underdog_ra = team_df[team_df['Team']==underdog][['Runs Scored','Runs Allowed']].values[0]
+underdog_color = team_df[team_df['Team']==underdog]['Color'].values[0]
 hfa = 0.04
 
 if team_1==team_2:
@@ -67,15 +69,15 @@ fill_dict.update({x*2+1:sum(best_of_prob(x*2+1,est_win_prob,sims,hfa=hfa)[0])/si
 
 def series_chart(fill_dict):
     fig, ax = plt.subplots(figsize=(6,4))
-    sns.lineplot(fill_dict,color=team_df[team_df['Team']==underdog]['Color'].values[0])
+    sns.lineplot(fill_dict,color=underdog_color)
     for series_len in fill_dict.keys():
         ax.text(series_len,fill_dict[series_len],
                 f'{fill_dict[series_len]:.1%}',
                 fontsize=12,
                 color='w',
                 ha='center',va='center',
-               bbox=dict(boxstyle="round",pad=0.25,alpha=1,edgecolor=team_df[team_df['Team']==underdog]['Color'].values[0],
-                         color=team_df[team_df['Team']==favored_team]['Color'].values[0]))
+               bbox=dict(boxstyle="round",pad=0.25,alpha=1,edgecolor=underdog_color,
+                         color=favored_color))
     ax.set_xticks(list(fill_dict.keys()))
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(1))
     ax.set(xlim=(0,max(fill_dict.keys())+1),
@@ -97,14 +99,23 @@ series_chart(fill_dict)
 #                                          hfa=hfa)
 # series_win_prob = sum(series_wins) / sims
 
+series_len = st.slider(
+      "How many games can be in the series?",
+      min_value=3,
+      max_value=25,
+      value=7,
+      step=2
+  )
+
 def games_played_chart(series_len):
-    games = best_of_prob(series_len,est_win_prob,sims,hfa=hfa)[1]
-    game_space = list(set(games))
+    games = best_of_prob(series_len,est_win_prob,
+                         sims,hfa=hfa)[1]
+  
     fig, ax  = plt.subplots(figsize=(4,4))
     game_space = list(set(games))
     sns.histplot(x=games, 
                  stat='percent',binrange=(min(game_space)-0.5,max(game_space)+0.5),binwidth=1,
-                 color=team_df[team_df['Team']==favored_team]['Color'].values[0],
+                 color=favored_color,
                  edgecolor='w')
     for p in ax.patches:
         color = p.get_facecolor()
@@ -118,4 +129,4 @@ def games_played_chart(series_len):
     sns.despine()
     st.pyplot(fig)
 
-games_played_chart(7)
+games_played_chart(series_len)
