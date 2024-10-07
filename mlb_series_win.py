@@ -90,7 +90,7 @@ def series_chart(fill_dict):
 series_chart(fill_dict)
 
 st.write(f'[PythagenPat Run Environment exponent](https://legacy.baseballprospectus.com/glossary/index.php?mode=viewstat&stat=136): '+r'exp = $(\frac{runs_{\text{scored}} + runs_{\text{allowed}}}{game})^{.285}$')
-st.write(f'[Pythagorean Team Win% Estimate](https://www.mlb.com/glossary/advanced-stats/pythagorean-winning-percentage): '+r'Win%_{\text{pyth}} = $(\frac{runs_{\text{scored}}^{exp}}{runs_{\text{scored}}^{exp}+runs_{\text{allowed}}^{exp}})$')
+st.write(f'[Pythagorean Team Win% Estimate](https://www.mlb.com/glossary/advanced-stats/pythagorean-winning-percentage): '+r'\text{Win%}_{\text{pyth}} = $(\frac{runs_{\text{scored}}^{exp}}{runs_{\text{scored}}^{exp}+runs_{\text{allowed}}^{exp}})$')
 st.write(f'[Log 5 Composite Win% Estimate](https://web.williams.edu/Mathematics/sjmiller/public_html/103/Log5WonLoss_Paper.pdf): '+r'Win%_{\text{comp}} = $\frac{(Win%_{\text{pyth, fav}}-(Win%_{\text{pyth, fav}} * Win%_{\text{pyth, und}}))}{(Win%_{\text{pyth, fav}} + Win%_{\text{pyth, und}} - (2 * Win%_{\text{pyth, fav}} * Win%_{\text{pyth, und}}))}$')
 series_wins, series_games = best_of_prob(games=7,
                                          favorite_win_prob=est_win_prob,
