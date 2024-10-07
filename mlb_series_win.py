@@ -145,7 +145,7 @@ def games_played_chart(series_len):
                      color='w' if height_check else 'k',
                     fontsize=font_size)
     ax.legend(ncol=2,bbox_to_anchor=(0.49,1),loc='lower center',
-              labels=[favored_team+' Win',underdog+' Win'],edgecolor='w',framealpha=0)
+              labels=[favored_team+f' Win: {sum(games[0])/sims:.1%}',underdog+f' Win: {1-sum(games[0])/sims:.1%}'],edgecolor='w',framealpha=0)
 
     # ax2.axis('off')
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(100,0))
