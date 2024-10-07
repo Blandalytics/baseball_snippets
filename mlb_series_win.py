@@ -96,13 +96,10 @@ st.write(f'[Log 5 Composite Win% Estimate](https://web.williams.edu/Mathematics/
 st.write(r'''
 
 
-    For any given pitch type, the pitcher-height-scaled pitch type population release position $(x',y',z') = \frac{(x,y,z)}{height}$ and pitch acceleration $(a_x,a_z)$ can be jointly modeled as a $5$-dimensional multivariate normal distribution $X_{\text{pitch type}}$ .
-
-    $$
-    X_{\text{pitch type}} \sim  \mathcal{N}(\mu, \Sigma)
-    $$
-            
-    To learn conditional distribution of acceleration given a release position, $X$ is partitioned into release position and acceleration components''')
+    $(\frac{(runs_scored + runs_allowed)}{game})^{.285}$
+    
+    
+    ''')
 
 series_wins, series_games = best_of_prob(games=7,
                                          favorite_win_prob=est_win_prob,
