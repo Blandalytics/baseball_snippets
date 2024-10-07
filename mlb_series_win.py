@@ -150,7 +150,7 @@ def games_played_chart(series_len):
     # ax2.axis('off')
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(100,0))
     ax.set_xticks(game_space)
-    ax.set(xlabel='',ylabel='')
+    ax.set(xlabel='',ylabel='',ylim=(0,ax.get_ylim()[1]*1.02))
     fig.suptitle(f'{favored_team}/{underdog} Series\nGames Played Distribution (Best of {series_len})',y=1.06)
     sns.despine()
     st.pyplot(fig)
