@@ -90,7 +90,7 @@ def series_chart(fill_dict):
 series_chart(fill_dict)
 
 st.write(f'[PythagenPat Run Environment exponent](https://legacy.baseballprospectus.com/glossary/index.php?mode=viewstat&stat=136): ((runs_scored + runs_allowed)/game)^.285')
-st.write(f'[Pythagorean Win% Estimate](https://www.mlb.com/glossary/advanced-stats/pythagorean-winning-percentage): runs_scored ^ exponent / (runs_scored ^ exponent + runs_allowed ^ exponent)')
+st.write(f'[Pythagorean Team Win% Estimate](https://www.mlb.com/glossary/advanced-stats/pythagorean-winning-percentage): runs_scored ^ exponent / (runs_scored ^ exponent + runs_allowed ^ exponent)')
 st.write(f'[Log 5 Composite Win% Estimate](https://web.williams.edu/Mathematics/sjmiller/public_html/103/Log5WonLoss_Paper.pdf): (favorite_win_prob - (favorite_win_prob * underdog_win_prob)) / (favorite_win_prob + underdog_win_prob - (2 * favorite_win_prob * underdog_win_prob))')
 
 series_wins, series_games = best_of_prob(games=7,
