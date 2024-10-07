@@ -103,8 +103,7 @@ def games_played_chart(series_len):
     fig, ax  = plt.subplots(figsize=(4,4))
     game_space = list(set(games))
     sns.histplot(x=games, 
-                 # hue=wins_7,
-                 stat='percent',multiple='stack',binrange=(min(game_space)-0.5,max(game_space)+0.5),binwidth=1,
+                 stat='percent',binrange=(min(game_space)-0.5,max(game_space)+0.5),binwidth=1,
                  color=team_df[team_df['Team']==favored_team]['Color'].values[0],
                  edgecolor='w')
     for p in ax.patches:
