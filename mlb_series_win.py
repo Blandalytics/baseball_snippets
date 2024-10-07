@@ -15,7 +15,7 @@ def log_pythag_win(favorite_rs,favorite_ra,
 
     return (favorite_win_prob-(favorite_win_prob*underdog_win_prob))/(favorite_win_prob+underdog_win_prob-(2 * favorite_win_prob*underdog_win_prob))
 def best_of_prob(games, favorite_win_prob, 
-                 sims=100000, hfa=0.04):
+                 sims=10000, hfa=0.04):
     series_schedule = [1,0,1] if games==3 else [1,1,0,0] + [1,0]*int(round((games-5)/2)) + [1]
     series_wins = []
     series_games = []
@@ -65,14 +65,15 @@ else:
 
 st.write(f'The {favored_team} are expected to beat the {underdog} {est_win_prob:.1%} of the time.')
 fill_dict = {1:est_win_prob+hfa}
-fill_dict.update({x*2+1:best_of_prob(x*2+1,est_win_prob,100000,hfa=hfa)[0] for x in range(1,6)})
+fill_dict.update({x*2+1:best_of_prob(x*2+1,est_win_prob,10000,hfa=hfa)[0] for x in range(1,6)})
 
 def series_chart(fill_dict):
     fig, ax = plt.subplots(figsize=(6,4))
     sns.lineplot(fill_dict)
     for series_len in fill_dict.keys():
+        series_win_val = fill_dict[series_len]
         ax.text(series_len,fill_dict[series_len],
-                f'{fill_dict[series_len]:.1%}',
+                f'{series_win_val:.1%}',
                 fontsize=12,
                 color='w',
                 ha='center',va='center',
