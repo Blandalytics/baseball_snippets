@@ -84,7 +84,7 @@ def series_chart(fill_dict):
     ax.set(xlim=(0,max(fill_dict.keys())+1),
            ylim=(0.5,1),
            xlabel='Series Length ("Best of X")')
-    fig.suptitle(f'Series Win%, based on length of series\n{favored_team} over {underdog}\n(Single Game, Neutral Site Win%: {est_win_prob:.1%})',
+    fig.suptitle(f'{favored_team} over {underdog} Series Win%\n(Single Game, Neutral Site Exp. Win%: {est_win_prob:.1%})',
                 y=1.02)
     sns.despine(bottom=True)
     st.pyplot(fig)
