@@ -78,7 +78,8 @@ def series_chart(fill_dict):
                 fontsize=12,
                 color='w',
                 ha='center',va='center',
-               bbox=dict(boxstyle="round",pad=0.25,alpha=1,edgecolor='w'))
+               bbox=dict(boxstyle="round",pad=0.25,alpha=1,edgecolor='w',
+                         color=team_df[team_df['Team']==favored_team]['Color'].values[0]))
     ax.set_xticks(list(fill_dict.keys()))
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(1))
     ax.set(xlim=(0,max(fill_dict.keys())+1),
