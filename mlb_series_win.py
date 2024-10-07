@@ -106,7 +106,7 @@ def games_played_chart(series_len):
                  # hue=wins_7,
                  stat='percent',multiple='stack',binrange=(min(game_space)-0.5,max(game_space)+0.5),binwidth=1,
                  color=team_df[team_df['Team']==favored_team]['Color'].values[0],
-                 edgecolor=None)
+                 edgecolor='w')
     for p in ax.patches:
         color = p.get_facecolor()
         ax.annotate(f"{p.get_height():.1f}%\n", (p.get_x() + p.get_width() / 2, p.get_height()),
