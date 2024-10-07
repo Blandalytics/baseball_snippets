@@ -96,7 +96,7 @@ st.write(f'[Log 5 Composite Win% Estimate](https://web.williams.edu/Mathematics/
 st.write(r'''
 
 
-    $(\frac{(runs_{\text{scored}} + runs_{\text{allowed}})}{game})^{.285}$
+    $(\frac{runs_{\text{scored}} + runs_{\text{allowed}}}{game})^{.285}$
     
     
     ''')
