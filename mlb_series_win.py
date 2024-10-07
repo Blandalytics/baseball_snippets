@@ -106,15 +106,6 @@ def series_chart(fill_dict):
 
 series_chart(fill_dict)
 
-# st.write(f'[PythagenPat Run Environment exponent](https://legacy.baseballprospectus.com/glossary/index.php?mode=viewstat&stat=136): '+r'exp = $(\frac{\text{runs_scored} + \text{runs_allowed}}{game})^{.285}$')
-# st.write(f'[Pythagorean Team Win% Estimate](https://www.mlb.com/glossary/advanced-stats/pythagorean-winning-percentage): '+r'$\frac{\text{runs_scored} ^ {exp}}{(\text{runs_scored} ^ {exp}) + (\text{runs_allowed} ^ {exp})}$')
-# st.write(f'[Log 5 Composite Win% Estimate](https://web.williams.edu/Mathematics/sjmiller/public_html/103/Log5WonLoss_Paper.pdf): '+r'Win%_{\text{comp}} = $\frac{(Win%_{\text{pyth, fav}}-(Win%_{\text{pyth, fav}} * Win%_{\text{pyth, und}}))}{(Win%_{\text{pyth, fav}} + Win%_{\text{pyth, und}} - (2 * Win%_{\text{pyth, fav}} * Win%_{\text{pyth, und}}))}$')
-# series_wins, series_games = best_of_prob(games=7,
-#                                          favorite_win_prob=est_win_prob,
-#                                          sims=sims,
-#                                          hfa=hfa)
-# series_win_prob = sum(series_wins) / sims
-
 series_len = st.slider(
       "How many games can be in the series?",
       min_value=3,
@@ -156,3 +147,7 @@ def games_played_chart(series_len):
     st.pyplot(fig)
 
 games_played_chart(series_len)
+
+st.write(f'[PythagenPat Run Environment exponent](https://legacy.baseballprospectus.com/glossary/index.php?mode=viewstat&stat=136): '+r'exp = $(\frac{\text{runs_scored} + \text{runs_allowed}}{game})^{.285}$')
+st.write(f'[Pythagorean Team Win% Estimate](https://www.mlb.com/glossary/advanced-stats/pythagorean-winning-percentage): '+r'$\frac{\text{runs_scored} ^ {exp}}{(\text{runs_scored} ^ {exp}) + (\text{runs_allowed} ^ {exp})}$')
+st.write(f'[Log 5 Composite Win% Estimate](https://web.williams.edu/Mathematics/sjmiller/public_html/103/Log5WonLoss_Paper.pdf): '+r'Win%_{\text{comp}} = $\frac{(Win%_{\text{pyth, fav}}-(Win%_{\text{pyth, fav}} * Win%_{\text{pyth, und}}))}{(Win%_{\text{pyth, fav}} + Win%_{\text{pyth, und}} - (2 * Win%_{\text{pyth, fav}} * Win%_{\text{pyth, und}}))}$')
