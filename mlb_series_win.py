@@ -65,7 +65,7 @@ else:
     est_win_prob = log_pythag_win(favorite_rs,favorite_ra,
                                   underdog_rs,underdog_ra)
 
-st.write(f'The {favored_team} are expected to beat the {underdog} {est_win_prob:.1%} of the time at a neutral site.')
+st.write(f'The {favored_team} are expected to beat the {underdog} {est_win_prob:.1%} of the time at a neutral site. Home Field Advantage is assumed to be worth {hfa:.0%}.')
 fill_dict = {1:est_win_prob+hfa}
 fill_dict.update({x*2+1:sum(best_of_prob(x*2+1,est_win_prob,10000,hfa=hfa)[0])/sims for x in range(1,6)})
 
