@@ -89,7 +89,7 @@ def series_chart(fill_dict):
 
 series_chart(fill_dict)
 
-st.write(f'(PythagenPat Run Environement exponent)[https://legacy.baseballprospectus.com/glossary/index.php?mode=viewstat&stat=136]: ((runs_scored + runs_allowed)/game)^.285')
+st.write(f'[PythagenPat Run Environement exponent](https://legacy.baseballprospectus.com/glossary/index.php?mode=viewstat&stat=136): ((runs_scored + runs_allowed)/game)^.285')
 st.write(f'Neutral Site xWin% vs generic opponent: runs_scored ^ exponent / (runs_scored ^ exponent + runs_allowed ^ exponent)')
 st.write(f'Log 5 Win% Estimate: (favorite_win_prob-(favorite_win_prob*underdog_win_prob))/(favorite_win_prob+underdog_win_prob-(2 * favorite_win_prob*underdog_win_prob))')
 
