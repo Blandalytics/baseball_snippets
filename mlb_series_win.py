@@ -138,7 +138,7 @@ def games_played_chart(series_len):
                  stat='percent',multiple='stack',binrange=(min(game_space)-0.5,max(game_space)+0.5),binwidth=1,
                  alpha=1,
                  edgecolor='w')
-    for p in ax.patches[::2]:
+    for p in ax.patches[1::2]:
         color = 'k'
         ax.annotate(f"{p.get_height():.1f}%\n", (p.get_x() + p.get_width() / 2, p.get_height()),
                     fontsize=font_size, color=color,
