@@ -73,9 +73,8 @@ def series_chart(fill_dict):
     fig, ax = plt.subplots(figsize=(6,4))
     sns.lineplot(fill_dict)
     for series_len in fill_dict.keys():
-        series_win_val = float(fill_dict[series_len].values)
         ax.text(series_len,fill_dict[series_len],
-                f'{series_win_val:.1%}',
+                f'{fill_dict[series_len]:.1%}',
                 fontsize=12,
                 color='w',
                 ha='center',va='center',
