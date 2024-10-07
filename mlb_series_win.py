@@ -127,11 +127,6 @@ def games_played_chart(series_len):
     font_size = np.clip(120/series_len,6,12)
     fig, ax  = plt.subplots(figsize=(5,4))
     game_space = list(set(games[1]))
-    # sns.histplot(x=games[1], 
-    #              stat='percent',binrange=(min(game_space)-0.5,max(game_space)+0.5),binwidth=1,
-    #              color='k',
-    #              edgecolor='w',legend=False)
-    # ax2 = ax.twinx()
     sns.histplot(x=games[1], 
                  hue=games[0],
                  palette=[underdog_color,favored_color],
@@ -141,7 +136,7 @@ def games_played_chart(series_len):
     for p in ax.patches:
         ax.annotate(f"{p.get_height():.1f}%\n" if p.get_height() >4 else '', 
                     (p.get_x() + p.get_width() / 2, p.get_y() + p.get_height()/2),
-                    ha="center", va="center",color='w')
+                    ha="center", va="center",color='w',fontsize=font_size)
     ax.legend(labels=[favored_team,underdog],edgecolor='w',framealpha=0)
     # ax2.axis('off')
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(100,0))
