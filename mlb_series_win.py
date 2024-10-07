@@ -137,7 +137,7 @@ def games_played_chart(series_len):
         height_check = p.get_height() > ax.get_ylim()[1]/12
         ax.annotate(f"{p.get_height():.1f}%\n", 
                     (p.get_x() + p.get_width() / 2, 
-                     (p.get_y() + p.get_height()/2) if height_check else (p.get_y() + p.get_height() - ax.get_ylim()[1]/30)),
+                     (p.get_y() + p.get_height()/2 - 1) if height_check else (p.get_y() + p.get_height() - ax.get_ylim()[1]/30)),
                     ha="center", 
                      va="center" if height_check else "bottom",
                      color='w' if height_check else 'k',
