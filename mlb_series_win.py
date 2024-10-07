@@ -101,7 +101,7 @@ def series_chart(fill_dict):
            xlabel='Series Length ("Best of X")')
     fig.suptitle(f'{favored_team} over {underdog} Series Win%\n(Single Game, Neutral Site xWin%: {est_win_prob:.1%})',
                 y=1.02)
-    pl_ax = fig.add_axes([0.01,-0.005,0.2,0.1], anchor='NE', zorder=1)
+    pl_ax = fig.add_axes([0.03,-0.01,0.2,0.1], anchor='NE', zorder=1)
     width, height = logo.size
     pl_ax.imshow(logo.crop((0, 0, width, height-150)))
     pl_ax.axis('off')
@@ -145,7 +145,7 @@ def games_played_chart(series_len):
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(100,0))
     ax.set_xticks(game_space)
     ax.set(xlabel='',ylabel='',ylim=(0,ax.get_ylim()[1]*1.02))
-    pl_ax = fig.add_axes([0.01,-0.01,0.2,0.1], anchor='NE', zorder=1)
+    pl_ax = fig.add_axes([0.03,-0.01,0.2,0.1], anchor='NE', zorder=1)
     width, height = logo.size
     pl_ax.imshow(logo.crop((0, 0, width, height-150)))
     pl_ax.axis('off')
