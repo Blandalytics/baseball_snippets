@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import seaborn as sns
 
-sims = 20000
+sims = 2000
 
 def log_pythag_win(favorite_rs,favorite_ra,
                   underdog_rs,underdog_ra):
@@ -74,8 +74,8 @@ def series_chart(fill_dict):
     sns.lineplot(fill_dict,color='#999999')
     for series_len in fill_dict.keys():
         ax.text(series_len,fill_dict[series_len],
-                f'{fill_dict[series_len]:.1%}',
-                fontsize=10,
+                f'{fill_dict[series_len]:.0%}',
+                fontsize=8,
                 color='w',
                 ha='center',va='center',
                bbox=dict(boxstyle="round",pad=0.25,alpha=1))
