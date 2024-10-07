@@ -139,7 +139,7 @@ def games_played_chart(series_len):
     sns.histplot(x=games[1], 
                  hue=games[0],
                  palette=[underdog_color,favored_color],
-                 stat='percent',binrange=(min(game_space)-0.5,max(game_space)+0.5),binwidth=1,
+                 stat='percent',multiple='stack',binrange=(min(game_space)-0.5,max(game_space)+0.5),binwidth=1,
                  alpha=1,
                  edgecolor='w')
     
