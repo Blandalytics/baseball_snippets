@@ -8,11 +8,13 @@ import seaborn as sns
 import urllib
 from PIL import Image
 
+st.set_page_config(page_title='MLB Series Simulator', page_icon='⚾')
+
 logo_loc = 'https://github.com/Blandalytics/PLV_viz/blob/main/data/PL-text-wht.png?raw=true'
 logo = Image.open(urllib.request.urlopen(logo_loc))
 st.image(logo, use_column_width=True)
 
-st.title('2024 MLB Playoff Series Simulator')
+st.title('MLB Series Simulator')
 sims = 100000
 
 def log_pythag_win(favorite_rs,favorite_ra,
