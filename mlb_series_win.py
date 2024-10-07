@@ -121,21 +121,38 @@ series_len = st.slider(
       step=2
   )
 
+sns.histplot(x=games_7, 
+             stat='percent',binrange=(min(game_space)-0.5,max(game_space)+0.5),binwidth=1)
+for p in ax.patches:
+    # color = p.get_facecolor()
+    ax.annotate(f"{p.get_height():.1f}%\n", (p.get_x() + p.get_width() / 2, p.get_height()),
+                ha="center", va="center",color='k')
+sns.histplot(x=games_7, 
+             hue=wins_7,
+             stat='percent',multiple='stack',binrange=(min(game_space)-0.5,max(game_space)+0.5),binwidth=1)
+
+
 def games_played_chart(series_len):
     games = best_of_prob(series_len,est_win_prob,
-                         sims,hfa=hfa)[1]
+                         sims,hfa=hfa)
     font_size = np.clip(120/series_len,6,12)
     fig, ax  = plt.subplots(figsize=(5,4))
-    game_space = list(set(games))
-    sns.histplot(x=games, 
+    game_space = list(set(games[1]))
+    sns.histplot(x=games[1], 
                  stat='percent',binrange=(min(game_space)-0.5,max(game_space)+0.5),binwidth=1,
-                 color=favored_color, alpha=1,
+                 color='k',
                  edgecolor='w')
     for p in ax.patches:
-        color = favored_color
+        color = 'k'
         ax.annotate(f"{p.get_height():.1f}%\n", (p.get_x() + p.get_width() / 2, p.get_height()),
                     fontsize=font_size, color=color,
                     ha="center", va="center")
+    sns.histplot(x=games, 
+                 hue=games[0],
+                 palette=[underdog_color,favored_color],
+                 stat='percent',binrange=(min(game_space)-0.5,max(game_space)+0.5),binwidth=1,
+                 alpha=1,
+                 edgecolor='w')
     
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(100,0))
     ax.set_xticks(game_space)
