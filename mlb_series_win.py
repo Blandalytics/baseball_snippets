@@ -66,7 +66,7 @@ fill_dict = {1:est_win_prob+hfa}
 fill_dict.update({x*2+1:sum(best_of_prob(x*2+1,est_win_prob,sims,hfa=hfa)[0])/sims for x in range(1,6)})
 
 def series_chart(fill_dict):
-    fig, ax = plt.subplots(figsize=(6,3))
+    fig, ax = plt.subplots(figsize=(6,4))
     sns.lineplot(fill_dict,color=team_df[team_df['Team']==underdog]['Color'].values[0])
     for series_len in fill_dict.keys():
         ax.text(series_len,fill_dict[series_len],
@@ -105,7 +105,8 @@ def games_played_chart(series_len):
     sns.histplot(x=games, 
                  # hue=wins_7,
                  stat='percent',multiple='stack',binrange=(min(game_space)-0.5,max(game_space)+0.5),binwidth=1,
-                 color=team_df[team_df['Team']==favored_team]['Color'].values[0])
+                 color=team_df[team_df['Team']==favored_team]['Color'].values[0],
+                 edgecolor=None)
     for p in ax.patches:
         color = p.get_facecolor()
         ax.annotate(f"{p.get_height():.1f}%\n", (p.get_x() + p.get_width() / 2, p.get_height()),
