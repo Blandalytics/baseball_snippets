@@ -134,7 +134,7 @@ def games_played_chart(series_len):
                  alpha=1,
                  edgecolor='w')
     for p in ax.patches:
-        height_check = p.get_height() > ax.get_ylim()[1]/12
+        height_check = (p.get_height() > ax.get_ylim()[1]-1)/10
         ax.annotate(f"{p.get_height():.1f}%\n", 
                     (p.get_x() + p.get_width() / 2, 
                      (p.get_y() + p.get_height()/2 - 1) if height_check else (p.get_y() + p.get_height() - ax.get_ylim()[1]/30)),
