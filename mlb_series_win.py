@@ -66,7 +66,7 @@ else:
 st.write(f'The {favored_team} are expected to beat the {underdog} ~{est_win_prob:.1%} of the time at a neutral site, based on their respective runs scored and allowed. Home Field Advantage is assumed to be worth ~{hfa:.0%}.')
 
 @st.cache_data(ttl=10*60,show_spinner=f"Simulating {sims} matchups, for each series length")
-def series_sims(est_win_prob,sims,hfa,series_max=11)
+def series_sims(est_win_prob,sims,hfa,series_max=11):
     fill_dict = {1:est_win_prob+hfa}
     fill_dict.update({x*2+1:sum(best_of_prob(x*2+1,est_win_prob,sims,hfa=hfa)[0])/sims for x in range(1,int(series_max/2+0.5))})
     return fill_dict
