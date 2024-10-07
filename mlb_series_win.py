@@ -124,9 +124,9 @@ def games_played_chart(series_len):
                  color=favored_color,
                  edgecolor='w')
     for p in ax.patches:
-        color = p.get_facecolor()
+        color = favored_color
         ax.annotate(f"{p.get_height():.1f}%\n", (p.get_x() + p.get_width() / 2, p.get_height()),
-                    fontsize=font_size,
+                    fontsize=font_size, color=color,
                     ha="center", va="center")
     
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(100,0))
