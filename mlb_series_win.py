@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import seaborn as sns
 
-sims = 2000
+sims = 10000
 
 def log_pythag_win(favorite_rs,favorite_ra,
                   underdog_rs,underdog_ra):
