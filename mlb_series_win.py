@@ -96,3 +96,26 @@ series_chart(fill_dict)
 #                                          sims=sims,
 #                                          hfa=hfa)
 # series_win_prob = sum(series_wins) / sims
+
+def games_played_chart(series_len):
+    games = best_of_prob(series_len,est_win_prob,sims,hfa=hfa)[1]
+    game_space = list(set(games))
+    fig, ax  = plt.subplots(figsize=(4,4))
+    game_space = list(set(games))
+    sns.histplot(x=games, 
+                 # hue=wins_7,
+                 stat='percent',multiple='stack',binrange=(min(game_space)-0.5,max(game_space)+0.5),binwidth=1,
+                 color=team_df[team_df['Team']==favored_team]['Color'].values[0])
+    for p in ax.patches:
+        color = p.get_facecolor()
+        ax.annotate(f"{p.get_height():.1f}%\n", (p.get_x() + p.get_width() / 2, p.get_height()),
+                    ha="center", va="center")
+    
+    ax.yaxis.set_major_formatter(mtick.PercentFormatter(100,0))
+    ax.set_xticks(game_space)
+    ax.set(xlabel='',ylabel='')
+    fig.suptitle(f'Distribution of Games Played\n({series_len} Game Series)',y=1)
+    sns.despine()
+    st.pyplot(fig)
+
+games_played_chart(7)
