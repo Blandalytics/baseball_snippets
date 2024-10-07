@@ -144,7 +144,8 @@ def games_played_chart(series_len):
                      va="center" if height_check else "bottom",
                      color='w' if height_check else 'k',
                     fontsize=font_size)
-    ax.legend(ncol=2,bbox_to_anchor=(0.48,.99),labels=[favored_team+' Win',underdog+' Win'],edgecolor='w',framealpha=0.8)
+    ax.legend(ncol=2,bbox_to_anchor=(0.48,.99),loc='lower center',
+              labels=[favored_team+' Win',underdog+' Win'],edgecolor='w',framealpha=0.8)
 
     # ax2.axis('off')
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(100,0))
