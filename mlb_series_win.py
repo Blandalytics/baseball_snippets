@@ -10,9 +10,9 @@ from PIL import Image
 
 st.set_page_config(page_title='MLB Series Simulator', page_icon='📊')
 
-logo_loc = 'https://github.com/Blandalytics/PLV_viz/blob/main/data/PL-text-wht.png?raw=true'
+logo_loc = 'https://github.com/Blandalytics/baseball_snippets/blob/main/PitcherList_Full_Black.png?raw=true'
 logo = Image.open(urllib.request.urlopen(logo_loc))
-st.image(logo, use_column_width=True)
+# st.image(logo, use_column_width=True)
 
 st.title('MLB Series Simulator')
 sims = 100000
@@ -101,6 +101,10 @@ def series_chart(fill_dict):
            xlabel='Series Length ("Best of X")')
     fig.suptitle(f'{favored_team} over {underdog} Series Win%\n(Single Game, Neutral Site xWin%: {est_win_prob:.1%})',
                 y=1.02)
+    pl_ax = fig.add_axes([0.01,0.085,0.2,0.1], anchor='NE', zorder=1)
+    width, height = logo.size
+    pl_ax.imshow(logo.crop((0, 0, width, height-150)))
+    pl_ax.axis('off')
     sns.despine(bottom=True)
     st.pyplot(fig)
 
