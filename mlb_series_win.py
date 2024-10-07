@@ -121,7 +121,7 @@ def games_played_chart(series_len):
     game_space = list(set(games))
     sns.histplot(x=games, 
                  stat='percent',binrange=(min(game_space)-0.5,max(game_space)+0.5),binwidth=1,
-                 color=favored_color,
+                 color=favored_color, alpha=1,
                  edgecolor='w')
     for p in ax.patches:
         color = favored_color
