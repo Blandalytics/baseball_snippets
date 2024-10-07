@@ -139,7 +139,7 @@ def games_played_chart(series_len):
                  alpha=1,
                  edgecolor='w')
     for p in ax.patches:
-        ax.annotate(f"{p.get_height():.1f}%\n" if p.get_y() >4 else '', 
+        ax.annotate(f"{p.get_height():.1f}%\n" if p.get_y() <4 else '', 
                     (p.get_x() + p.get_width() / 2, p.get_y() + p.get_height()/2),
                     ha="center", va="center",color='w')
     ax.legend(labels=[favored_team,underdog],edgecolor='w',framealpha=0)
