@@ -143,7 +143,7 @@ def games_played_chart(series_len):
                  stat='percent',multiple='stack',binrange=(min(game_space)-0.5,max(game_space)+0.5),binwidth=1,
                  alpha=1,
                  edgecolor='w',ax=ax2)
-    ax2.legend(labels=[favored_team,underdog])
+    ax2.legend(labels=[favored_team,underdog],edgecolor=None)
     ax2.axis('off')
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(100,0))
     ax.set_xticks(game_space)
