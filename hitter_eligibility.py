@@ -77,7 +77,9 @@ pos_sort = {
 players = list(pivot_df['Name'].unique())
 default_val = players.index('Aaron Judge')
 player_select = st.selectbox('Choose a hitter:', pivot_df['Name'].unique(), index=default_val)
-pos_list = player_data.loc[player_data['name']==player_select,'position'].to_list()
+pos_list = player_data.loc[(player_data['name']==player_select) &
+                            ((player_data['games_started']>=games_started_thresh) |
+                            (player_data['games_played']>=games_played_thresh)),'position'].to_list()
 pos_list.sort(key=lambda x: pos_sort[x])
 pos_text = ', '.join(pos_list)
 st.write(f"""
