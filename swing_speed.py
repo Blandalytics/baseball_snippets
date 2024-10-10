@@ -620,4 +620,4 @@ st.write('- Max Possible EV (in mph) = (Pitch Speed at Plate * q) + [Swing Speed
 st.write('- Squared Up% (SU%; % of Max Possible EV) = Exit Velocity / Max Possible EV')
 st.write('- Partial Blasts (PB) = 1/[1 + exp(90.6 - Swing Speed * 0.57 - Squared Up% * 53.52)]')
 st.write('- Partial Blast Rate (PB%) = PB / Swing')
-st.write('- Coefficient of Variation ([CoV](https://en.wikipedia.org/wiki/Coefficient_of_variation)) = Standard Deviation of Swing Speed / Average Swing Speed, per player')
+st.write('- Coefficient of Variation ([CoV](https://en.wikipedia.org/wiki/Coefficient_of_variation)) = Standard Deviation of Swing Speed / Average Swing Speed * 100, per player')
