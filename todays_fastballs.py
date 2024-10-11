@@ -329,7 +329,7 @@ def load_savant(date,level):
     else:
         player_df['plvLoc+'] = loc_model(player_df)
   
-    return player_df.loc[(player_df['pitch_type']=='FF') & (player_df['Inning'].groupby(player_df['MLBAMID']).transform('min')==1)]
+    return player_df.loc[(player_df['pitch_type']=='FF')] if level == 17 player_df.loc[(player_df['pitch_type']=='FF') & (player_df['Inning'].groupby(player_df['MLBAMID']).transform('min')==1)]
 
 chart_df = load_savant(date,level_code)
 
