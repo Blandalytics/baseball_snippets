@@ -200,8 +200,8 @@ today = (datetime.datetime.now(pytz.utc)-timedelta(hours=16)).date()
 st.header(f"4-Seam Fastballs by Starters")
 col1, col2, col3 = st.columns([1/3,1/3,1/3])
 with col1:
-    level = st.selectbox('Choose a level:', ['MLB','AAA','A (FSL)','AFL?'])
-    level_dict = {'MLB':1,'AAA':11,'A (FSL)':14, 'AFL?':17}
+    level = st.selectbox('Choose a level:', ['MLB','AAA','A (FSL)','AFL'])
+    level_dict = {'MLB':1,'AAA':11,'A (FSL)':14, 'AFL':17}
     level_code = level_dict[level]
 with col2:
     date = st.date_input("Select a game date:", today, min_value=datetime.date(2024, 3, 28), max_value=today)
