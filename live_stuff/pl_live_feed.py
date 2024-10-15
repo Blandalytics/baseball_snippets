@@ -429,7 +429,7 @@ def scrape_pitch_data(date,level):
                     except KeyError:
                         None
     pitch_df = pd.DataFrame.from_dict({i: pitch_data[i] for i in pitch_data.keys()},
-                                       orient='index').astype({'balls':'int','strikes':'int'})
+                                       orient='index')
     pitch_df['Starter'] = np.where(pitch_df['inning'].groupby(pitch_df['pitcher_id']).transform('min')==1,1,0)
     group_map = {
         'FF':'Fastball',
@@ -469,7 +469,7 @@ def scrape_pitch_data(date,level):
     return pitch_df.reset_index().rename(columns={'index':'pitch_id'})
 
 chart_df = scrape_pitch_data(date,level_code)
-st.write(chart_df['balls'].unique())
+# st.write(chart_df['balls'].unique())
 
 if chart_df.shape[0]==0:
     st.write('No fastballs thrown')
