@@ -6,11 +6,13 @@ import numpy as np
 import pandas as pd
 import pickle
 import seaborn as sns
+import urllib
 import requests
 import plotly.graph_objs as go
 from plotly import tools
 from plotly.subplots import make_subplots
 import plotly.offline as py
+from PIL import Image
 # import pytz
 import xgboost as xgb
 # import pkg_resources
