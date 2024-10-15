@@ -587,7 +587,7 @@ def stuff_preds(df):
     df['stuff_reg'] = df['stuff_reg'].sub(0.01857).div(0.02131).mul(-50).add(100)
 
     df['plvStuff+'] = df[['stuff_class','stuff_reg']].mean(axis=1)
-    return df[cols+['plvStuff+']].copy()
+    return df[cols+['stuff_class','stuff_reg','plvStuff+']].copy()
 
 chart_df = stuff_preds(chart_df)
 
