@@ -429,7 +429,7 @@ def scrape_pitch_data(date,level):
                     except KeyError:
                         None
     pitch_df = pd.DataFrame.from_dict({i: pitch_data[i] for i in pitch_data.keys()},
-                                       orient='index')
+                                       orient='index').astype({'balls':'int','strikes':'int'})
     pitch_df['Starter'] = np.where(pitch_df['inning'].groupby(pitch_df['pitcher_id']).transform('min')==1,1,0)
     group_map = {
         'FF':'Fastball',
@@ -463,7 +463,8 @@ def scrape_pitch_data(date,level):
     for stat in ['IHB','IVB','velo']:
         pitch_df[stat+'_diff'] = fastball_differences(pitch_df,stat)
     pitch_df['total_IB_diff'] = (pitch_df['IHB_diff'].astype('float')**2+pitch_df['IVB_diff'].astype('float')**2)**0.5
-    pitch_df[pd.get_dummies(pitch_df[['p_throws','stand','balls','strikes']]).columns.values] = pd.get_dummies(pitch_df[['p_throws','stand','balls','strikes']])
+    dummy_cols = list(pd.get_dummies(pitch_df[['p_throws','stand','balls','strikes']]).columns.values)
+    pitch_df[dummy_cols] = pd.get_dummies(pitch_df[['p_throws','stand','balls','strikes']])
   
     return pitch_df.reset_index().rename(columns={'index':'pitch_id'})
 
