@@ -508,7 +508,7 @@ def stuff_preds(df):
         
     for pitch_type in ['Fastball','Breaking Ball','Offspeed']:
          # Regression Model
-        with open(f'models/live_stuff_rv_model_{pitch_type}.pkl', 'rb') as f:
+        with open(f'live_stuff/models/live_stuff_rv_model_{pitch_type}.pkl', 'rb') as f:
             stuff_model = pickle.load(f)
     
         df.loc[df['pitch_type_bucket']==pitch_type,['stuff_reg']] = stuff_model.predict(df.loc[df['pitch_type_bucket']==pitch_type,stuff_model.feature_names_in_])
