@@ -594,8 +594,11 @@ model_df = (chart_df
               'velo':'Velo',
               'spin_rate':'Spin'
             })
-            .groupby(['Pitcher','pitch_type'])
-            [['#','plvStuff+','Velo','Ext','IVB','HAVAA','IHB','Spin','VAA','x0','z0']]
+            .groupby(['Pitcher'#,'pitch_type'
+                     ])
+            [['#','plvStuff+',
+              'Velo','Ext','IVB','HAVAA','IHB','Spin','VAA','x0','z0'
+             ]]
             .agg({
                 '#':'count',
                 'plvStuff+':'mean',
@@ -618,3 +621,42 @@ st.dataframe(model_df
              .background_gradient(axis=0, vmin=85, vmax=115, cmap="vlag", subset=['plvStuff+']),
             column_config={"Pitcher": st.column_config.Column(width="medium")}
 )
+
+players = list(chart_df
+               .groupby('pitchername')
+               [['pitch_id','plv_stuff_plus']]
+               .agg({'pitch_id':'count','plvStuff+':'mean'})
+               .reset_index()
+               .sort_values('plvStuff+', ascending=False)
+               ['pitchername']
+              )
+
+pitcher = st.selectbox('Choose a pitcher:', players)
+
+player_df = (chart_df
+             .loc[chart_df['pitchername']==pitcher]
+             .rename(columns={
+              'pitcher_name':'Pitcher',
+              'pitch_id':'#',
+              'extension':'Ext',
+              'velo':'Velo',
+              'spin_rate':'Spin'
+            })
+            .groupby(['Pitcher','pitch_type'
+                     ])
+            [['#','plvStuff+','Velo','Ext','IVB','HAVAA','IHB','Spin','VAA','x0','z0']]
+            .agg({
+                '#':'count',
+                'plvStuff+':'mean',
+                'Velo':'mean',
+                'Ext':'mean',
+                'IVB':'mean',
+                'HAVAA':'mean',
+                'IHB':'mean',
+                'Spin':'mean',
+                'VAA':'mean',
+                'x0':'mean',
+                'z0':'mean',
+              })
+            .sort_values('#',ascending=False)
+            )
