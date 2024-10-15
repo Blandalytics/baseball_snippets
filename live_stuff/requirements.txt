@@ -12,3 +12,4 @@ scipy
 lxml
 pytz
 CairoSVG
+pkg_resources
