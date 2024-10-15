@@ -479,11 +479,6 @@ category_feats = ['p_throws_L', 'stand_L',
                   'balls_1','balls_2','balls_3',
                   'strikes_1','strikes_2'
                  ]
-
-for x in category_feats:
-    if x not in chart_df.columns.values:
-        chart_df[x] = None
-
 stuff_feats = ['velo','velo_diff',
                'extension',
                'spin_rate',
