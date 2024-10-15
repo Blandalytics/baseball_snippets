@@ -11,7 +11,7 @@ import plotly.graph_objs as go
 from plotly import tools
 from plotly.subplots import make_subplots
 import plotly.offline as py
-import pytz
+# import pytz
 import xgboost as xgb
 import pkg_resources
 from xgboost import XGBClassifier, XGBRegressor
@@ -347,7 +347,7 @@ def get_mode(series):
         return series.mode()[0]
 
 
-today = (datetime.datetime.now(pytz.utc)-timedelta(hours=16)).date()
+today = (datetime.datetime.now()-timedelta(hours=16)).date()
 st.header(f"PL Live Feed")
 col1, col2, col3 = st.columns([1/3,1/3,1/3])
 with col1:
