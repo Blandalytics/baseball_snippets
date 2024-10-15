@@ -468,6 +468,7 @@ def scrape_pitch_data(date,level):
     return pitch_df.reset_index().rename(columns={'index':'pitch_id'})
 
 chart_df = scrape_pitch_data(date,level_code)
+st.write(chart_df.columns.values)
 
 if chart_df.shape[0]==0:
     st.write('No fastballs thrown')
@@ -514,14 +515,14 @@ def stuff_preds(df):
         df.loc[df['pitch_type_bucket']==pitch_type,['stuff_reg']] = stuff_model.predict(df.loc[df['pitch_type_bucket']==pitch_type,stuff_model.feature_names_in_])
       
         # Swing Result        
-        with open(f'models/live_stuff_contact_model_{pitch_type}.pkl', 'rb') as f:
+        with open(f'live_stuff/models/live_stuff_contact_model_{pitch_type}.pkl', 'rb') as f:
             swing_result_model = pickle.load(f)
     
         df.loc[df['pitch_type_bucket']==pitch_type,['swinging_strike_pred','contact_input_temp']] = swing_result_model.predict_proba(df.loc[df['pitch_type_bucket']==pitch_type,swing_result_model.feature_names_in_])
         # print(pitch_type+' Swing Result model done')
     
         # Contact Result
-        with open(f'models/live_stuff_in_play_model_{pitch_type}.pkl', 'rb') as f:
+        with open(f'live_stuff/models/live_stuff_in_play_model_{pitch_type}.pkl', 'rb') as f:
             contact_model = pickle.load(f)
     
         df.loc[df['pitch_type_bucket']==pitch_type,['foul_strike_raw_temp','in_play_raw_temp']] = contact_model.predict_proba(df.loc[df['pitch_type_bucket']==pitch_type,contact_model.feature_names_in_])
@@ -530,7 +531,7 @@ def stuff_preds(df):
         # print(pitch_type+' Contact model done')
     
         # Launch Angle Result
-        with open(f'models/live_stuff_launch_angle_model_{pitch_type}.pkl', 'rb') as f:
+        with open(f'live_stuff/models/live_stuff_launch_angle_model_{pitch_type}.pkl', 'rb') as f:
             launch_angle_model = pickle.load(f)
     
         df.loc[df['pitch_type_bucket']==pitch_type,['10deg_raw_temp','10-20deg_raw_temp','20-30deg_raw_temp','30-40deg_raw_temp','40-50deg_raw_temp','50+deg_raw_temp']] = launch_angle_model.predict_proba(df.loc[df['pitch_type_bucket']==pitch_type,launch_angle_model.feature_names_in_])
@@ -541,14 +542,14 @@ def stuff_preds(df):
     
         # Launch Velo Result
         for launch_angle in ['10deg','10-20deg','20-30deg','30-40deg','40-50deg']:
-            with open(f'models/live_stuff_{launch_angle}_model_{pitch_type}.pkl', 'rb') as f:
+            with open(f'live_stuff/models/live_stuff_{launch_angle}_model_{pitch_type}.pkl', 'rb') as f:
                 launch_velo_model = pickle.load(f)
     
             df.loc[df['pitch_type_bucket']==pitch_type,[launch_angle+': <90mph_raw_temp',launch_angle+': 90-95mph_raw_temp',launch_angle+': 95-100mph_raw_temp',launch_angle+': 100-105mph_raw_temp',launch_angle+': 105+mph_raw_temp']] = launch_velo_model.predict_proba(df.loc[df['pitch_type_bucket']==pitch_type,launch_velo_model.feature_names_in_])
             for bucket in [launch_angle+': '+x for x in ['<90mph','90-95mph','95-100mph','100-105mph','105+mph']]:
                 df.loc[df['pitch_type_bucket']==pitch_type,bucket+'_pred'] = df.loc[df['pitch_type_bucket']==pitch_type,bucket+'_raw_temp'].mul(df.loc[df['pitch_type_bucket']==pitch_type,launch_angle+'_input_temp'])
 
-    run_expectancies = pd.read_csv('re_12_vals.csv').set_index(['cleaned_description','count']).to_dict()['delta_re']
+    run_expectancies = pd.read_csv('live_stuff/re_12_vals.csv').set_index(['cleaned_description','count']).to_dict()['delta_re']
     df['count'] = df['balls'].astype('str')+'_'+df['strikes'].astype('str')
     df['re12'] = df[['cleaned_description','count']].apply(tuple,axis=1).map(run_expectancies)
     
