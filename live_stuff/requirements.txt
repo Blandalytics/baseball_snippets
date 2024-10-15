@@ -1,0 +1,14 @@
+streamlit
+streamlit-aggrid
+matplotlib
+numpy
+pandas
+plotly
+scikit-learn
+seaborn
+statsmodels
+xgboost == 1.6.0
+scipy
+lxml
+pytz
+CairoSVG
