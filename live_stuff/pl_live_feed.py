@@ -1,3 +1,5 @@
+sudo apt-get install --reinstall python-pkg-resources
+
 import streamlit as st
 import datetime
 from datetime import timedelta
