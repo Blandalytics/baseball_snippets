@@ -9,5 +9,3 @@ seaborn
 statsmodels
 xgboost == 1.6.0
 scipy
-lxml
-pkg_resources
