@@ -398,7 +398,7 @@ def scrape_pitch_data(date,level):
                             'outs':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['outs'],
                             'balls':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['balls'],
                             'strikes':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['strikes'],
-                            'pitch_type':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['pitch_type'],
+                            'pitch_type':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['pitch_type'] if 'pitch_type' in x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch].keys() else 'UN',
                             'batter':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['batter'],
                             'batter_name':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['batter_name'],
                             'description':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['description'],
