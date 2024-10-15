@@ -492,7 +492,7 @@ model_feats = stuff_feats+category_feats
 
 def stuff_preds(df):
     cols = list(df.columns.values)
-    df[['swinging_strike_raw_temp','contact_raw_temp','contact_input_temp',
+    df[['stuff_reg','swinging_strike_raw_temp','contact_raw_temp','contact_input_temp',
                 'foul_strike_raw_temp','in_play_raw_temp','10deg_raw_temp','10-20deg_raw_temp',
                 '20-30deg_raw_temp','30-40deg_raw_temp','40-50deg_raw_temp','50+deg_raw_temp',
                 'swinging_strike_pred','foul_strike_pred','in_play_input','50+deg_pred',
@@ -506,9 +506,14 @@ def stuff_preds(df):
                  launch_angle+': 95-100mph_pred',launch_angle+': 100-105mph_pred',
                  launch_angle+': 105+mph_pred']] = None
         
-    for pitch_type in tqdm.tqdm(['Fastball','Breaking Ball','Offspeed']):
-        # Swing Result
-        
+    for pitch_type in ['Fastball','Breaking Ball','Offspeed']:
+         # Regression Model
+        with open(f'models/live_stuff_rv_model_{pitch_type}.pkl', 'rb') as f:
+            stuff_model = pickle.load(f)
+    
+        df.loc[df['pitch_type_bucket']==pitch_type,['stuff_reg']] = stuff_model.predict(df.loc[df['pitch_type_bucket']==pitch_type,stuff_model.feature_names_in_])
+      
+        # Swing Result        
         with open(f'models/live_stuff_contact_model_{pitch_type}.pkl', 'rb') as f:
             swing_result_model = pickle.load(f)
     
@@ -574,14 +579,6 @@ def stuff_preds(df):
     df['bbe_rv'] = df['delta_re_bbe'].sub(0.016315525368434315)
     df['stuff_rv'] = df['delta_re'].sub(-0.03020640800454353)
     df['stuff_class'] = df['stuff_rv'].div(0.03926217571950926).mul(-50).add(100)
-    
-    for pitch_type in ['Fastball','Breaking Ball','Offspeed']:
-        # Swing Result
-        with open(f'models/live_stuff_rv_model_{pitch_type}.pkl', 'rb') as f:
-            stuff_model = pickle.load(f)
-    
-        df.loc[df['pitch_type_bucket']==pitch_type,['stuff_reg']] = stuff_model.predict(df.loc[df['pitch_type_bucket']==pitch_type,stuff_model.feature_names_in_])
-
     df['stuff_reg'] = df['stuff_reg'].div(0.039239297258416656).mul(-50).add(100)
 
     df['plvStuff+'] = df[['stuff_class','stuff_reg']].mean(axis=1)
