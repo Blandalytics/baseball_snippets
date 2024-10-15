@@ -467,7 +467,7 @@ def scrape_pitch_data(date,level):
   
     return pitch_df.reset_index().rename(columns={'index':'pitch_id'})
 
-chart_df = load_savant(date,level_code)
+chart_df = scrape_pitch_data(date,level_code)
 
 if chart_df.shape[0]==0:
     st.write('No fastballs thrown')
