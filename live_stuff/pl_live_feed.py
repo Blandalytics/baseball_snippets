@@ -398,6 +398,7 @@ def scrape_pitch_data(date,level):
                             'outs':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['outs'],
                             'balls':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['balls'],
                             'strikes':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['strikes'],
+                            'pitch_type':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['pitch_type'],
                             'batter':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['batter'],
                             'batter_name':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['batter_name'],
                             'description':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['description'],
@@ -409,7 +410,6 @@ def scrape_pitch_data(date,level):
                     try:
                         pitch_data[x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['play_id']].update({
                             'velo':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['start_speed'],
-                            'pitch_type':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['pitch_type'],
                             'ivb':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['inducedBreakZ'],
                             'extension':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['extension'] if 'extension' in x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch].keys() else None,
                             'spin_rate':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['spin_rate'],
