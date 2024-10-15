@@ -11,5 +11,3 @@ xgboost == 1.6.0
 scipy
 lxml
 pytz
-CairoSVG
-pkg_resources
