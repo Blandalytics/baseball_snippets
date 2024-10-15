@@ -559,11 +559,11 @@ def stuff_preds(df):
     # Apply averages to each predicted grouping
     for outcome in ['out', 'single', 'double', 'triple', 'home_run']:
         # Start with 50+ degrees (popups)
-        df[outcome+'_pred'] = df['50+deg_pred'].mul(bip_result_dict['50+deg'][outcome])
+        df[outcome+'_pred'] = df['50+deg_pred']*bip_result_dict['50+deg'][outcome]
         
         for launch_angle in ['10deg','10-20deg','20-30deg','30-40deg','40-50deg']:
             for bucket in [launch_angle+': '+x for x in ['<90mph','90-95mph','95-100mph','100-105mph','105+mph']]:
-                df[outcome+'_pred'] += df[bucket+'_pred'].mul(bip_result_dict[bucket][outcome])
+                df[outcome+'_pred'] += df[bucket+'_pred']*bip_result_dict[bucket][outcome]
     
     for stat in ['swinging_strike','foul_strike','out','single','double','triple','home_run']:
         df[stat+'_re'] = stat
@@ -581,7 +581,7 @@ def stuff_preds(df):
     df['stuff_class'] = df['stuff_rv'].div(0.03882).mul(-50).add(100)
     df['stuff_reg'] = df['stuff_reg'].sub(-0.02979).div(0.05053).mul(-50).add(100)
 
-    df['plvStuff+'] = df[['stuff_class','stuff_reg']].mean(axis=1)
+    df['plvStuff+'] = df['stuff_class']#df[['stuff_class','stuff_reg']].mean(axis=1)
     return df[cols+['stuff_class','stuff_reg','plvStuff+']].copy()
 
 chart_df = stuff_preds(chart_df)
@@ -595,12 +595,10 @@ model_df = (chart_df
               'spin_rate':'Spin'
             })
             .groupby(['Pitcher'])
-            [['#','plvStuff+','stuff_class','stuff_reg','Velo','Ext','IVB','HAVAA','IHB','Spin','VAA','x0','z0']]
+            [['#','plvStuff+','Velo','Ext','IVB','HAVAA','IHB','Spin','VAA','x0','z0']]
             .agg({
                 '#':'count',
                 'plvStuff+':'mean',
-                'stuff_class':'mean',
-                'stuff_reg':'mean',
                 'Velo':'mean',
                 'Ext':'mean',
                 'IVB':'mean',
