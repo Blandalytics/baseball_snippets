@@ -600,9 +600,10 @@ model_df = (chart_df
               'spin_rate':'Spin'
             })
             .groupby(['Pitcher'])
-            [['#','Velo','Ext','IVB','HAVAA','IHB','Spin','VAA','x0','z0','plvStuff+']]
+            [['#','plvStuff+','Velo','Ext','IVB','HAVAA','IHB','Spin','VAA','x0','z0']]
             .agg({
                 '#':'count',
+                'plvStuff+':'mean'
                 'Velo':'mean',
                 'Ext':'mean',
                 'IVB':'mean',
@@ -612,7 +613,6 @@ model_df = (chart_df
                 'VAA':'mean',
                 'x0':'mean',
                 'z0':'mean',
-                'plvStuff+':'mean'
               })
             .sort_values('plvStuff+',ascending=False)
            )
