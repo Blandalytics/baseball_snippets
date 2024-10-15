@@ -594,7 +594,7 @@ model_df = (chart_df
               'velo':'Velo',
               'spin_rate':'Spin'
             })
-            .groupby(['Pitcher'])
+            .groupby(['Pitcher','pitch_type'])
             [['#','plvStuff+','Velo','Ext','IVB','HAVAA','IHB','Spin','VAA','x0','z0']]
             .agg({
                 '#':'count',
