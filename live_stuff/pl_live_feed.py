@@ -452,7 +452,7 @@ def scrape_pitch_data(date,level):
         'PO':'Other'
     }
     pitch_df['pitch_type_bucket'] = pitch_df['pitch_type'].map(group_map)
-    pitch_df[['IHB','IVB']] = spin_calcs(pitch_df)
+    pitch_df[['IHB','IVB','total_IB']] = spin_calcs(pitch_df)
     pitch_df['IHB'] = np.where(pitch_df['p_throws']=='R',pitch_df['IHB'].mul(-1),pitch_df['IHB'])
     pitch_df[['VAA','HAVAA']] = adjusted_vaa(pitch_df)
   
