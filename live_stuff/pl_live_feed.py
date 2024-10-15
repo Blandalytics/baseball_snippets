@@ -13,6 +13,7 @@ from plotly.subplots import make_subplots
 import plotly.offline as py
 import pytz
 import xgboost as xgb
+import pkg_resources
 from xgboost import XGBClassifier, XGBRegressor
 
 st.set_page_config(page_title='Live Pitcher List Feed', page_icon='⚾')
