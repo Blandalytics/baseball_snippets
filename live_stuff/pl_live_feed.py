@@ -556,7 +556,6 @@ def stuff_preds(df):
 
     run_expectancies = pd.read_csv('live_stuff/re_12_vals.csv').set_index(['cleaned_description','count']).to_dict()['delta_re']
     df['count'] = df['balls'].astype('str')+'_'+df['strikes'].astype('str')
-    df['re12'] = df[['cleaned_description','count']].apply(tuple,axis=1).map(run_expectancies)
     
     df['delta_re'] = 0
     df['delta_re_str'] = 0
