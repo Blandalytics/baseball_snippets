@@ -10,5 +10,4 @@ statsmodels
 xgboost == 1.6.0
 scipy
 lxml
-pytz
 pkg_resources
