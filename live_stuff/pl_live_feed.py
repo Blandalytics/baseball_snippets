@@ -624,7 +624,7 @@ st.dataframe(model_df
 
 players = list(chart_df
                .groupby('pitcher_name')
-               ['Live Stuff+']
+               ['Live plvStuff+']
                .mean()
                .reset_index()
                .sort_values('Live plvStuff+', ascending=False)
