@@ -603,7 +603,7 @@ model_df = (chart_df
             [['#','plvStuff+','Velo','Ext','IVB','HAVAA','IHB','Spin','VAA','x0','z0']]
             .agg({
                 '#':'count',
-                'plvStuff+':'mean'
+                'plvStuff+':'mean',
                 'Velo':'mean',
                 'Ext':'mean',
                 'IVB':'mean',
