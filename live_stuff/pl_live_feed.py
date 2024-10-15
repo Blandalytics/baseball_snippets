@@ -623,12 +623,12 @@ st.dataframe(model_df
 )
 
 players = list(chart_df
-               .groupby('pitchername')
-               [['pitch_id','plv_stuff_plus']]
-               .agg({'pitch_id':'count','plvStuff+':'mean'})
+               .groupby('pitcher_name')
+               ['plvStuff+']
+               .mean()
                .reset_index()
                .sort_values('plvStuff+', ascending=False)
-               ['pitchername']
+               ['pitcher_name']
               )
 
 pitcher = st.selectbox('Choose a pitcher:', players)
