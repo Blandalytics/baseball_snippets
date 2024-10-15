@@ -575,11 +575,11 @@ def stuff_preds(df):
             df['delta_re_bbe'] = df['delta_re_bbe'].add(df[stat+'_pred'].mul(df[stat+'_re']))
     
     df['wOBAcon_pred'] = df[['single_pred', 'double_pred', 'triple_pred', 'home_run_pred']].mul([0.9,1.25,1.6,2]).sum(axis=1).div(df['in_play_input'].astype('float'))
-    df['str_rv'] = df['delta_re_str'].sub(-0.046515)
-    df['bbe_rv'] = df['delta_re_bbe'].sub(0.014664)
-    df['stuff_rv'] = df['delta_re'].sub(-0.031851)
-    df['stuff_class'] = df['stuff_rv'].div(0.03882).mul(-50).add(100)
-    df['stuff_reg'] = df['stuff_reg'].sub(-0.02979).div(0.05053).mul(-50).add(100)
+    df['str_rv'] = df['delta_re_str'].sub(-0.047944)
+    df['bbe_rv'] = df['delta_re_bbe'].sub(0.014494)
+    df['stuff_rv'] = df['delta_re'].sub(-0.03345)
+    df['stuff_class'] = df['stuff_rv'].div(0.041137).mul(-50).add(100)
+    df['stuff_reg'] = df['stuff_reg'].sub(-0.03030).div(0.04699).mul(-50).add(100)
 
     df['plvStuff+'] = df['stuff_class']#df[['stuff_class','stuff_reg']].mean(axis=1)
     return df[cols+['stuff_class','stuff_reg','plvStuff+']].copy()
