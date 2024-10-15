@@ -581,8 +581,8 @@ def stuff_preds(df):
     df['stuff_class'] = df['stuff_rv'].div(0.041137).mul(-50).add(100)
     df['stuff_reg'] = df['stuff_reg'].sub(-0.03030).div(0.04699).mul(-50).add(100)
 
-    df['plvStuff+'] = df['stuff_class']#df[['stuff_class','stuff_reg']].mean(axis=1)
-    return df[cols+['stuff_class','stuff_reg','plvStuff+']].copy()
+    df['Live plvStuff+'] = df['stuff_class']#df[['stuff_class','stuff_reg']].mean(axis=1)
+    return df[cols+['stuff_class','stuff_reg','Live plvStuff+']].copy()
 
 chart_df = stuff_preds(chart_df)
 
@@ -596,12 +596,12 @@ model_df = (chart_df
             })
             .groupby(['Pitcher'#,'pitch_type'
                      ])
-            [['#','plvStuff+',
+            [['#','Live plvStuff+',
               'Velo','Ext','IVB','HAVAA','IHB','Spin','VAA','x0','z0'
              ]]
             .agg({
                 '#':'count',
-                'plvStuff+':'mean',
+                'Live plvStuff+':'mean',
                 'Velo':'mean',
                 'Ext':'mean',
                 'IVB':'mean',
@@ -612,22 +612,22 @@ model_df = (chart_df
                 'x0':'mean',
                 'z0':'mean',
               })
-            .sort_values('plvStuff+',ascending=False)
+            .sort_values('Live plvStuff+',ascending=False)
            )
 
 st.dataframe(model_df
              .style
              .format(precision=1, thousands=',')
-             .background_gradient(axis=0, vmin=85, vmax=115, cmap="vlag", subset=['plvStuff+']),
+             .background_gradient(axis=0, vmin=85, vmax=115, cmap="vlag", subset=['Live plvStuff+']),
             column_config={"Pitcher": st.column_config.Column(width="medium")}
 )
 
 players = list(chart_df
                .groupby('pitcher_name')
-               ['plvStuff+']
+               ['Live Stuff+']
                .mean()
                .reset_index()
-               .sort_values('plvStuff+', ascending=False)
+               .sort_values('Live plvStuff+', ascending=False)
                ['pitcher_name']
               )
 
@@ -643,10 +643,10 @@ player_df = (chart_df
               'spin_rate':'Spin'
             })
             .groupby('pitch_type')
-            [['#','plvStuff+','Velo','Ext','IVB','HAVAA','IHB','Spin','VAA','x0','z0']]
+            [['#','Live plvStuff+','Velo','Ext','IVB','HAVAA','IHB','Spin','VAA','x0','z0']]
             .agg({
                 '#':'count',
-                'plvStuff+':'mean',
+                'Live plvStuff+':'mean',
                 'Velo':'mean',
                 'Ext':'mean',
                 'IVB':'mean',
@@ -663,6 +663,6 @@ st.write(f"{pitcher}'s {date} Repertoire")
 st.dataframe(player_df
              .style
              .format(precision=1, thousands=',')
-             .background_gradient(axis=0, vmin=85, vmax=115, cmap="vlag", subset=['plvStuff+']),
+             .background_gradient(axis=0, vmin=85, vmax=115, cmap="vlag", subset=['Live plvStuff+']),
             column_config={"Pitcher": st.column_config.Column(width="medium")}
 )
