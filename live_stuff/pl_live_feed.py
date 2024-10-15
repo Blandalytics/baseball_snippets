@@ -642,8 +642,7 @@ player_df = (chart_df
               'velo':'Velo',
               'spin_rate':'Spin'
             })
-            .groupby(['Pitcher','pitch_type'
-                     ])
+            .groupby('pitch_type')
             [['#','plvStuff+','Velo','Ext','IVB','HAVAA','IHB','Spin','VAA','x0','z0']]
             .agg({
                 '#':'count',
@@ -660,6 +659,7 @@ player_df = (chart_df
               })
             .sort_values('#',ascending=False)
             )
+st.write(f"{pitcher}'s {date} Repertoire")
 st.dataframe(player_df
              .style
              .format(precision=1, thousands=',')
