@@ -634,7 +634,7 @@ players = list(chart_df
 pitcher = st.selectbox('Choose a pitcher:', players)
 
 player_df = (chart_df
-             .loc[chart_df['pitchername']==pitcher]
+             .loc[chart_df['pitcher_name']==pitcher]
              .rename(columns={
               'pitcher_name':'Pitcher',
               'pitch_id':'#',
@@ -660,3 +660,9 @@ player_df = (chart_df
               })
             .sort_values('#',ascending=False)
             )
+st.dataframe(player_df
+             .style
+             .format(precision=1, thousands=',')
+             .background_gradient(axis=0, vmin=85, vmax=115, cmap="vlag", subset=['plvStuff+']),
+            column_config={"Pitcher": st.column_config.Column(width="medium")}
+)
