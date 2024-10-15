@@ -1,5 +1,3 @@
-sudo apt-get install --reinstall python-pkg-resources
-
 import streamlit as st
 import datetime
 from datetime import timedelta
@@ -16,6 +14,7 @@ import plotly.offline as py
 import pytz
 import xgboost as xgb
 from xgboost import XGBClassifier, XGBRegressor
+
 st.set_page_config(page_title='Live Pitcher List Feed', page_icon='⚾')
 
 logo_loc = 'https://github.com/Blandalytics/PLV_viz/blob/main/data/PL-text-wht.png?raw=true'
