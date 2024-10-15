@@ -517,7 +517,7 @@ def stuff_preds(df):
         with open(f'live_stuff/models/live_stuff_rv_model_{pitch_type}.pkl', 'rb') as f:
             stuff_model = pickle.load(f)
     
-        df.loc[df['pitch_type_bucket']==pitch_type,['stuff_reg']] = stuff_model.predict(df.loc[df['pitch_type_bucket']==pitch_type,stuff_model.feature_names_in_])
+        df.loc[df['pitch_type_bucket']==pitch_type,'stuff_reg'] = stuff_model.predict(df.loc[df['pitch_type_bucket']==pitch_type,stuff_model.feature_names_in_])
       
         # Swing Result        
         with open(f'live_stuff/models/live_stuff_contact_model_{pitch_type}.pkl', 'rb') as f:
@@ -584,7 +584,7 @@ def stuff_preds(df):
     df['bbe_rv'] = df['delta_re_bbe'].sub(0.014664)
     df['stuff_rv'] = df['delta_re'].sub(-0.031851)
     df['stuff_class'] = df['stuff_rv'].div(0.03882).mul(-50).add(100)
-    df['stuff_reg'] = df['stuff_reg'].sub(-0.02979).div(0.05061).mul(-50).add(100)
+    df['stuff_reg'] = df['stuff_reg'].sub(-0.02979).div(0.05053).mul(-50).add(100)
 
     df['plvStuff+'] = df[['stuff_class','stuff_reg']].mean(axis=1)
     return df[cols+['stuff_class','stuff_reg','plvStuff+']].copy()
