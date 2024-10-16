@@ -358,9 +358,13 @@ with col1:
     level_code = level_dict[level]
 with col2:
     date = st.date_input("Select a game date:", today, min_value=datetime.date(2021, 3, 1), max_value=today)
+with col3:
+    role_filter = st.selectbox('Choose a pitcher role:', ['All','SP','RP'])
+    role_dict = {'All':[0,1],'SP':[1],'RP':[0]}
+    role_code = role_dict[role_filter]
 
 @st.cache_data(ttl=90,show_spinner=f"Loading data")
-def scrape_pitch_data(date,level):
+def scrape_pitch_data(date,level,role_code):
     pitch_data={}
     r = requests.get(f'https://statsapi.mlb.com/api/v1/schedule?sportId={level}&date={date}')
     x = r.json()
@@ -447,7 +451,7 @@ def scrape_pitch_data(date,level):
                         })
     pitch_df = pd.DataFrame.from_dict({i: pitch_data[i] for i in pitch_data.keys()},
                                        orient='index')
-    # pitch_df['Starter'] = np.where(pitch_df['inning'].groupby(pitch_df['pitcher_id']).transform('min')==1,1,0)
+    pitch_df['Starter'] = np.where(pitch_df['inning'].groupby(pitch_df['pitcher_id']).transform('min')==1,1,0)
     group_map = {
         'FF':'Fastball',
         'SI':'Fastball',
@@ -483,9 +487,9 @@ def scrape_pitch_data(date,level):
     dummy_cols = list(pd.get_dummies(pitch_df[['p_throws','stand','balls','strikes']].astype('str')).columns.values)
     pitch_df[dummy_cols] = pd.get_dummies(pitch_df[['p_throws','stand','balls','strikes']].astype('str'))
   
-    return pitch_df.reset_index().rename(columns={'index':'pitch_id'})
+    return pitch_df.loc[pitch_df['Starter'].isin(role_code)].reset_index().rename(columns={'index':'pitch_id'})
 
-chart_df = scrape_pitch_data(date,level_code)
+chart_df = scrape_pitch_data(date,level_code,role_code)
 # st.write(chart_df['balls'].unique())
 
 if chart_df.shape[0]==0:
