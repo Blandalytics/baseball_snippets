@@ -401,10 +401,10 @@ def scrape_pitch_data(date,level):
                             'pitch_type':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['pitch_type'] if 'pitch_type' in x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch].keys() else 'UN',
                             'batter':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['batter'],
                             'batter_name':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['batter_name'],
-                            'description':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['description'],
-                            'events':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['events'],
-                            'hit_speed':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['hit_speed'] if 'hit_speed' in x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch].keys() else None,
-                            'hit_angle':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['hit_angle'] if 'hit_angle' in x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch].keys() else None
+                            # 'description':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['description'],
+                            # 'events':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['events'],
+                            # 'hit_speed':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['hit_speed'] if 'hit_speed' in x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch].keys() else None,
+                            # 'hit_angle':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['hit_angle'] if 'hit_angle' in x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch].keys() else None
                             }
                     })
                     try:
