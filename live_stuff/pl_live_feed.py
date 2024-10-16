@@ -380,7 +380,7 @@ def scrape_pitch_data(date,level,role_code):
         r = requests.get(f'https://baseballsavant.mlb.com/gf?game_pk={game_id}')
         x = r.json()
         for home_away_pitcher in ['home','away']:
-            if f'{home_away_pitcher}_pitchers' not in x.keys():
+            if x['game_status']=='S':
                 continue
             for pitcher_id in list(x[f'{home_away_pitcher}_pitchers'].keys()):
                 for pitch in range(len(x[f'{home_away_pitcher}_pitchers'][pitcher_id])):
