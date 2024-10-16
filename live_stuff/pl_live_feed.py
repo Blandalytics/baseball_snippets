@@ -427,7 +427,24 @@ def scrape_pitch_data(date,level):
                             'sz_bot':x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['sz_bot']
                         })
                     except KeyError:
-                        None
+                        pitch_data[x[f'{home_away_pitcher}_pitchers'][pitcher_id][pitch]['play_id']].update({
+                            'velo':None,
+                            'ivb':None,
+                            'extension':None,
+                            'spin_rate':None,
+                            'x0':None,
+                            'z0':None,
+                            'vx0':None,
+                            'vy0':None,
+                            'vz0':None,
+                            'ax':None,
+                            'ay':None,
+                            'az':None,
+                            'px':None,
+                            'pz':None,
+                            'sz_top':None,
+                            'sz_bot':None
+                        })
     pitch_df = pd.DataFrame.from_dict({i: pitch_data[i] for i in pitch_data.keys()},
                                        orient='index')
     # pitch_df['Starter'] = np.where(pitch_df['inning'].groupby(pitch_df['pitcher_id']).transform('min')==1,1,0)
