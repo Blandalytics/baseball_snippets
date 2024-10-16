@@ -569,11 +569,11 @@ def stuff_preds(df):
     for stat in ['swinging_strike','foul_strike','out','single','double','triple','home_run']:
         df[stat+'_re'] = stat
         df[stat+'_re'] = df[[stat+'_re','count']].apply(tuple,axis=1).map(run_expectancies)
-        df['delta_re'] = df['delta_re'].add(df[stat+'_pred'].mul(df[stat+'_re']))
+        df['delta_re'] = df['delta_re'].add(df[stat+'_pred'].fillna(0).mul(df[stat+'_re']))
         if stat in ['swinging_strike','foul_strike']:
-            df['delta_re_str'] = df['delta_re_str'].add(df[stat+'_pred'].mul(df[stat+'_re']))
+            df['delta_re_str'] = df['delta_re_str'].add(df[stat+'_pred'].fillna(0).mul(df[stat+'_re']))
         else:
-            df['delta_re_bbe'] = df['delta_re_bbe'].add(df[stat+'_pred'].mul(df[stat+'_re']))
+            df['delta_re_bbe'] = df['delta_re_bbe'].add(df[stat+'_pred'].fillna(0).mul(df[stat+'_re']))
     
     df['wOBAcon_pred'] = df[['single_pred', 'double_pred', 'triple_pred', 'home_run_pred']].mul([0.9,1.25,1.6,2]).sum(axis=1).div(df['in_play_input'].astype('float'))
     df['str_rv'] = df['delta_re_str'].sub(-0.047944)
