@@ -646,7 +646,6 @@ st.dataframe(model_df
 )
 
 players = list(chart_df
-               .dropna()
                .groupby('pitcher_name')
                ['Live plvStuff+']
                .mean()
