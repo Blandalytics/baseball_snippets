@@ -475,10 +475,11 @@ if chart_df.shape[0]==0:
     st.write('No fastballs thrown')
     st.stop()
 
-category_feats = ['p_throws_L', 'stand_L',
-                  'balls_1','balls_2','balls_3',
-                  'strikes_1','strikes_2'
-                 ]
+category_feats = ['p_throws_L', 'stand_L']
+for feat in category_feats:
+    if feat not in chart_df.columns.values:
+        chart_df[feat] = False
+
 stuff_feats = ['velo','velo_diff',
                'extension',
                'spin_rate',
