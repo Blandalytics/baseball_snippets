@@ -634,6 +634,7 @@ model_df = (chart_df
            )
 
 st.dataframe(model_df
+             .dropna()
              .style
              .format(precision=1, thousands=',')
              .background_gradient(axis=0, vmin=85, vmax=115, cmap="vlag", subset=['Live plvStuff+']),
@@ -641,6 +642,7 @@ st.dataframe(model_df
 )
 
 players = list(chart_df
+               .dropna()
                .groupby('pitcher_name')
                ['Live plvStuff+']
                .mean()
@@ -682,5 +684,5 @@ st.dataframe(player_df
              .style
              .format(precision=1, thousands=',')
              .background_gradient(axis=0, vmin=85, vmax=115, cmap="vlag", subset=['Live plvStuff+']),
-            column_config={"Pitcher": st.column_config.Column(width="medium")}
+             column_config={"Pitcher": st.column_config.Column(width="medium")}
 )
