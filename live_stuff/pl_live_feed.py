@@ -359,7 +359,7 @@ with col1:
 with col2:
     date = st.date_input("Select a game date:", today, min_value=datetime.date(2021, 3, 1), max_value=today)
 with col3:
-    role_filter = st.selectbox('Choose a pitcher role:', ['All','SP','RP'])
+    role_filter = st.selectbox('Choose a pitcher role:', ['All','SP','RP'], index=1)
     role_dict = {'All':[0,1],'SP':[1],'RP':[0]}
     role_code = role_dict[role_filter]
 
