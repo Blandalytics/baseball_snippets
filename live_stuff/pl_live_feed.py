@@ -374,8 +374,13 @@ def scrape_pitch_data(date,level,role_code):
     
     game_list = []
     for game in range(len(x['dates'][0]['games'])):
+        if x['dates'][0]['games'][game]['status']['statusCode'] == 'S':
+          continue
         game_list += [x['dates'][0]['games'][game]['gamePk']]
-    
+    if len(game_list)==0:
+        st.write('No games started')
+        st.stop()
+      
     for game_id in game_list:
         r = requests.get(f'https://baseballsavant.mlb.com/gf?game_pk={game_id}')
         x = r.json()
