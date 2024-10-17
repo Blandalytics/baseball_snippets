@@ -374,7 +374,7 @@ def scrape_pitch_data(date,level,role_code):
     
     game_list = []
     for game in range(len(x['dates'][0]['games'])):
-        if x['dates'][0]['games'][game]['status']['statusCode'] == 'S':
+        if x['dates'][0]['games'][game]['status']['statusCode'] in ['S','PW']:
           continue
         game_list += [x['dates'][0]['games'][game]['gamePk']]
     if len(game_list)==0:
