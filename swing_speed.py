@@ -591,7 +591,7 @@ def swing_heatmap(df,hitter,base_stat,handedness):
                                  xy=(1, 0), va="bottom",color="k")
         sns.despine(left=True,bottom=True)
         st.pyplot(fig)
-swing_heatmap(heatmap_data(swing_data,stat,handedness),player,stat,handedness)
+# swing_heatmap(heatmap_data(swing_data,stat,handedness),player,stat,handedness)
 
 st.header('Assumptions & Formulas')
 st.write('Assumptions:')
