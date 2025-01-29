@@ -67,7 +67,7 @@ player = st.selectbox('Choose a player:', player_list,
 
 start_date = datetime.date(2024,10,20)
 def plot_draft_data(df,player,start_date):
-  chart_df = df.loc[(df['Player']==player) & (df['end_date'].dt.date >= start_date)].copy()
+  chart_df = df.loc[(df['Player']==player) & (df['end_date'] >= start_date)].copy()
   chart_start = start_date.strftime('%-m/%-d/%y')
   chart_end = chart_df['end_date'].max()
   chart_end = chart_end.strftime('%-m/%-d/%y')
