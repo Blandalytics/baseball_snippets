@@ -100,20 +100,24 @@ def plot_draft_data(df,player,start_date):
            ha='left',va='center')
   
   min_val = chart_df.iloc[-1]['Min Pick']
-  ax.text(chart_df.iloc[-1]['end_date'] + datetime.timedelta(days=2),
-          min_val,
-          f'Min Pick: {min_val:.0f}',
-           ha='left',va='center', color=chart_red)
+  if min_val <= adp_val*0.9:
+    ax.text(chart_df.iloc[-1]['end_date'] + datetime.timedelta(days=2),
+            min_val,
+            f'Min Pick: {min_val:.0f}',
+             ha='left',va='center', color=chart_red)
   
   max_val = chart_df.iloc[-1]['Max Pick']
-  ax.text(chart_df.iloc[-1]['end_date'] + datetime.timedelta(days=2),
-          max_val,
-          f'Max Pick: {max_val:.0f}',
-           ha='left',va='center',color=chart_blue)
-  ax.text(chart_df.iloc[-1]['end_date'] + datetime.timedelta(days=2),
-          chart_df.iloc[-1]['ADP'] + chart_df.iloc[-1]['StDev Est'],
-          'St Dev (est)',
-           ha='left',va='center',color='#aaaaaa')
+  if max_val >= adp_val*1.2:
+    ax.text(chart_df.iloc[-1]['end_date'] + datetime.timedelta(days=2),
+            max_val,
+            f'Max Pick: {max_val:.0f}',
+             ha='left',va='center',color=chart_blue)
+    
+  if chart_df.iloc[-1]['ADP'] + chart_df.iloc[-1]['StDev Est'] >= adp_val*1.1:
+    ax.text(chart_df.iloc[-1]['end_date'] + datetime.timedelta(days=2),
+            chart_df.iloc[-1]['ADP'] + chart_df.iloc[-1]['StDev Est'],
+            'St Dev (est)',
+             ha='left',va='center',color='#aaaaaa')
   
   ax.set(xlim=(ax.get_xlim()[0],chart_df['end_date'].max()),
          xlabel='')
