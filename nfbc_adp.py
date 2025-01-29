@@ -19,8 +19,8 @@ st.title("NFBC Draft Data, over Time")
 @st.cache_data(ttl=6000,show_spinner=f"Loading draft data")
 def load_data():
   df = pd.read_parquet('https://github.com/Blandalytics/baseball_snippets/blob/main/nfbc_adp_data.parquet?raw=true')
-  df['start_date'] = pd.to_datetime(df['start_date'])
-  df['end_date'] = pd.to_datetime(df['end_date'])
+  df['start_date'] = pd.to_datetime(df['start_date']).dt.date
+  df['end_date'] = pd.to_datetime(df['end_date']).dt.date
   return df
 
 nfbc_adp_df = load_data()
@@ -65,11 +65,11 @@ player_list = list(
 player = st.selectbox('Choose a player:', player_list,
                       index=player_list.index('Lawrence Butler'))
 
-start_date = datetime.date(2024,10,1)
+start_date = datetime.date(2024,10,20)
 def plot_draft_data(df,player,start_date):
   chart_df = df.loc[(df['Player']==player) & (df['end_date'].dt.date >= start_date)].copy()
   chart_start = start_date.strftime('%-m/%-d/%y')
-  chart_end = datetime.datetime.now() - datetime.timedelta(days=8)
+  chart_end = chart_df['end_date'].max()
   chart_end = chart_end.strftime('%-m/%-d/%y')
   
   fig, ax = plt.subplots(figsize=(6,4))
