@@ -62,7 +62,7 @@ player_list = list(
 )
 
 player = st.selectbox('Choose a player:', player_list,
-                      index=player_list.index('Lawrence Butler')
+                      index=player_list.index('Lawrence Butler'))
 
 start_date = datetime.date(2024,10,1)
 def plot_draft_data(df,player,start_date):
