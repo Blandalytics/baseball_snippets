@@ -24,8 +24,8 @@ def load_data():
   return df
 
 nfbc_adp_df = load_data()
-update_date = nfbc_adp_df['end_date'].max().strftime('%#m/%#d/%y')
-st.write(f'Last updated: {update_date}')
+update_date = nfbc_adp_df['end_date'].max().strftime('%-m/%-d/%y')
+st.write(f'Data is through {update_date}')
 ## Set Styling
 # Plot Style
 pl_white = '#FEFEFE'
