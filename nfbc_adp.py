@@ -65,6 +65,7 @@ with col1:
                  .sort_values('perc_diff',ascending=True)
                  .round(1)
                  .rename(columns={'perc_diff':'% Diff'})
+                 .drop(columns=['Player ID'])
                  .head(10)
                  .style
                  .format(precision=1, thousands='')
@@ -85,6 +86,7 @@ with col2:
                  .sort_values('perc_diff',ascending=False)
                  .round(1)
                  .rename(columns={'perc_diff':'% Diff'})
+                 .drop(columns=['Player ID'])
                  .head(10)
                  .style
                  .format(precision=1, thousands='')
