@@ -78,7 +78,7 @@ st.dataframe(pd
                     suffixes=['_early','_current'])
              .assign(perc_diff = lambda x: (x['ADP_current']-x['ADP_early'])/x['ADP_early'] * 100)
              .query('ADP_current <= 200')
-             .sort_values('perc_diff',ascending=false)
+             .sort_values('perc_diff',ascending=False)
              .round(1)
              .rename(columns={'perc_diff':'% Diff'})
              .head(10)
