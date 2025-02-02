@@ -51,22 +51,22 @@ sns.set_theme(
 chart_red = sns.color_palette('vlag',n_colors=10000)[-1]
 chart_blue = sns.color_palette('vlag',n_colors=10000)[0]
 
-col1, col2 = st.columns(2)
+adp_diff_df = (pd
+               .merge(nfbc_adp_df.loc[nfbc_adp_df['end_date'] == datetime.date(2024,11,1),['Player ID','Player','ADP']],
+                      nfbc_adp_df.loc[nfbc_adp_df['end_date'] == nfbc_adp_df['end_date'].max(),['Player ID','Player','ADP']],
+                      on=['Player ID','Player'],
+                      suffixes=['_early','_current'])
+               .assign(perc_diff = lambda x: (x['ADP_current']-x['ADP_early'])/x['ADP_early'] * 100)
+               .query('ADP_current <= 300')
+               .sort_values('perc_diff',ascending=True)
+               .round(1)
+               .rename(columns={'perc_diff':'% Diff'})
+               .drop(columns=['Player ID']))
 
+col1, col2 = st.columns(2)
 with col1:
-    st.write('Biggest risers since 11/1/24 (current ADP < 200)')
-    st.dataframe(pd
-                 .merge(nfbc_adp_df.loc[nfbc_adp_df['end_date'] == datetime.date(2024,11,1),['Player ID','Player','ADP']],
-                        nfbc_adp_df.loc[nfbc_adp_df['end_date'] == nfbc_adp_df['end_date'].max(),['Player ID','Player','ADP']],
-                        on=['Player ID','Player'],
-                        suffixes=['_early','_current'])
-                 .assign(perc_diff = lambda x: (x['ADP_current']-x['ADP_early'])/x['ADP_early'] * 100)
-                 .query('ADP_current <= 200')
-                 .sort_values('perc_diff',ascending=True)
-                 .round(1)
-                 .rename(columns={'perc_diff':'% Diff'})
-                 .drop(columns=['Player ID'])
-                 .head(25)
+    st.write('Biggest risers since 11/1/24 (current ADP < 300)')
+    st.dataframe(adp_diff_df.sort_values('% Diff',ascending=True).head(25)
                  .style
                  .format(precision=1, thousands='')
                  .background_gradient(axis=0, vmin=-50, vmax=50,
@@ -75,19 +75,8 @@ with col1:
                  )
 
 with col2:
-    st.write('Biggest fallers since 11/1/24 (current ADP < 200)')
-    st.dataframe(pd
-                 .merge(nfbc_adp_df.loc[nfbc_adp_df['end_date'] == datetime.date(2024,11,1),['Player ID','Player','ADP']],
-                        nfbc_adp_df.loc[nfbc_adp_df['end_date'] == nfbc_adp_df['end_date'].max(),['Player ID','Player','ADP']],
-                        on=['Player ID','Player'],
-                        suffixes=['_early','_current'])
-                 .assign(perc_diff = lambda x: (x['ADP_current']-x['ADP_early'])/x['ADP_early'] * 100)
-                 .query('ADP_current <= 200')
-                 .sort_values('perc_diff',ascending=False)
-                 .round(1)
-                 .rename(columns={'perc_diff':'% Diff'})
-                 .drop(columns=['Player ID'])
-                 .head(25)
+    st.write('Biggest fallers since 11/1/24 (current ADP < 300)')
+    st.dataframe(adp_diff_df.sort_values('% Diff',ascending=False).head(25)
                  .style
                  .format(precision=1, thousands='')
                  .background_gradient(axis=0, vmin=-50, vmax=50,
@@ -187,3 +176,11 @@ def plot_draft_data(df,player,start_date):
   st.pyplot(fig)
 
 plot_draft_data(nfbc_adp_df,player,start_date)
+
+st.dataframe(adp_diff_df
+             .style
+             .format(precision=1, thousands='')
+             .background_gradient(axis=0, vmin=-50, vmax=50,
+                                  cmap="vlag_r", subset=['% Diff']),
+             hide_index=True
+             )
