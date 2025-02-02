@@ -183,5 +183,5 @@ st.dataframe(adp_diff_df
              .background_gradient(axis=0, vmin=-50, vmax=50,
                                   cmap="vlag_r", subset=['% Diff']),
              hide_index=True,
-             width=300
+             width=500
              )
