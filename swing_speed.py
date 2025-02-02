@@ -78,7 +78,7 @@ with col1:
                                       min_value=0, 
                                       max_value=swing_data.groupby('Hitter')['Swings'].sum().astype('int').max(),
                                       step=25, 
-                                      value=100)
+                                      value=200)
 with col2:
     team = st.selectbox('Team:',
                         ['All','ATL', 'AZ', 'BAL', 'BOS', 'CHC', 'CIN', 'CLE', 'COL', 'CWS',
