@@ -57,7 +57,7 @@ adp_diff_df = (pd
                       on=['Player ID','Player'],
                       suffixes=['_early','_current'])
                .assign(perc_diff = lambda x: (x['ADP_current']-x['ADP_early'])/x['ADP_early'] * 100,
-                       val_diff = lambda x: np.log(x['ADP_current']) - np.log(x['ADP_early']))
+                       val_diff = lambda x: -10.19 * (np.log(x['ADP_current']) - np.log(x['ADP_early'])))
                .query('ADP_current <= 300')
                .sort_values('perc_diff',ascending=True)
                .round(1)
