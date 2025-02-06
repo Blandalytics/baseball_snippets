@@ -194,7 +194,7 @@ def plot_draft_data(df,player,start_date):
 
 plot_draft_data(nfbc_adp_df,player,start_date)
 st.write('ADP differences (current ADP <300)')
-st.dataframe(adp_diff_df.sort_values('% Diff',ascending=False).head(25)
+st.dataframe(adp_diff_df.sort_values('% Diff')
                  .style
                  .format(precision=1, thousands='')
                  .format(format_dollar_amount,subset=['Val Diff'])
