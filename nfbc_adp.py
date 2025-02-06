@@ -83,7 +83,7 @@ with col1:
                  .format(format_dollar_amount,subset=['Val Diff'])
                  .background_gradient(axis=0, vmin=-50, vmax=50,
                                       cmap="vlag_r", subset=['% Diff'])
-                 .background_gradient(axis=0, vmin=-5, vmax=5,
+                 .background_gradient(axis=0, vmin=-7.4, vmax=7.4,
                                       cmap="vlag", subset=['Val Diff']),
                  hide_index=True
                  )
@@ -96,7 +96,7 @@ with col2:
                  .format(format_dollar_amount,subset=['Val Diff'])
                  .background_gradient(axis=0, vmin=-50, vmax=50,
                                       cmap="vlag_r", subset=['% Diff'])
-                 .background_gradient(axis=0, vmin=-5, vmax=5,
+                 .background_gradient(axis=0, vmin=-7.4, vmax=7.4,
                                       cmap="vlag", subset=['Val Diff']),
                  hide_index=True
                  )
