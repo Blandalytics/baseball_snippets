@@ -81,7 +81,7 @@ with col1:
                  .style
                  .format(precision=1, thousands='')
                  .format(format_dollar_amount,subset=['Val Diff'])
-                 .background_gradient(axis=0, vmin=-50, vmax=50,
+                 .background_gradient(axis=0, vmin=-50, vmax=100,
                                       cmap="vlag_r", subset=['% Diff'])
                  .background_gradient(axis=0, vmin=-7, vmax=7,
                                       cmap="vlag", subset=['Val Diff']),
@@ -94,7 +94,7 @@ with col2:
                  .style
                  .format(precision=1, thousands='')
                  .format(format_dollar_amount,subset=['Val Diff'])
-                 .background_gradient(axis=0, vmin=-50, vmax=50,
+                 .background_gradient(axis=0, vmin=-50, vmax=100,
                                       cmap="vlag_r", subset=['% Diff'])
                  .background_gradient(axis=0, vmin=-7, vmax=7, 
                                       cmap="vlag", subset=['Val Diff']),
@@ -194,11 +194,14 @@ def plot_draft_data(df,player,start_date):
 
 plot_draft_data(nfbc_adp_df,player,start_date)
 st.write('ADP differences (current ADP <300)')
-st.dataframe(adp_diff_df
-             .style
-             .format(precision=1, thousands='')
-             .background_gradient(axis=0, vmin=-50, vmax=50,
-                                  cmap="vlag_r", subset=['% Diff']),
-             hide_index=True,
+st.dataframe(adp_diff_df.sort_values('% Diff',ascending=False).head(25)
+                 .style
+                 .format(precision=1, thousands='')
+                 .format(format_dollar_amount,subset=['Val Diff'])
+                 .background_gradient(axis=0, vmin=-50, vmax=100,
+                                      cmap="vlag_r", subset=['% Diff'])
+                 .background_gradient(axis=0, vmin=-7, vmax=7, 
+                                      cmap="vlag", subset=['Val Diff']),
+                 hide_index=True,
              width=500
              )
