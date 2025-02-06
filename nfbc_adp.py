@@ -199,7 +199,7 @@ def plot_draft_data(df,player,start_date):
   st.pyplot(fig)
 
 plot_draft_data(nfbc_adp_df,player,start_date)
-st.write('ADP differences (current ADP <300)')
+st.write(f'ADP differences since {adp_start_date.strftime('%-m/%-d/%y')} (current ADP <300)')
 st.dataframe(adp_diff_df.sort_values('% Diff')
                  .style
                  .format(precision=1, thousands='')
