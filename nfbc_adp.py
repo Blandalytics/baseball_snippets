@@ -56,9 +56,14 @@ def format_dollar_amount(amount):
     if round(amount, 2) < 0:
         return f'-{formatted_absolute_amount}'
     return formatted_absolute_amount
+adp_start_date = st.date_input("ADP Start Date", 
+                               datetime.date(2024,11,1),
+                               min_value=datetime.date(2024,10,20),
+                               max_value=datetime.date.today() - datetime.timedelta(days=7))
+start_string = adp_start_date.strftime('%-m/%-d')
 
 adp_diff_df = (pd
-               .merge(nfbc_adp_df.loc[nfbc_adp_df['end_date'] == datetime.date(2024,11,1),['Player ID','Player','ADP']],
+               .merge(nfbc_adp_df.loc[nfbc_adp_df['end_date'] == adp_start_date,['Player ID','Player','ADP']],
                       nfbc_adp_df.loc[nfbc_adp_df['end_date'] == nfbc_adp_df['end_date'].max(),['Player ID','Player','ADP']],
                       on=['Player ID','Player'],
                       suffixes=['_early','_current'])
@@ -67,7 +72,7 @@ adp_diff_df = (pd
                .query('ADP_current <= 300')
                .sort_values('perc_diff',ascending=True)
                .round(1)
-               .rename(columns={'ADP_early':'Early',
+               .rename(columns={'ADP_early':start_string,
                                 'ADP_current':'Current',
                                 'perc_diff':'% Diff',
                                 'val_diff':'Val Diff'})
@@ -76,7 +81,7 @@ adp_diff_df = (pd
 st.write('Value Diff is the modeled Auction Value of the Current Rank minus the modeled Auction Value of the Early Rank')
 col1, col2 = st.columns(2)
 with col1:
-    st.write('Biggest risers since 11/1/24 (current ADP < 300)')
+    st.write(f'Biggest risers since {adp_start_date.strftime('%-m/%-d/%y')} (current ADP < 300)')
     st.dataframe(adp_diff_df.sort_values('% Diff',ascending=True).head(25)
                  .style
                  .format(precision=1, thousands='')
@@ -89,7 +94,7 @@ with col1:
                  )
 
 with col2:
-    st.write('Biggest fallers since 11/1/24 (current ADP < 300)')
+    st.write(f'Biggest fallers since {adp_start_date.strftime('%-m/%-d/%y')} (current ADP < 300)')
     st.dataframe(adp_diff_df.sort_values('% Diff',ascending=False).head(25)
                  .style
                  .format(precision=1, thousands='')
