@@ -56,13 +56,16 @@ adp_diff_df = (pd
                       nfbc_adp_df.loc[nfbc_adp_df['end_date'] == nfbc_adp_df['end_date'].max(),['Player ID','Player','ADP']],
                       on=['Player ID','Player'],
                       suffixes=['_early','_current'])
-               .assign(perc_diff = lambda x: (x['ADP_current']-x['ADP_early'])/x['ADP_early'] * 100)
+               .assign(perc_diff = lambda x: (x['ADP_current']-x['ADP_early'])/x['ADP_early'] * 100,
+                       val_diff = lambda x: np.log(x['ADP_current']) - np.log(x['ADP_early']))
                .query('ADP_current <= 300')
                .sort_values('perc_diff',ascending=True)
                .round(1)
-               .rename(columns={'perc_diff':'% Diff'})
+               .rename(columns={'perc_diff':'% Diff',
+                               'val_diff':'Val Diff'})
                .drop(columns=['Player ID']))
 
+st.write('Value Diff is the modeled Auction Value of the Current Rank minus the modeled Auction Value of the Early Rank')
 col1, col2 = st.columns(2)
 with col1:
     st.write('Biggest risers since 11/1/24 (current ADP < 300)')
@@ -70,7 +73,9 @@ with col1:
                  .style
                  .format(precision=1, thousands='')
                  .background_gradient(axis=0, vmin=-50, vmax=50,
-                                      cmap="vlag_r", subset=['% Diff']),
+                                      cmap="vlag_r", subset=['% Diff'])
+                 .background_gradient(axis=0, vmin=-5, vmax=5,
+                                      cmap="vlag", subset=['Val Diff']),
                  hide_index=True
                  )
 
