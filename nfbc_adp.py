@@ -100,7 +100,7 @@ player_list = list(
 player = st.selectbox('Choose a player:', player_list,
                       index=player_list.index('Lawrence Butler'))
 
-start_date = datetime.date(2024,10,20)
+start_date = datetime.date(2024,10,21)
 def plot_draft_data(df,player,start_date):
   chart_df = df.loc[(df['Player']==player) & (df['end_date'] >= start_date)].copy()
   chart_start = start_date.strftime('%-m/%-d/%y')
