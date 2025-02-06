@@ -51,6 +51,12 @@ sns.set_theme(
 chart_red = sns.color_palette('vlag',n_colors=10000)[-1]
 chart_blue = sns.color_palette('vlag',n_colors=10000)[0]
 
+def format_dollar_amount(amount):
+    formatted_absolute_amount = '${:.1f}'.format(abs(amount))
+    if round(amount, 2) < 0:
+        return f'-{formatted_absolute_amount}'
+    return formatted_absolute_amount
+
 adp_diff_df = (pd
                .merge(nfbc_adp_df.loc[nfbc_adp_df['end_date'] == datetime.date(2024,11,1),['Player ID','Player','ADP']],
                       nfbc_adp_df.loc[nfbc_adp_df['end_date'] == nfbc_adp_df['end_date'].max(),['Player ID','Player','ADP']],
@@ -87,7 +93,7 @@ with col2:
     st.dataframe(adp_diff_df.sort_values('% Diff',ascending=False).head(25)
                  .style
                  .format(precision=1, thousands='')
-                 .format('${:.1f}',subset=['Val Diff'])
+                 .format(format_dollar_amount(),subset=['Val Diff'])
                  .background_gradient(axis=0, vmin=-50, vmax=50,
                                       cmap="vlag_r", subset=['% Diff'])
                  .background_gradient(axis=0, vmin=-5, vmax=5,
