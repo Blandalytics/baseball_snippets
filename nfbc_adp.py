@@ -85,7 +85,9 @@ with col2:
                  .style
                  .format(precision=1, thousands='')
                  .background_gradient(axis=0, vmin=-50, vmax=50,
-                                      cmap="vlag_r", subset=['% Diff']),
+                                      cmap="vlag_r", subset=['% Diff'])
+                 .background_gradient(axis=0, vmin=-5, vmax=5,
+                                      cmap="vlag", subset=['Val Diff']),
                  hide_index=True
                  )
 
