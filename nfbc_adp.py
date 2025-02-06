@@ -81,7 +81,7 @@ with col1:
                  .style
                  .format(precision=1, thousands='')
                  .format(format_dollar_amount,subset=['Val Diff'])
-                 .background_gradient(axis=0, vmin=-50, vmax=100,
+                 .background_gradient(axis=0, vmin=-50, vmax=50,
                                       cmap="vlag_r", subset=['% Diff'])
                  .background_gradient(axis=0, vmin=-7, vmax=7,
                                       cmap="vlag", subset=['Val Diff']),
@@ -94,7 +94,7 @@ with col2:
                  .style
                  .format(precision=1, thousands='')
                  .format(format_dollar_amount,subset=['Val Diff'])
-                 .background_gradient(axis=0, vmin=-50, vmax=100,
+                 .background_gradient(axis=0, vmin=-50, vmax=50,
                                       cmap="vlag_r", subset=['% Diff'])
                  .background_gradient(axis=0, vmin=-7, vmax=7, 
                                       cmap="vlag", subset=['Val Diff']),
@@ -198,7 +198,7 @@ st.dataframe(adp_diff_df.sort_values('% Diff',ascending=False).head(25)
                  .style
                  .format(precision=1, thousands='')
                  .format(format_dollar_amount,subset=['Val Diff'])
-                 .background_gradient(axis=0, vmin=-50, vmax=100,
+                 .background_gradient(axis=0, vmin=-50, vmax=50,
                                       cmap="vlag_r", subset=['% Diff'])
                  .background_gradient(axis=0, vmin=-7, vmax=7, 
                                       cmap="vlag", subset=['Val Diff']),
