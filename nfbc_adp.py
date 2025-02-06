@@ -61,6 +61,7 @@ adp_start_date = st.date_input("ADP Start Date",
                                min_value=datetime.date(2024,10,20),
                                max_value=datetime.date.today() - datetime.timedelta(days=7),
                                format="MM/DD/YYYY")
+adp_thresh = 450
 start_string = adp_start_date.strftime('%-m/%-d')
 
 adp_diff_df = (pd
@@ -70,7 +71,7 @@ adp_diff_df = (pd
                       suffixes=['_early','_current'])
                .assign(perc_diff = lambda x: (x['ADP_current']-x['ADP_early'])/x['ADP_early'] * 100,
                        val_diff = lambda x: -10.19 * (np.log(x['ADP_current']) - np.log(x['ADP_early'])))
-               .query('ADP_current <= 300')
+               .query(f'ADP_current <= {adp_thresh}')
                .sort_values('perc_diff',ascending=True)
                .round(1)
                .rename(columns={'ADP_early':start_string,
@@ -82,7 +83,7 @@ adp_diff_df = (pd
 st.write('Value Diff is the modeled Auction Value of the Current Rank minus the modeled Auction Value of the Early Rank')
 col1, col2 = st.columns(2)
 with col1:
-    st.write(f'Biggest risers since {adp_start_date.strftime('%-m/%-d/%y')} (current ADP < 300)')
+    st.write(f'Biggest risers since {adp_start_date.strftime('%-m/%-d/%y')} (current ADP < {adp_thresh})')
     st.dataframe(adp_diff_df.sort_values('% Diff',ascending=True).head(25)
                  .style
                  .format(precision=1, thousands='')
@@ -95,7 +96,7 @@ with col1:
                  )
 
 with col2:
-    st.write(f'Biggest fallers since {adp_start_date.strftime('%-m/%-d/%y')} (current ADP < 300)')
+    st.write(f'Biggest fallers since {adp_start_date.strftime('%-m/%-d/%y')} (current ADP < {adp_thresh})')
     st.dataframe(adp_diff_df.sort_values('% Diff',ascending=False).head(25)
                  .style
                  .format(precision=1, thousands='')
@@ -199,7 +200,7 @@ def plot_draft_data(df,player,start_date):
   st.pyplot(fig)
 
 plot_draft_data(nfbc_adp_df,player,start_date)
-st.write(f'ADP differences since {adp_start_date.strftime('%-m/%-d/%y')} (current ADP <300)')
+st.write(f'ADP differences since {adp_start_date.strftime('%-m/%-d/%y')} (current ADP <{adp_thresh})')
 st.dataframe(adp_diff_df.sort_values('% Diff')
                  .style
                  .format(precision=1, thousands='')
