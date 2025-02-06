@@ -80,7 +80,7 @@ with col1:
     st.dataframe(adp_diff_df.sort_values('% Diff',ascending=True).head(25)
                  .style
                  .format(precision=1, thousands='')
-                 .format('${:.1f}',subset=['Val Diff'])
+                 .format(format_dollar_amount,subset=['Val Diff'])
                  .background_gradient(axis=0, vmin=-50, vmax=50,
                                       cmap="vlag_r", subset=['% Diff'])
                  .background_gradient(axis=0, vmin=-5, vmax=5,
