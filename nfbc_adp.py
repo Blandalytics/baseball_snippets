@@ -142,8 +142,13 @@ player_list = list(
   .index
 )
 
+if pos_filter in ['All','H','OF']:
+    player_index = player_list.index('Lawrence Butler')
+else:
+    player_list = 0
+
 player = st.selectbox('Choose a player:', player_list,
-                      index=player_list.index('Lawrence Butler'))
+                      index=player_index)
 
 start_date = datetime.date(2024,10,21)
 def plot_draft_data(df,player,start_date):
