@@ -99,9 +99,7 @@ adp_diff_df = (pd
                                 'ADP_current':'Current',
                                 'perc_diff':'% Diff',
                                 'val_diff':'Val Diff'})
-               .sort_values('% Diff',ascending=True)
                .drop(columns=['Player ID'])
-               .reset_index(drop=True)
                )
 
 st.write('Value Diff is the modeled Auction Value of the Current Rank minus the modeled Auction Value of the Early Rank')
