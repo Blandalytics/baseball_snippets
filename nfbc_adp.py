@@ -85,6 +85,8 @@ else:
     position_mask = nfbc_adp_df['yahoo_pos'].apply(lambda x: pos_filter in x)
     nfbc_adp_df = nfbc_adp_df.loc[position_mask].copy()
 
+pos_text = '' if pos_filter =='All' else f' ({pos_filter}-Eligible)'
+
 adp_diff_df = (pd
                .merge(nfbc_adp_df.loc[nfbc_adp_df['end_date'] == adp_start_date,['Player ID','Player','ADP']],
                       nfbc_adp_df.loc[nfbc_adp_df['end_date'] == nfbc_adp_df['end_date'].max(),['Player ID','Player','ADP']],
@@ -105,7 +107,7 @@ adp_diff_df = (pd
 st.write('Value Diff is the modeled Auction Value of the Current Rank minus the modeled Auction Value of the Early Rank')
 col1, col2 = st.columns(2)
 with col1:
-    st.write(f'Biggest risers since {adp_start_date.strftime('%-m/%-d/%y')} (current ADP < {adp_thresh})')
+    st.write(f'Biggest risers since {adp_start_date.strftime('%-m/%-d/%y')}{pos_text}')
     st.dataframe(adp_diff_df.sort_values('% Diff',ascending=True).head(25)
                  .style
                  .format(precision=1, thousands='')
@@ -118,7 +120,7 @@ with col1:
                  )
 
 with col2:
-    st.write(f'Biggest fallers since {adp_start_date.strftime('%-m/%-d/%y')} (current ADP < {adp_thresh})')
+    st.write(f'Biggest fallers since {adp_start_date.strftime('%-m/%-d/%y')}{pos_text}')
     st.dataframe(adp_diff_df.sort_values('% Diff',ascending=False).head(25)
                  .style
                  .format(precision=1, thousands='')
@@ -227,7 +229,7 @@ def plot_draft_data(df,player,start_date):
   st.pyplot(fig)
 
 plot_draft_data(nfbc_adp_df,player,start_date)
-st.write(f'ADP differences since {adp_start_date.strftime('%-m/%-d/%y')} (current ADP <{adp_thresh})')
+st.write(f'ADP differences since {adp_start_date.strftime('%-m/%-d/%y')}{pos_text}')
 st.dataframe(adp_diff_df.sort_values('% Diff')
                  .style
                  .format(precision=1, thousands='')
