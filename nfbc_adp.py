@@ -72,7 +72,9 @@ pos_filters = [
 ]
 
 pos_filter = st.selectbox('Select a position filter:',pos_filters)
-if pos_filter in ['H','P']:
+if pos_filter=='All':
+    nfbc_adp_df = nfbc_adp_df.copy()
+elif pos_filter in ['H','P']:
     if pos_filter=='H':
         position_mask = nfbc_adp_df['yahoo_pos'].apply(lambda x: 'P' not in ', '.join(x))
         nfbc_adp_df = nfbc_adp_df.loc[position_mask].copy()
