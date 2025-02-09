@@ -145,7 +145,7 @@ player_list = list(
 if pos_filter in ['All','H','OF']:
     player_index = player_list.index('Lawrence Butler')
 else:
-    player_list = 0
+    player_index = 0
 
 player = st.selectbox('Choose a player:', player_list,
                       index=player_index)
