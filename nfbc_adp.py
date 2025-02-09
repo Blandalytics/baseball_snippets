@@ -64,6 +64,27 @@ adp_start_date = st.date_input("ADP Start Date",
 adp_thresh = 450
 start_string = adp_start_date.strftime('%-m/%-d')
 
+pos_filters = [
+    'All',
+    'H','P',
+    'C','1B','2B','SS','3B','OF','DH',
+    'SP','RP'
+]
+
+pos_filter = st.selectbox('Select a position filter:',pos_filters)
+if pos_filter == 'All':
+    continue
+elif pos_filter in ['H','P']:
+    if pos_filter=='H':
+        position_mask = nfbc_adp_df['yahoo_pos'].apply(lambda x: 'P' not in ', '.join(x))
+        nfbc_adp_df = nfbc_adp_df.loc[position_mask].copy()
+    else:
+        position_mask = nfbc_adp_df['yahoo_pos'].apply(lambda x: 'P' in ', '.join(x))
+        nfbc_adp_df = nfbc_adp_df.loc[position_mask].copy()
+else:
+    position_mask = nfbc_adp_df['yahoo_pos'].apply(lambda x: pos_filter in x)
+    nfbc_adp_df = nfbc_adp_df.loc[position_mask].copy()
+
 adp_diff_df = (pd
                .merge(nfbc_adp_df.loc[nfbc_adp_df['end_date'] == adp_start_date,['Player ID','Player','ADP']],
                       nfbc_adp_df.loc[nfbc_adp_df['end_date'] == nfbc_adp_df['end_date'].max(),['Player ID','Player','ADP']],
