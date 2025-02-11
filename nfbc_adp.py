@@ -233,7 +233,7 @@ def plot_draft_data(df,player,start_date):
 
 plot_draft_data(nfbc_adp_df,player,start_date)
 st.write(f'ADP differences since {adp_start_date.strftime('%-m/%-d/%y')}{pos_text}')
-st.dataframe(adp_diff_df.sort_values('Current').reset_index().assign(index=lambda x: x['index'].add(1)).rename(columns={'index':'ADP Rank'})
+st.dataframe(adp_diff_df.sort_values('Current').reset_index(drop=True).reset_index().assign(index=lambda x: x['index'].add(1)).rename(columns={'index':'ADP Rank'})
                  .style
                  .format(precision=1, thousands='')
                  .format(format_dollar_amount,subset=['Val Diff'])
