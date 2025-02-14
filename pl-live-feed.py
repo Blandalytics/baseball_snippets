@@ -351,8 +351,8 @@ today = (datetime.datetime.now()-timedelta(hours=16)).date()
 st.header(f"PL Live Feed")
 col1, col2, col3 = st.columns([1/3,1/3,1/3])
 with col1:
-    level = st.selectbox('Choose a level:', ['MLB','AAA','A (FSL)','AFL'])
-    level_dict = {'MLB':1,'AAA':11,'A (FSL)':14, 'AFL':17}
+    level = st.selectbox('Choose a level:', ['MLB','AAA','A (FSL)','AFL','NCAA'])
+    level_dict = {'MLB':1,'AAA':11,'A (FSL)':14, 'AFL':17, 'NCAA':22}
     level_code = level_dict[level]
 with col2:
     date = st.date_input("Select a game date:", today, min_value=datetime.date(2021, 3, 1), max_value=today)
