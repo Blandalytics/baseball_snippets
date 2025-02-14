@@ -393,7 +393,7 @@ def location_chart(df,player):
                                colorscale=[[x/100,'rgb'+str(tuple([int(y*255) for y in sns.color_palette('vlag',n_colors=101)[x]]))] for x in range(101)], 
                                colorbar=dict(
                                    title="plvLocation+\n",
-                                   titleside="top",
+                                   # titleside="top",
                                    tickmode="array",
                                    tickvals=[50, 75, 100, 125, 150],
                                    ticks="outside"
