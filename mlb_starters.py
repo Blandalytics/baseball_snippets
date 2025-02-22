@@ -6,6 +6,8 @@ import psycopg2
 from dotenv import load_dotenv
 from pathlib import Path
 
+API_KEY = '' # Enter API Key here
+
 # Load IDs from database
 dotenv_path = Path('pitcherlist_datascience.env')
 load_dotenv(dotenv_path=dotenv_path)
@@ -85,7 +87,7 @@ def extract_pitcher_values(dictionary):
 def sp_schedule(start_date=datetime.date.today(),n_days=21):
     week_df = pd.DataFrame()
     for day in pd.date_range(start_date, periods=n_days):
-        test_starters = pd.read_json('https://api.rotowire.com/Baseball/MLB/ProjectedStarters.php?key=ef2o9hi032uibd013bhd&format=json&date='+day.strftime('%m%d%Y'))
+        test_starters = pd.read_json(f'https://api.rotowire.com/Baseball/MLB/ProjectedStarters.php?key={API_KEY}&format=json&date='+day.strftime('%m%d%Y'))
         test_starters[['game_id', 'home_team', 'home_starter_id', 'home_starter_name', 'home_starter_designation', 
                         'away_team', 'away_starter_id', 'away_starter_name', 'away_starter_designation']] = None
         if test_starters.shape[0]>0:
