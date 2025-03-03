@@ -91,7 +91,7 @@ with col2:
     pos_text = '' if pos_filter =='All' else f' ({pos_filter}-Eligible)'
 
 adp_diff_df = (pd
-               .merge(nfbc_adp_df.loc[nfbc_adp_df['end_date'] == adp_start_date,['Player ID','Player','ADP']],
+               .merge(nfbc_adp_df.loc[nfbc_adp_df['end_date'] == adp_start_date,['Player ID','Player','yahoo_pos','ADP']],
                       nfbc_adp_df.loc[nfbc_adp_df['end_date'] == nfbc_adp_df['end_date'].max(),['Player ID','Player','ADP']],
                       on=['Player ID','Player'],
                       suffixes=['_early','_current'])
@@ -100,7 +100,8 @@ adp_diff_df = (pd
                .query(f'ADP_current <= {adp_thresh}')
                .sort_values('perc_diff',ascending=True)
                .round(1)
-               .rename(columns={'ADP_early':start_string,
+               .rename(columns={'yahoo_pos':'Pos',
+                                'ADP_early':start_string,
                                 'ADP_current':'Current',
                                 'perc_diff':'% Diff',
                                 'val_diff':'Val Diff'})
