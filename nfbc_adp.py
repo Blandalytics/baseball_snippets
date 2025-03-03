@@ -112,7 +112,7 @@ st.write('Value Diff is the modeled Auction Value of the Current Rank minus the 
 col1, col2 = st.columns(2)
 with col1:
     st.write(f'Biggest risers since {adp_start_date.strftime('%-m/%-d/%y')}{pos_text}')
-    st.dataframe(adp_diff_df.sort_values('% Diff',ascending=True).head(25)
+    st.dataframe(adp_diff_df.drop(columns=['Pos']).sort_values('% Diff',ascending=True).head(25)
                  .style
                  .format(precision=1, thousands='')
                  .format(format_dollar_amount,subset=['Val Diff'])
@@ -125,7 +125,7 @@ with col1:
 
 with col2:
     st.write(f'Biggest fallers since {adp_start_date.strftime('%-m/%-d/%y')}{pos_text}')
-    st.dataframe(adp_diff_df.sort_values('% Diff',ascending=False).head(25)
+    st.dataframe(adp_diff_df.drop(columns=['Pos']).sort_values('% Diff',ascending=False).head(25)
                  .style
                  .format(precision=1, thousands='')
                  .format(format_dollar_amount,subset=['Val Diff'])
@@ -244,5 +244,5 @@ st.dataframe(adp_diff_df.sort_values('Current').reset_index(drop=True).reset_ind
                  .background_gradient(axis=0, vmin=-7, vmax=7, 
                                       cmap="vlag", subset=['Val Diff']),
                  hide_index=True,
-             width=500
+             width=750
              )
