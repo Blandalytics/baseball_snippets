@@ -64,7 +64,7 @@ with col1:
                                    min_value=datetime.date(2024,10,20),
                                    max_value=datetime.date.today() - datetime.timedelta(days=7),
                                    format="MM/DD/YYYY")
-    adp_thresh = 450
+    adp_thresh = 1000
     start_string = adp_start_date.strftime('%-m/%-d')
 with col2:
     pos_filters = [
