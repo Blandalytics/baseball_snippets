@@ -93,6 +93,7 @@ with col2:
 adp_diff_df = (pd
                .merge(nfbc_adp_df.loc[nfbc_adp_df['end_date'] == adp_start_date,['Player ID','Player','yahoo_pos','ADP']],
                       nfbc_adp_df.loc[nfbc_adp_df['end_date'] == nfbc_adp_df['end_date'].max(),['Player ID','Player','ADP']],
+                      how='right',
                       on=['Player ID','Player'],
                       suffixes=['_early','_current'])
                .assign(perc_diff = lambda x: (x['ADP_current']-x['ADP_early'])/x['ADP_early'] * 100,
