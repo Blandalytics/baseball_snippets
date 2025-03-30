@@ -48,10 +48,12 @@ count_rates = {
     (3, 1): 0.022078597836505547,
     (3, 0): 0.010149253731343283
 }
+col1, col2 = st.columns(2)
 
-all_swings = st.toggle('Include Non-Competitive swings?')
-year = st.selectbox('Season:',
-                        ['2024','2025'])
+with col1:
+    year = st.selectbox('Season:',['2024','2025'])
+with col2:
+    all_swings = st.toggle('Include Non-Competitive swings?')
 
 @st.cache_data(ttl=120,show_spinner=f"Loading data")
 def load_data(all_swings=all_swings,year=year):
