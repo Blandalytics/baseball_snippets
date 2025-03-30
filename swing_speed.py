@@ -70,7 +70,7 @@ def load_data(all_swings=all_swings,year=year):
     df['game_date'] = pd.to_datetime(df['game_date'])
     return df
     
-swing_data = load_data()
+swing_data = load_data(year=year)
 
 data_start = swing_data['game_date'].min()
 data_end = swing_data['game_date'].max()
