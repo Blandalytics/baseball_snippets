@@ -436,7 +436,8 @@ def rolling_chart(df,player,stat,handedness):
     sns.despine()
     st.pyplot(fig)
 st.write('The rolling chart uses either 25 swings or ~1/2 of the Swings seen in that count, whichever is larger')
-rolling_chart(swing_data,player,stat,handedness)
+if year=='2024':
+    rolling_chart(swing_data,player,stat,handedness)
 
 zone_df = pd.DataFrame(columns=['x','z'])
 for x in range(-20,21):
