@@ -83,8 +83,8 @@ with col1:
     swing_threshold = st.number_input(f'Min # of Swings (in all situations):',
                                       min_value=0, 
                                       max_value=swing_data.groupby('Hitter')['Swings'].sum().astype('int').max(),
-                                      step=25, 
-                                      value=200 if year=='2024' else 0)
+                                      step=5, 
+                                      value=200 if year=='2024' else 10)
 with col2:
     team = st.selectbox('Team:',
                         ['All','ATL', 'AZ', 'BAL', 'BOS', 'CHC', 'CIN', 'CLE', 'COL', 'CWS',
