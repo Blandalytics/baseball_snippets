@@ -51,7 +51,7 @@ count_rates = {
 col1, col2 = st.columns(2)
 
 with col1:
-    year = st.selectbox('Season:',['2024','2025'])
+    year = st.selectbox('Season:',['2025','2024'])
 with col2:
     all_swings = st.toggle('Include Non-Competitive swings?')
 
@@ -84,7 +84,7 @@ with col1:
                                       min_value=0, 
                                       max_value=swing_data.groupby('Hitter')['Swings'].sum().astype('int').max(),
                                       step=5, 
-                                      value=200 if year=='2024' else 10)
+                                      value=200 if year=='2024' else 50)
 with col2:
     team = st.selectbox('Team:',
                         ['All','ATL', 'AZ', 'BAL', 'BOS', 'CHC', 'CIN', 'CLE', 'COL', 'CWS',
