@@ -51,7 +51,7 @@ count_rates = {
 col1, col2 = st.columns(2)
 
 with col1:
-    year = st.selectbox('Season:',['2025','2024'])
+    year = st.selectbox('Season:',['2025','2024'], index=0)
 with col2:
     all_swings = st.toggle('Include Non-Competitive swings?')
 
