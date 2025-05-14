@@ -61,7 +61,7 @@ col1, col2 = st.columns(2)
 with col1:
     team_1 = st.selectbox('Choose a team:',list(team_df['Team']),index=0)
 with col2:
-    team_2 = st.selectbox('Choose a team:',list(team_df['Team']),index=8)
+    team_2 = st.selectbox('Choose a team:',list(team_df['Team']),index=1)
 
 favored_team, underdog = (team_1, team_2) if team_df[team_df['Team']==team_1]['Win%'].values[0] >= team_df[team_df['Team']==team_2]['Win%'].values[0] else (team_2, team_1)
 
@@ -76,7 +76,7 @@ if team_1==team_2:
 else:
     est_win_prob = log_pythag_win(favorite_rs,favorite_ra,
                                   underdog_rs,underdog_ra)
-st.write(f'The {favored_team} are expected to beat the {underdog} ~{est_win_prob:.1%} of the time at a neutral site, based on their 2024 regular season runs scored and allowed. Home Field Advantage is assumed to be worth ~{hfa:.0%}.')
+st.write(f'The {favored_team} are expected to beat the {underdog} ~{est_win_prob:.1%} of the time at a neutral site, based on their regular season runs scored and allowed. Home Field Advantage is assumed to be worth ~{hfa:.0%}.')
 
 @st.cache_data(ttl=10*60,show_spinner=f"Simulating {sims:,} matchups, for each series length")
 def series_sims(est_win_prob,sims,hfa,series_max=11):
