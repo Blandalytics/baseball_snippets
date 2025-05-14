@@ -88,14 +88,15 @@ fill_dict = series_sims(est_win_prob,sims,hfa)
 
 def series_chart(fill_dict):
     fig, ax = plt.subplots(figsize=(6,4))
-    sns.lineplot(fill_dict,color=underdog_color,linewidth=4)
+    sns.lineplot(fill_dict,color=underdog_color,linewidth=3)
     for series_len in fill_dict.keys():
         ax.text(series_len,fill_dict[series_len],
                 f'{fill_dict[series_len]:.1%}',
                 fontsize=12,
                 color='w',
                 ha='center',va='center',
-               bbox=dict(boxstyle="round",pad=0.25,alpha=1,edgecolor=underdog_color,
+               bbox=dict(boxstyle="round",pad=0.25,alpha=1,
+                         edgecolor=underdog_color,linewidth=1,
                          color=favored_color))
     ax.set_xticks(list(fill_dict.keys()))
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(1))
