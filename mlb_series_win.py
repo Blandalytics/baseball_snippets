@@ -140,7 +140,7 @@ def games_played_chart(series_len):
                      (p.get_y() + p.get_height()/2 - 1) if height_check else (p.get_y() + p.get_height() - ax.get_ylim()[1]/30)),
                     ha="center", 
                      va="center" if height_check else "bottom",
-                     color='w' if height_check else 'k',
+                     color='w' if height_check else underdog_color,
                     fontsize=font_size)
     ax.legend(ncol=2,bbox_to_anchor=(0.49,1),loc='lower center',
               labels=[favored_team+f' Win: {sum(games[0])/sims:.1%}',underdog+f' Win: {1-sum(games[0])/sims:.1%}'],edgecolor='w',framealpha=0)
