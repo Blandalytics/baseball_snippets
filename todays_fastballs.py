@@ -384,7 +384,7 @@ def location_chart(df,player):
 
     plate_y = -.25
     
-    layout = go.Layout(height = 600,width = 400,xaxis_range=[-2.5,2.5], yaxis_range=[-1,6])
+    layout = go.Layout(height = 600,width = 300,xaxis_range=[-2.5,2.5], yaxis_range=[-1,6])
 
     labels = chart_df['plvLoc+']
     hover_text = '<b>plvLoc+: %{marker.color:.1f}</b><br>Count: %{customdata[0]}-%{customdata[1]}<br>Hitter Hand: %{text}<br>X Loc: %{x:.1f}ft<br>Y Loc: %{y:.1f}ft<extra></extra>'
