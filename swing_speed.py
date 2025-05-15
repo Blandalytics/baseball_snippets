@@ -286,7 +286,7 @@ def speed_dist(swing_data,player,stat,handedness):
     hand_text = '' if handedness=='All' else f'\nAs {hand}HH'
     date_text = '' if (start_date==season_start) & (end_date==season_end) else f' ({start_date:%b %-d} - {end_date:%b %-d})'
     count_text = '' if count_select=='All' else f'\nIn {count_select} counts' if handedness=='All' else f' in {count_select} counts'
-    fig.suptitle(f"{player}{apostrophe_text}\n{title_stat}{date_text}{hand_text}{count_text}",y=1.025 if (count_select=='All') and (handedness=='All') else 1.075)
+    fig.suptitle(f"{player}{apostrophe_text} {year}\n{title_stat}{date_text}{hand_text}{count_text}",y=1.025 if (count_select=='All') and (handedness=='All') else 1.075)
     sns.despine(left=True)
     fig.text(0.8,-0.15,'@blandalytics\nData: Savant',ha='center',fontsize=8)
     fig.text(0.125,-0.14,'mlb-swing-speed.streamlit.app',ha='left',fontsize=8)
@@ -427,7 +427,7 @@ def rolling_chart(df,player,stat,handedness):
     apostrophe_text = "'" if player[-1]=='s' else "'s"
     hand_text = '' if handedness=='All' else f' as {hand}HH'
     count_text = '' if count_select=='All' else f'; in {count_select} counts'
-    fig.suptitle(f"{player}{apostrophe_text} {metric_text}\nRolling {swing_thresh} Swings{hand_text}{count_text}",
+    fig.suptitle(f"{player}{apostrophe_text} {year} {metric_text}\nRolling {swing_thresh} Swings{hand_text}{count_text}",
                  fontsize=14,
                  y=0.95
                  )
