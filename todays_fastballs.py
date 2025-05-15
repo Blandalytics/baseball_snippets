@@ -468,8 +468,8 @@ def location_chart(df,player):
     overall_loc = chart_df['plvLoc+'].mean()
     fig.update_layout(
             margin=dict(
-                l=150,
-                r=150,
+                l=200,
+                r=200,
                 b=100,
                 t=100,
                 pad=4
