@@ -384,7 +384,7 @@ def location_chart(df,player):
 
     plate_y = -.25
     
-    layout = go.Layout(height = 600,width = 300,xaxis_range=[-2.5,2.5], yaxis_range=[-1,6])
+    layout = go.Layout(height = 600,width = 500,xaxis_range=[-2.5,2.5], yaxis_range=[-1,6])
 
     labels = chart_df['plvLoc+']
     hover_text = '<b>plvLoc+: %{marker.color:.1f}</b><br>Count: %{customdata[0]}-%{customdata[1]}<br>Hitter Hand: %{text}<br>X Loc: %{x:.1f}ft<br>Y Loc: %{y:.1f}ft<extra></extra>'
@@ -467,6 +467,7 @@ def location_chart(df,player):
     
     overall_loc = chart_df['plvLoc+'].mean()
     fig.update_layout(
+            width = 400,
             template='simple_white',
             title={
                 'text': f"{player}'s Four-Seam<br>plvLocation+: {overall_loc:.1f}",
