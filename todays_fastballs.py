@@ -467,7 +467,13 @@ def location_chart(df,player):
     
     overall_loc = chart_df['plvLoc+'].mean()
     fig.update_layout(
-            width = 400,
+            margin=dict(
+                l=100,
+                r=100,
+                b=50,
+                t=50,
+                pad=4
+                ),
             template='simple_white',
             title={
                 'text': f"{player}'s Four-Seam<br>plvLocation+: {overall_loc:.1f}",
