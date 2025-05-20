@@ -91,7 +91,7 @@ def series_chart(fill_dict):
     sns.lineplot(fill_dict,color=underdog_color,linewidth=3)
     for series_len in fill_dict.keys():
         ax.text(series_len,fill_dict[series_len],
-                f'{fill_dict[series_len]:.1%}',
+                f'{fill_dict[series_len]:.1%}' if round(fill_dict[series_len],1)<1 else '~100%',
                 fontsize=12,
                 color='w',
                 ha='center',va='center',
