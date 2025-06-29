@@ -607,10 +607,6 @@ st.write('''
 - The entirety of a swing's length is measured
   - Tracking starts ['generally around 150 ms'](https://www.mlb.com/glossary/statcast/swing-length) before Swing Speed is measured, which *may* be after the swing starts
 ''')
-st.write('''
-- Swing Speed is recorded at the same point & time as final Swing Length
-  - Swing Speed is known to be recorded at 6" from the head of the bat, while length is measured at the head of the bat. I am working on adjusting for this difference.
-''')
 st.write('- Speed of pitch at plate = 0.91 * Release Speed')
 st.write('- Collision Efficiency = [0.23](http://tangotiger.com/index.php/site/article/statcast-lab-collisions-and-the-perfect-swing)')
 st.write("- Squared Up% can't be >100%")
