@@ -51,18 +51,16 @@ count_rates = {
 col1, col2 = st.columns(2)
 
 with col1:
-    year = st.selectbox('Season:',['2025','2024'], index=0)
+    year = st.selectbox('Season:',['2025','2024','2023'], index=0)
 with col2:
     all_swings = st.toggle('Include Non-Competitive swings?')
 
 @st.cache_data(ttl=120,show_spinner=f"Loading data")
 def load_data(all_swings=all_swings,year=year):
     df = pd.read_parquet(f'https://github.com/Blandalytics/baseball_snippets/blob/main/{year}_swing_speed_data.parquet?raw=true')
-    if (all_swings==False) & (year=='2024'):
-        df = df.loc[(df['bat_speed']>=40) &
+    if (all_swings==False):
+        df = df.loc[((df['bat_speed']>=60) & (df['launch_speed']>=90)) &
                             (df['bat_speed']>df['bat_speed'].groupby(df['Hitter']).transform(lambda x: x.quantile(0.1)))].copy()
-    elif (all_swings==False):
-        df = df.loc[(df['bat_speed']>=40)].copy()
     df['Hitter'] = df['Hitter'].astype('string')
     df['squared_up_frac'] = df['squared_up_frac'].mul(100)
     df['blastitos'] = df['blastitos'].mul(100)
@@ -611,6 +609,7 @@ st.write('- Speed of pitch at plate = 0.91 * Release Speed')
 st.write('- Collision Efficiency = [0.23](http://tangotiger.com/index.php/site/article/statcast-lab-collisions-and-the-perfect-swing)')
 st.write("- Squared Up% can't be >100%")
 st.write("- Swing Speed and Acceleration are in a single, constant plane")
+st.write("- Competitive swings are [the fastest 90% of a player's swings, plus any 60+ MPH swings resulting in an exit velocity of 90+ MPH](https://baseballsavant.mlb.com/leaderboard/bat-tracking#:~:text=The%20fastest%2090%25%20of%20a,swing%E2%80%9D%20is%2075%2B%20MPH.)")
 st.write('Formulas:')
 st.write('- Initial Speed (v_0; in ft/s) = 0 ')
 st.write('- Final Speed (v_f; in ft/s) = Swing Speed * 1.46667 (from Savant; converted from mph to ft/s)')
