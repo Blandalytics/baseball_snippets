@@ -322,11 +322,11 @@ def game_chart(game_choice_id):
     
     # Create a figure and plot the line on it
     fig, ax = plt.subplots(figsize=(7,5))
-    ax.axhline(1,color=color_dict[home_abbr],alpha=0.5,xmin=7/(chart_outs+1.25),xmax=(chart_outs+1)/(chart_outs+1.25))
-    ax.axhline(0,color=color_dict[away_abbr],alpha=0.5,xmin=7/(chart_outs+1.25),xmax=(chart_outs+1)/(chart_outs+1.25))
+    ax.axhline(1,color=color_dict[home_abbr],alpha=1,xmin=7/(chart_outs+1.25),xmax=(chart_outs+1)/(chart_outs+1.25))
+    ax.axhline(0,color=color_dict[away_abbr],alpha=1,xmin=7/(chart_outs+1.25),xmax=(chart_outs+1)/(chart_outs+1.25))
     for inning in range(int((chart_outs-1)/6)+1):
         ax.text((inning+0.5)*6,0.5,inning+1,ha='center',va='center',
-                bbox=dict(boxstyle='round', facecolor=chart_white, alpha=0.75,edgecolor='k'))
+                bbox=dict(boxstyle='round', facecolor=chart_white, alpha=0.5,edgecolor='k'))
         ax.axvline((inning+1)*6,linestyle='--',alpha=0.25,ymin=(0.25+0.1)/1.5,ymax=(0.75+0.1)/1.5,color='k')
 
     custom_map = colors.ListedColormap(sns.light_palette(color_dict[away_abbr], n_colors=50, reverse=True) + 
@@ -355,12 +355,14 @@ def game_chart(game_choice_id):
     xvals_line = np.linspace(-1, game_outs, int(game_outs) * 50)
     yinterp_line = np.interp(xvals_line, x, y)
     dydx = 0.5 * (yinterp_line[:-1] + yinterp_line[1:])
-    shadow = colored_line_between_pts(np.array(xvals_line), 
-                                         yinterp_line, 
-                                         dydx,
-                                         ax, linewidth=2.25,
-                             cmap=contrast_map,
-                             norm=normalize, alpha=0.25
+    shadow = colored_line_between_pts(np.array(xvals_line),
+                                      yinterp_line, 
+                                      dydx,
+                                      ax, 
+                                      linewidth=2.25,
+                                      cmap=contrast_map,
+                                      norm=normalize, 
+                                      alpha=1/3
                             )
     # lines = colored_line_between_pts(np.array(xvals_line), 
     #                                      yinterp_line, 
