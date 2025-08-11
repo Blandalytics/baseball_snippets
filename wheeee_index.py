@@ -274,7 +274,7 @@ if agg_df.shape[0]==0:
 
 game_list = agg_df['game_name'].to_list()
 game_choice = st.selectbox('Choose a game:',game_list)
-game_choice_id = agg_df.row(by_predicate=(pl.col("game_name") == 'D-backs @ Braves: 10.0'))[-1]
+game_choice_id = agg_df.row(by_predicate=(pl.col("game_name") == game_choice))[-1]
 
 def game_chart(game_choice_id):
     single_game_df = test_df.filter(pl.col('game_pk')==game_choice_id)
