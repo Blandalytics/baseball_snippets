@@ -422,7 +422,7 @@ game_chart(game_choice_id)
 
 st.header('Glossary')
 st.write(f'''
-- **Δ Win Prob/54 Outs**: The total change in win probabiity for the game, normalized to 54 outs. Derived from [Luke Benz's Game Excitement Index](https://lukebenz.com/post/gei/)
+- **Δ Win Prob/54 Outs**: The total change in win probability for the game, normalized to 54 outs. Derived from [Luke Benz's Game Excitement Index](https://lukebenz.com/post/gei/)
 ''')
 st.write(f'''
 - **Biggest Swing**: Largest swing in win probability across 6 outs (after the 1st inning)
