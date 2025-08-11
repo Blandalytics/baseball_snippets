@@ -420,6 +420,7 @@ def game_chart(game_choice_id):
     
 game_chart(game_choice_id)
 
-st.write('**Δ Win Prob/54 Outs**: The total change in win probabiity for the game, normalized to 54 outs.')
+st.header('Glossary')
+st.write("**Δ Win Prob/54 Outs**: The total change in win probabiity for the game, normalized to 54 outs. Derived from [Luke Benz's Game Excitement Index](https://lukebenz.com/post/gei/)")
 st.write('**Biggest Swing**: Largest swing in win probability across 6 outs (after the 1st inning).')
-st.write('**Excitement Index**: Combination of Δ Win Prob/54 Outs and Biggest Swing, scaled 0-10')
+st.write('**Wheeee Index**: Combination of Δ Win Prob/54 Outs and Biggest Swing, scaled 0-10')
