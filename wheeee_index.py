@@ -97,9 +97,11 @@ def colored_line_between_pts(x, y, c, ax, **lc_kwargs):
     lc.set_array(c)
 
     return ax.add_collection(lc)
+col1, col2 = st.columns(2)
 
-today = (datetime.datetime.now(pytz.utc)-timedelta(hours=16)).date()
-date = st.date_input("Select a game date:", today, min_value=datetime.date(2020, 3, 28), max_value=today)
+with col1:
+    today = (datetime.datetime.now(pytz.utc)-timedelta(hours=16)).date()
+    date = st.date_input("Select a game date:", today, min_value=datetime.date(2020, 3, 28), max_value=today)
 
 def fetch_game_ids(date,regular_season=False):
     r = requests.get(f'https://statsapi.mlb.com/api/v1/schedule?sportId=1&date={date}')
@@ -270,9 +272,10 @@ if agg_df.shape[0]==0:
     st.write('No games played')
     st.stop()
 
-game_list = agg_df['game_name'].to_list()
-game_choice = st.selectbox('Choose a game:',game_list)
-game_choice_id = agg_df.row(by_predicate=(pl.col("game_name") == game_choice))[-1]
+with col2:
+    game_list = agg_df['game_name'].to_list()
+    game_choice = st.selectbox('Choose a game:',game_list)
+    game_choice_id = agg_df.row(by_predicate=(pl.col("game_name") == game_choice))[-1]
 
 def game_chart(game_choice_id):
     single_game_df = test_df.filter(pl.col('game_pk')==game_choice_id)
