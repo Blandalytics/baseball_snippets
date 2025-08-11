@@ -435,7 +435,7 @@ st.write(f'''
 - **Δ Win Prob/54 Outs**: The total change in win probability for the game, normalized to 54 outs (a median game is ~1.8 wins). Derived from [Luke Benz's Game Excitement Index](https://lukebenz.com/post/gei/)
 ''')
 st.write(f'''
-- **Biggest Swing**: Largest swing in win probability across 6 outs (after the 1st inning; a median game is ~40%))
+- **Biggest Swing**: Largest swing in win probability across 6 outs (after the 1st inning; a median game is ~40%)
 ''')
 st.write(f'''
 - **Wheeee Index**: Combination of Δ Win Prob/54 Outs and Biggest Swing, scaled 0-10
