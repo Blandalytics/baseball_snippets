@@ -425,14 +425,14 @@ st.header(f'Wheeee! stats for {date:%-m/%-d/%y} games:')
 st.dataframe(agg_df
              .with_columns(pl.col('game_name').str.head(pl.col('game_name').str.len_bytes()-2-pl.col('excitement_index').cast(pl.String).str.len_bytes()).alias('Game'),
                            pl.col('game_pk').alias('Game ID'),
-                           pl.col('homeTeamWinProbabilityAdded').alias('Δ Win Prob/54 Outs'),
+                           pl.col('homeTeamWinProbabilityAdded').alias('Δ Win Prob/54 Outs (%)'),
                            pl.col('win_swing').alias('Biggest Swing (%)'),
                            pl.col('excitement_index').alias('Wheeee! Index'))
              [['Game','Game ID','Δ Win Prob/54 Outs','Biggest Swing (%)','Wheeee! Index']])
 
 st.header('Glossary')
 st.write(f'''
-- **Δ Win Prob/54 Outs**: The total change in win probability for the game, normalized to 54 outs (a median game is ~1.8 wins). Derived from [Luke Benz's Game Excitement Index](https://lukebenz.com/post/gei/)
+- **Δ Win Prob/54 Outs**: The total change in win probability for the game, normalized to 54 outs (a median game is ~180%). Derived from [Luke Benz's Game Excitement Index](https://lukebenz.com/post/gei/)
 ''')
 st.write(f'''
 - **Biggest Swing**: Largest swing in win probability across 6 outs (after the 1st inning; a median game is ~40%)
