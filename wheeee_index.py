@@ -294,11 +294,11 @@ def game_chart(game_choice_id):
     x = single_game_df.select(pl.col('game_outs')).to_numpy().ravel()
     y = single_game_df.select(pl.col('rolling_last_prob')).to_numpy().ravel() / 100
     
-    gei = agg_df.filter(pl.col('game_pk')==game_pk)['homeTeamWinProbabilityAdded'][0] / 100
-    win_prob_index = agg_df.filter(pl.col('game_pk')==game_pk)['win_prob_index'][0]
-    biggest_win_swing = agg_df.filter(pl.col('game_pk')==game_pk)['win_swing'][0] / 100
-    win_swing_index = agg_df.filter(pl.col('game_pk')==game_pk)['win_swing_index'][0]
-    excite_index = agg_df.filter(pl.col('game_pk')==game_pk)['excitement_index'][0]
+    gei = agg_df.filter(pl.col('game_pk')==game_choice_id)['homeTeamWinProbabilityAdded'][0] / 100
+    win_prob_index = agg_df.filter(pl.col('game_pk')==game_choice_id)['win_prob_index'][0]
+    biggest_win_swing = agg_df.filter(pl.col('game_pk')==game_choice_id)['win_swing'][0] / 100
+    win_swing_index = agg_df.filter(pl.col('game_pk')==game_choice_id)['win_swing_index'][0]
+    excite_index = agg_df.filter(pl.col('game_pk')==game_choice_id)['excitement_index'][0]
     
     game_outs = max(x)
     chart_outs = 54 if game_outs <51 else game_outs
