@@ -312,10 +312,10 @@ def game_chart(game_choice_id):
                 bbox=dict(boxstyle='round', facecolor=chart_white, alpha=0.5,edgecolor='k'))
         ax.axvline((inning+1)*6,linestyle='--',alpha=0.25,ymin=(0.25+0.1)/1.5,ymax=(0.75+0.1)/1.5,color='k')
     
-    custom_map = colors.ListedColormap(sns.light_palette(color_dict[away_abbr], n_colors=50, reverse=True) + 
-                                       sns.light_palette(color_dict[home_abbr], n_colors=50))
-    contrast_map = colors.ListedColormap(sns.dark_palette(color_dict[away_abbr], n_colors=50, reverse=True) + 
-                                       sns.dark_palette(color_dict[home_abbr], n_colors=50))
+    custom_map = colors.ListedColormap(sns.light_palette(color_dict[away_abbr][0], n_colors=50, reverse=True) + 
+                                       sns.light_palette(color_dict[home_abbr][0], n_colors=50))
+    contrast_map = colors.ListedColormap(sns.dark_palette(color_dict[away_abbr][0], n_colors=50, reverse=True) + 
+                                       sns.dark_palette(color_dict[home_abbr][0], n_colors=50))
     ax.axhline(0.5,color='k',alpha=0.5)
     
     nc = 50
@@ -383,7 +383,7 @@ def game_chart(game_choice_id):
     away_team_ax.axis('off')
     
     
-    fig.suptitle(f'Win Probability - {date:%#m/%#d/%y}\n{away_name} {away_score:.0f} @ {home_name} {home_score:.0f}',
+    fig.suptitle(f'Win Probability - {date:%-m/%-d/%y}\n{away_name} {away_score:.0f} @ {home_name} {home_score:.0f}',
                 fontsize=20,x=0.45,y=0.95)
     fig.text(0.32,0.785,'Δ Win Prob/54 Outs',
              ha='center', fontsize=12)
