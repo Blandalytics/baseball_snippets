@@ -305,8 +305,8 @@ def game_chart(game_choice_id):
     
     # Create a figure and plot the line on it
     fig, ax = plt.subplots(figsize=(7,5))
-    ax.axhline(1,color=color_dict[home_abbr],alpha=1,xmin=7/(chart_outs+1.25),xmax=(chart_outs+1)/(chart_outs+1.25))
-    ax.axhline(0,color=color_dict[away_abbr],alpha=1,xmin=7/(chart_outs+1.25),xmax=(chart_outs+1)/(chart_outs+1.25))
+    ax.axhline(1,color=color_dict[home_abbr][0],alpha=1,xmin=7/(chart_outs+1.25),xmax=(chart_outs+1)/(chart_outs+1.25))
+    ax.axhline(0,color=color_dict[away_abbr][0],alpha=1,xmin=7/(chart_outs+1.25),xmax=(chart_outs+1)/(chart_outs+1.25))
     for inning in range(int((chart_outs-1)/6)+1):
         ax.text((inning+0.5)*6,0.5,inning+1,ha='center',va='center',
                 bbox=dict(boxstyle='round', facecolor=chart_white, alpha=0.5,edgecolor='k'))
