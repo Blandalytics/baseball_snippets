@@ -418,7 +418,14 @@ def game_chart(game_choice_id):
     
 game_chart(game_choice_id)
 
-st.dataframe(agg_df)
+st.write(f'Wheeee! stats for {date:%-m/%-d/%y} games:')
+st.dataframe(agg_df
+             .with_columns(pl.col('game_name').str.head(pl.col('game_name').str.len_bytes()-3-pl.col('excitement_index').str.len_bytes()).alias('Game'),
+                           pl.col('game_pk').alias('Game ID'),
+                           pl.col('homeTeamWinProbabilityAdded').alias('Δ Win Prob/54 Outs'),
+                           pl.col('win_swing').alias('Biggest Swing (%)'),
+                           pl.col('excitement_index').alias('Wheeee! Index'))
+             [['Game','Game ID','Δ Win Prob/54 Outs','Biggest Swing (%)','Wheeee! Index']])
 
 st.header('Glossary')
 st.write(f'''
