@@ -369,14 +369,14 @@ def game_chart(game_choice_id):
     excite_ax.axis('off')
     
     home_team_ax = fig.add_axes([0.12,0.115,0.1,0.12], anchor='NW', zorder=1)
-    cairosvg.svg2png(url=logo_dict[home_abbr], 
+    cairosvg.svg2png(url=logo_dict[home_abbr][0], 
                      write_to="home.png")
     image = Image.open('home.png')
     home_team_ax.imshow(image,aspect='equal')
     home_team_ax.axis('off')
     
     away_team_ax = fig.add_axes([0.12,0.625,0.1,0.12], anchor='NW', zorder=1)
-    cairosvg.svg2png(url=logo_dict[away_abbr],
+    cairosvg.svg2png(url=logo_dict[away_abbr][0],
                      write_to="away.png")
     image = Image.open('away.png')
     away_team_ax.imshow(image,aspect='equal')
