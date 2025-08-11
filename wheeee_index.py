@@ -418,7 +418,7 @@ def game_chart(game_choice_id):
     
 game_chart(game_choice_id)
 
-st.write(f'Wheeee! stats for {date:%-m/%-d/%y} games:')
+st.header(f'Wheeee! stats for {date:%-m/%-d/%y} games:')
 st.dataframe(agg_df
              .with_columns(pl.col('game_name').str.head(pl.col('game_name').str.len_bytes()-2-pl.col('excitement_index').cast(pl.String).str.len_bytes()).alias('Game'),
                            pl.col('game_pk').alias('Game ID'),
