@@ -428,7 +428,7 @@ st.dataframe(agg_df
                            pl.col('homeTeamWinProbabilityAdded').alias('Δ Win Prob/54 Outs (%)'),
                            pl.col('win_swing').alias('Biggest Swing (%)'),
                            pl.col('excitement_index').alias('Wheeee! Index'))
-             [['Game','Game ID','Δ Win Prob/54 Outs','Biggest Swing (%)','Wheeee! Index']])
+             [['Game','Game ID','Δ Win Prob/54 Outs (%)','Biggest Swing (%)','Wheeee! Index']])
 
 st.header('Glossary')
 st.write(f'''
