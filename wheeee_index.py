@@ -22,9 +22,8 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from st_aggrid import GridOptionsBuilder, AgGrid, GridUpdateMode, ColumnsAutoSizeMode
 
-## Excitement Index Idea
-# GEI (2021-2023 5th percentile is ~0.2, 95th is ~1, log scale)
-# https://lukebenz.com/post/gei/
+st.title('Wheeee! Index')
+st.write('This is an attempt to quantify how much "Wheeee!" a baseball game has (s/o to Sarah Langs for [making this a thing!](https://x.com/search?q=from%3ASlangsOnSports%20wheeee&src=typed_query&f=live))')
 
 chart_white = '#FEFEFE'
 chart_accent = '#162B50'
@@ -271,7 +270,6 @@ if agg_df.shape[0]==0:
     st.write('No games played')
     st.stop()
 
-
 game_list = agg_df['game_name'].to_list()
 game_choice = st.selectbox('Choose a game:',game_list)
 game_choice_id = agg_df.row(by_predicate=(pl.col("game_name") == game_choice))[-1]
@@ -420,12 +418,14 @@ def game_chart(game_choice_id):
     
 game_chart(game_choice_id)
 
+st.dataframe(agg_df)
+
 st.header('Glossary')
 st.write(f'''
-- **Δ Win Prob/54 Outs**: The total change in win probability for the game, normalized to 54 outs. Derived from [Luke Benz's Game Excitement Index](https://lukebenz.com/post/gei/)
+- **Δ Win Prob/54 Outs**: The total change in win probability for the game, normalized to 54 outs (a median game is ~1.8 wins). Derived from [Luke Benz's Game Excitement Index](https://lukebenz.com/post/gei/)
 ''')
 st.write(f'''
-- **Biggest Swing**: Largest swing in win probability across 6 outs (after the 1st inning)
+- **Biggest Swing**: Largest swing in win probability across 6 outs (after the 1st inning; a median game is ~40%))
 ''')
 st.write(f'''
 - **Wheeee Index**: Combination of Δ Win Prob/54 Outs and Biggest Swing, scaled 0-10
