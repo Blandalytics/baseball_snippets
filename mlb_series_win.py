@@ -92,7 +92,7 @@ def series_chart(fill_dict):
     for series_len in fill_dict.keys():
         ax.text(series_len,fill_dict[series_len],
                 f'{fill_dict[series_len]:.1%}' if round(fill_dict[series_len],3)<1 else '~100%',
-                fontsize=12,
+                fontsize=10,
                 color='w',
                 ha='center',va='center',
                bbox=dict(boxstyle="round",pad=0.25,alpha=1,
