@@ -153,7 +153,7 @@ series_chart(fill_dict)
 series_len = st.slider(
       "How many games can be in the series?",
       min_value=3,
-      max_value=11,
+      max_value=15,
       value=7,
       step=2
   )
