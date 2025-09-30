@@ -146,34 +146,34 @@ def games_played_chart(series_len):
     sns.despine()
     st.pyplot(fig)
 
-if st.button("Simulate series"):
-    fill_dict = series_sims(est_win_prob,sims,hfa)
-    series_chart(fill_dict)
+# if st.button("Simulate series"):
+fill_dict = series_sims(est_win_prob,sims,hfa)
+series_chart(fill_dict)
 
-    series_len = st.slider(
-          "How many games can be in the series?",
-          min_value=3,
-          max_value=11,
-          value=7,
-          step=2
-      )
-    games_played_chart(series_len)
+series_len = st.slider(
+      "How many games can be in the series?",
+      min_value=3,
+      max_value=11,
+      value=7,
+      step=2
+  )
+games_played_chart(series_len)
 
-    st.write(f'''
-    - [PythagenPat Run Environment exponent](https://legacy.baseballprospectus.com/glossary/index.php?mode=viewstat&stat=136)
-    
-    pat_exp = [(runs_scored + runs_allowed) / game] ^ .285
-    
-    ''')
-    st.write(f'''
-    - [Pythagorean Team Win% Estimate](https://www.mlb.com/glossary/advanced-stats/pythagorean-winning-percentage)
-    
-    team_win% = (runs_scored ^ pat_exp) / [(runs_scored ^ pat_exp) + (runs_allowed ^ pat_exp)]
-    
-    ''')
-    st.write(f'''
-    - [Log 5 Win% Estimate](https://web.williams.edu/Mathematics/sjmiller/public_html/103/Log5WonLoss_Paper.pdf)
-    
-    combined_win% = [favored_win% - (favored_win% * underdog_win%)]/[favored_win% + underdog_win% - (2 * favored_win% * underdog_win%)]
-    
-    ''')
+st.write(f'''
+- [PythagenPat Run Environment exponent](https://legacy.baseballprospectus.com/glossary/index.php?mode=viewstat&stat=136)
+
+pat_exp = [(runs_scored + runs_allowed) / game] ^ .285
+
+''')
+st.write(f'''
+- [Pythagorean Team Win% Estimate](https://www.mlb.com/glossary/advanced-stats/pythagorean-winning-percentage)
+
+team_win% = (runs_scored ^ pat_exp) / [(runs_scored ^ pat_exp) + (runs_allowed ^ pat_exp)]
+
+''')
+st.write(f'''
+- [Log 5 Win% Estimate](https://web.williams.edu/Mathematics/sjmiller/public_html/103/Log5WonLoss_Paper.pdf)
+
+combined_win% = [favored_win% - (favored_win% * underdog_win%)]/[favored_win% + underdog_win% - (2 * favored_win% * underdog_win%)]
+
+''')
