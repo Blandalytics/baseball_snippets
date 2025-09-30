@@ -26,6 +26,7 @@ def log_pythag_win(favorite_rs,favorite_ra,
     underdog_win_prob = underdog_rs**underdog_factor/(underdog_rs**underdog_factor+underdog_ra**underdog_factor)
 
     return (favorite_win_prob-(favorite_win_prob*underdog_win_prob))/(favorite_win_prob+underdog_win_prob-(2 * favorite_win_prob*underdog_win_prob))
+                    
 def best_of_prob(games, favorite_win_prob, 
                  sims=sims, hfa=0.04):
     series_schedule = [1,0,1] if games==3 else [1,1,0,0] + [1,0]*int(round((games-5)/2)) + [1]
@@ -83,8 +84,6 @@ def series_sims(est_win_prob,sims,hfa,series_max=11):
     fill_dict = {1:est_win_prob+hfa}
     fill_dict.update({x*2+1:sum(best_of_prob(x*2+1,est_win_prob,sims,hfa=hfa)[0])/sims for x in range(1,int(series_max/2+0.5))})
     return fill_dict
-
-fill_dict = series_sims(est_win_prob,sims,hfa)
 
 def series_chart(fill_dict):
     fig, ax = plt.subplots(figsize=(6,4))
@@ -148,6 +147,7 @@ def games_played_chart(series_len):
     st.pyplot(fig)
 
 if st.button("Simulate series"):
+    fill_dict = series_sims(est_win_prob,sims,hfa)
     series_chart(fill_dict)
 
     series_len = st.slider(
