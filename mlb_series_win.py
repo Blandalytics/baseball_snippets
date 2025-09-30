@@ -16,6 +16,7 @@ logo = Image.open(urllib.request.urlopen(logo_loc))
 
 st.title('MLB Series Simulator')
 sims = 100000
+max_series_len = 15
 
 def log_pythag_win(favorite_rs,favorite_ra,
                   underdog_rs,underdog_ra):
@@ -80,7 +81,7 @@ else:
 st.write(f'The {favored_team} are expected to beat the {underdog} ~{est_win_prob:.1%} of the time at a neutral site, based on their regular season runs scored and allowed. Home Field Advantage is assumed to be worth ~{hfa:.0%}.')
 
 @st.cache_data(ttl=10*60,show_spinner=f"Simulating {sims:,} matchups, for each series length")
-def series_sims(est_win_prob,sims,hfa,series_max=11):
+def series_sims(est_win_prob,sims,hfa,series_max=max_series_len):
     fill_dict = {1:est_win_prob+hfa}
     fill_dict.update({x*2+1:sum(best_of_prob(x*2+1,est_win_prob,sims,hfa=hfa)[0])/sims for x in range(1,int(series_max/2+0.5))})
     return fill_dict
@@ -153,7 +154,7 @@ series_chart(fill_dict)
 series_len = st.slider(
       "How many games can be in the series?",
       min_value=3,
-      max_value=15,
+      max_value=max_series_len,
       value=7,
       step=2
   )
