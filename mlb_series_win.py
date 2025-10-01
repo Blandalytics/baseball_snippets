@@ -132,8 +132,9 @@ series_len = st.slider(
 all_home = st.checkbox("All higher seed home games")
 
 def games_played_chart(series_len):
+    series_sims = 250000
     games = best_of_prob(series_len,est_win_prob,
-                         250000,hfa=hfa,all_home=all_home)
+                         series_sims,hfa=hfa,all_home=all_home)
     font_size = np.clip(120/series_len,6,12)
     fig, ax  = plt.subplots(figsize=(6,4))
     game_space = list(set(games[1]))
@@ -153,7 +154,7 @@ def games_played_chart(series_len):
                      color='w' if height_check else lower_seed_color,
                     fontsize=font_size)
     ax.legend(ncol=2,bbox_to_anchor=(0.49,1),loc='lower center',
-              labels=[higher_seed_team+f' Win: {sum(games[0])/sims:.1%}',lower_seed_team+f' Win: {1-sum(games[0])/sims:.1%}'],edgecolor='w',framealpha=0)
+              labels=[higher_seed_team+f' Win: {sum(games[0])/series_sims:.1%}',lower_seed_team+f' Win: {1-sum(games[0])/series_sims:.1%}'],edgecolor='w',framealpha=0)
 
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(100,0))
     ax.set_xticks(game_space)
