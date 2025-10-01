@@ -104,7 +104,9 @@ def series_chart(fill_dict):
     ax.set_xticks(list(fill_dict.keys()))
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(1))
     ax.set(xlim=(0,max(fill_dict.keys())+1),
-           ylim=(0.5,1) if team_df[team_df['Team']==higher_seed_team]['Win%'].values[0] >= team_df[team_df['Team']==lower_seed_team]['Win%'].values[0] else (0,0.6),
+           ylim=(min(0.3,round(min(fill_dict.values())-0.05,1)),
+                 max(0.7,round(max(fill_dict.values())+0.05,1))),
+           # ylim=(0.5,1) if team_df[team_df['Team']==higher_seed_team]['Win%'].values[0] >= team_df[team_df['Team']==lower_seed_team]['Win%'].values[0] else (0,0.6),
            xlabel='Series Length ("Best of X")')
     fig.suptitle(f'{higher_seed_team} over {lower_seed_team} Series Win%\n(Single Game, Neutral Site xWin%: {est_win_prob:.1%})',
                 y=1.02)
