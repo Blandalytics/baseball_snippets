@@ -76,7 +76,7 @@ lower_seed_rs,lower_seed_ra = team_df[team_df['Team']==lower_seed_team][['Runs S
 lower_seed_color = team_df[team_df['Team']==lower_seed_team]['Color'].values[0]
 hfa = 0.04
 
-if team_1==team_2:
+if higher_seed_team==lower_seed_team:
     est_win_prob = 0.5
 else:
     est_win_prob = log_pythag_win(higher_seed_rs,higher_seed_ra,
