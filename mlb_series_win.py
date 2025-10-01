@@ -29,8 +29,11 @@ def log_pythag_win(favorite_rs,favorite_ra,
     return (favorite_win_prob-(favorite_win_prob*underdog_win_prob))/(favorite_win_prob+underdog_win_prob-(2 * favorite_win_prob*underdog_win_prob))
                     
 def best_of_prob(games, favorite_win_prob, 
-                 sims=sims, hfa=0.04):
-    series_schedule = [1,0,1] if games==3 else [1,1,0,0] + [1,0]*int(round((games-5)/2)) + [1]
+                 sims=sims, hfa=0.04,all_home=False):
+    if all_home:
+        series_schedule = [1] * games
+    else:
+        series_schedule = [1,0,1] if games==3 else [1,1,0,0] + [1,0]*int(round((games-5)/2)) + [1]
     series_wins = []
     series_games = []
     for series in range(sims):
@@ -61,9 +64,9 @@ team_df = pd.read_csv('https://docs.google.com/spreadsheets/d/1zbYqHg685OyP_D-E_
 
 col1, col2 = st.columns(2)
 with col1:
-    team_1 = st.selectbox('Choose a team:',list(team_df['Team']),index=1)
+    team_1 = st.selectbox('Higher seed:',list(team_df['Team']),index=1)
 with col2:
-    team_2 = st.selectbox('Choose a team:',list(team_df['Team']),index=5)
+    team_2 = st.selectbox('Lower seed:',list(team_df['Team']),index=5)
 
 favored_team, underdog = (team_1, team_2) if team_df[team_df['Team']==team_1]['Win%'].values[0] >= team_df[team_df['Team']==team_2]['Win%'].values[0] else (team_2, team_1)
 
@@ -81,7 +84,7 @@ else:
 st.write(f'The {favored_team} are expected to beat the {underdog} ~{est_win_prob:.1%} of the time at a neutral site, based on their regular season runs scored and allowed. Home Field Advantage is assumed to be worth ~{hfa:.0%}.')
 
 @st.cache_data(ttl=10*60,show_spinner=f"Simulating {sims:,} matchups, for each series length")
-def series_sims(est_win_prob,sims,hfa,series_max=max_series_len):
+def series_sims(est_win_prob,sims,hfa,series_max=max_series_len,all_home=all_home):
     fill_dict = {1:est_win_prob+hfa}
     fill_dict.update({x*2+1:sum(best_of_prob(x*2+1,est_win_prob,sims,hfa=hfa)[0])/sims for x in range(1,int(series_max/2+0.5))})
     return fill_dict
@@ -114,7 +117,7 @@ def series_chart(fill_dict):
 
 def games_played_chart(series_len):
     games = best_of_prob(series_len,est_win_prob,
-                         sims,hfa=hfa)
+                         sims,hfa=hfa,all_home=all_home)
     font_size = np.clip(120/series_len,6,12)
     fig, ax  = plt.subplots(figsize=(6,4))
     game_space = list(set(games[1]))
@@ -158,6 +161,7 @@ series_len = st.slider(
       value=7,
       step=2
   )
+all_home = st.checkbox("All higher seed home games")
 games_played_chart(series_len)
 
 st.write(f'''
