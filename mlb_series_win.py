@@ -133,7 +133,7 @@ all_home = st.checkbox("All higher seed home games")
 
 def games_played_chart(series_len):
     games = best_of_prob(series_len,est_win_prob,
-                         sims,hfa=hfa,all_home=all_home)
+                         250000,hfa=hfa,all_home=all_home)
     font_size = np.clip(120/series_len,6,12)
     fig, ax  = plt.subplots(figsize=(6,4))
     game_space = list(set(games[1]))
