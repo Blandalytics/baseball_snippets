@@ -162,7 +162,7 @@ def games_played_chart(series_len):
     width, height = logo.size
     pl_ax.imshow(logo.crop((0, 0, width, height-150)))
     pl_ax.axis('off')
-    home_text = f', (all @{higher_seed_code})' if all_home else ''
+    home_text = f', all @{higher_seed_code}' if all_home else ''
     fig.suptitle(f'{higher_seed_team}/{lower_seed_team} Series\nGames Played Distribution (Best of {series_len}{home_text})',y=1.06)
     sns.despine()
     st.pyplot(fig)
