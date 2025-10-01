@@ -91,6 +91,7 @@ def series_sims(est_win_prob,sims,hfa,series_max=max_series_len):
 
 def series_chart(fill_dict):
     fig, ax = plt.subplots(figsize=(6,4))
+    ax.axhline(0.5,linestyle='--',alpha=0.25,color='k')
     sns.lineplot(fill_dict,color=lower_seed_color,linewidth=3)
     for series_len in fill_dict.keys():
         ax.text(series_len,fill_dict[series_len],
@@ -102,7 +103,7 @@ def series_chart(fill_dict):
                          edgecolor=lower_seed_color,linewidth=1,
                          color=higher_seed_color))
     ax.set_xticks(list(fill_dict.keys()))
-    ax.yaxis.set_major_formatter(mtick.PercentFormatter(1))
+    ax.yaxis.set_major_formatter(mtick.PercentFormatter(1,decimals=0))
     ax.set(xlim=(0,max(fill_dict.keys())+1),
            ylim=(min(0.3,round(min(fill_dict.values())-0.05,1)),
                  max(0.7,round(max(fill_dict.values())+0.05,1))),
