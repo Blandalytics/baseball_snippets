@@ -60,7 +60,7 @@ def format_dollar_amount(amount):
 col1, col2 = st.columns(2)
 with col1:
     adp_start_date = st.date_input("ADP Start Date", 
-                                   datetime.date(2024,11,1),
+                                   datetime.date(2025,10,1),
                                    min_value=datetime.date(2024,10,20),
                                    max_value=datetime.date.today() - datetime.timedelta(days=7),
                                    format="MM/DD/YYYY")
