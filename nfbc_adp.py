@@ -151,7 +151,7 @@ player_list = list(
 )
 
 if pos_filter in ['All','H','OF']:
-    player_index = player_list.index('Lawrence Butler')
+    player_index = player_list.index('Ben Rice')
 else:
     player_index = 0
 
