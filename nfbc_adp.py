@@ -146,7 +146,7 @@ player_list = list(
   .assign(adp = lambda x: x['weighted_adp'].div(x['# Picks']))
   .sort_values('adp')
   .rename(columns={'# Picks':'num_picks'})
-  .query('num_picks >= 2000')
+  .query('num_picks >= 500')
   .index
 )
 
