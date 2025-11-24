@@ -22,7 +22,7 @@ def load_data():
   df['start_date'] = pd.to_datetime(df['start_date']).dt.date
   df['end_date'] = pd.to_datetime(df['end_date']).dt.date
   df['yahoo_pos'] = np.where(df['Position(s)'].apply(lambda x: 'P' in ', '.join(x)),
-                             [x.str.replace('DH','UT') for x in df['yahoo_pos']],
+                             df['yahoo_pos'].apply(lambda x: [y.str.replace('DH','UT') for y in x]),
                              df['Position(s)'].str.split(', '))
   return df
 
