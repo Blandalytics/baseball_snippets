@@ -27,6 +27,10 @@ def load_data():
   return df
 
 nfbc_adp_df = load_data()
+default_player = 'Ben Rice'
+default_player_pos = nfbc_adp_df.loc[nfbc_adp_df['Player']==default_player,'yahoo_pos'].iloc[0]
+default_player_group = ['H'] if 'P' not in ', '.join(default_player_pos) else ['P']
+
 update_date = nfbc_adp_df['end_date'].max().strftime('%-m/%-d/%y')
 st.write(f'Data is through {update_date}')
 ## Set Styling
@@ -153,9 +157,6 @@ player_list = list(
   .index
 )
 
-default_player = 'Ben Rice'
-default_player_pos = nfbc_adp_df.loc[nfbc_adp_df['Player']==default_player,'yahoo_pos'].iloc[0]
-default_player_group = ['H'] if 'P' not in ', '.join(default_player_pos) else ['P']
 if pos_filter in ['All']+default_player_group+default_player_pos:
     player_index = player_list.index(default_player)
 else:
