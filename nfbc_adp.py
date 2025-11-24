@@ -21,6 +21,9 @@ def load_data():
   df = pd.read_parquet('https://github.com/Blandalytics/baseball_snippets/blob/main/nfbc_adp_data.parquet?raw=true')
   df['start_date'] = pd.to_datetime(df['start_date']).dt.date
   df['end_date'] = pd.to_datetime(df['end_date']).dt.date
+  df['yahoo_pos'] = np.where(df['Position(s)'].apply(lambda x: 'P' in ', '.join(x)),
+                             df['yahoo_pos'],
+                             df['Position(s)'].str.split(', '))
   return df
 
 nfbc_adp_df = load_data()
