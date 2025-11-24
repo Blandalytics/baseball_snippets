@@ -153,8 +153,11 @@ player_list = list(
   .index
 )
 
-if pos_filter in ['All','H','OF']:
-    player_index = player_list.index('Ben Rice')
+default_player = 'Ben Rice'
+default_player_pos = nfbc_adp_df.loc[nfbc_adp_df['Player']==default_player,'yahoo_pos'].iloc[0]
+default_player_group = ['H'] if 'P' not in ', '.join(default_player_pos) else ['P']
+if pos_filter in ['All']+default_player_group+default_player_pos:
+    player_index = player_list.index(default_player)
 else:
     player_index = 0
 
