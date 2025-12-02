@@ -187,8 +187,8 @@ def plot_draft_data(df,player,start_date):
               )
   
   ax.fill_between(chart_df['end_date'], 
-                  chart_df['ADP'] - chart_df['StDev Est'], 
-                  chart_df['ADP'] + chart_df['StDev Est'], 
+                  np.clip(chart_df['ADP'] - chart_df['StDev Est'],chart_df['Min Pick'],chart_df['Max Pick']), 
+                  np.clip(chart_df['ADP'] + chart_df['StDev Est'],chart_df['Min Pick'],chart_df['Max Pick']), 
                   color='w',
                   alpha=0.2,
                  )
