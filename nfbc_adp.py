@@ -16,7 +16,7 @@ st.image(logo, width=200)
 
 st.title("NFBC Draft Data, over Time")
 
-@st.cache_data(ttl=6000,show_spinner=f"Loading draft data")
+@st.cache_data(ttl=600,show_spinner=f"Loading draft data")
 def load_data():
   df = pd.read_parquet('https://github.com/Blandalytics/baseball_snippets/blob/main/nfbc_adp_data.parquet?raw=true')
   df['start_date'] = pd.to_datetime(df['start_date']).dt.date
