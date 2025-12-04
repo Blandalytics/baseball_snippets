@@ -92,7 +92,7 @@ with col2:
             position_mask = nfbc_adp_df['yahoo_pos'].apply(lambda x: 'P' in ', '.join(x))
             nfbc_adp_df = nfbc_adp_df.loc[position_mask].copy()
     else:
-        position_mask = nfbc_adp_df['yahoo_pos'].apply(lambda x: pos_filter in x)
+        position_mask = nfbc_adp_df['yahoo_pos'].apply(lambda x: pos_filter in ', '.join(x))
         nfbc_adp_df = nfbc_adp_df.loc[position_mask].copy()
     
     pos_text = '' if pos_filter =='All' else f' ({pos_filter}-Eligible)'
