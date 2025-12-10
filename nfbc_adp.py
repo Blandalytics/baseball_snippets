@@ -194,30 +194,31 @@ def plot_draft_data(df,player,start_date):
                  )
   
   adp_val = chart_df.iloc[-1]['ADP']
+  chart_range = ax.get_ylim()[1] - ax.get_ylim()[0]
   ax.text(chart_df.iloc[-1]['end_date'] + datetime.timedelta(days=2),
           adp_val,
           f'ADP: {adp_val:.1f}',
            ha='left',va='center')
   
   min_val = chart_df.iloc[-1]['Min Pick']
-  if min_val <= adp_val*0.95:
-    ax.text(chart_df.iloc[-1]['end_date'] + datetime.timedelta(days=2),
-            min_val,
-            f'Min Pick: {min_val:.0f}',
-             ha='left',va='center', color=chart_red)
+  min_adj = min(min_val,adp_val - chart_range*0.055)
+  ax.text(chart_df.iloc[-1]['end_date'] + datetime.timedelta(days=2),
+          min_adj,
+          f'Min Pick: {min_val:.0f}',
+           ha='left',va='center', color=chart_red)
   
   max_val = chart_df.iloc[-1]['Max Pick']
-  if max_val >= adp_val*1.1:
-    ax.text(chart_df.iloc[-1]['end_date'] + datetime.timedelta(days=2),
-            max_val,
-            f'Max Pick: {max_val:.0f}',
-             ha='left',va='center',color=chart_blue)
-    
-  if chart_df.iloc[-1]['ADP'] + chart_df.iloc[-1]['StDev Est'] >= adp_val*1.05:
-    ax.text(chart_df.iloc[-1]['end_date'] + datetime.timedelta(days=2),
-            chart_df.iloc[-1]['ADP'] + chart_df.iloc[-1]['StDev Est'],
-            'St Dev (est)',
-             ha='left',va='center',color='#aaaaaa')
+  max_adj = max(max_val,adp_val + chart_range*0.055)
+  ax.text(chart_df.iloc[-1]['end_date'] + datetime.timedelta(days=2),
+          max_adj,
+          f'Max Pick: {max_val:.0f}',
+           ha='left',va='center',color=chart_blue)
+   
+  text_mask = max_val - (adp_val + chart_df.iloc[-1]['StDev Est'])  >= chart_range * 0.11 
+  ax.text(chart_df.iloc[-1]['end_date'] + datetime.timedelta(days=2),
+          chart_df.iloc[-1]['ADP'] + chart_df.iloc[-1]['StDev Est'],
+          'St Dev (est)' if text_mask else '',
+           ha='left',va='center',color='#aaaaaa')
   
   ax.set(xlim=(ax.get_xlim()[0],chart_df['end_date'].max()),
          ylim=(ax.get_ylim()[1],max(0,ax.get_ylim()[0])),
