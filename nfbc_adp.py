@@ -14,7 +14,9 @@ logo_loc = 'https://github.com/Blandalytics/PLV_viz/blob/main/data/PL-text-wht.p
 logo = Image.open(urllib.request.urlopen(logo_loc))
 st.image(logo, width=200)
 
-st.title("NFBC Draft Data, over Time")
+# st.title("NFBC Draft Data, over Time")
+new_title = '<p style="color:#72CBFD; font-weight: bold; font-size: 42px;">NFBC Draft Data, over Time</p>'
+st.markdown(new_title, unsafe_allow_html=True)
 
 @st.cache_data(ttl=600,show_spinner=f"Loading draft data")
 def load_data():
@@ -36,7 +38,7 @@ st.write(f'Data is through {update_date}')
 ## Set Styling
 # Plot Style
 pl_white = '#FEFEFE'
-pl_background = '#162B50'
+pl_background = '#292C42'
 pl_text = '#72a3f7'
 pl_line_color = '#293a6b'
 
