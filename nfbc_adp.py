@@ -9,6 +9,12 @@ from PIL import Image
 from matplotlib import ticker
 import matplotlib.dates as mdates
 from matplotlib import colors
+import matplotlib.font_manager as fm
+import os
+
+fpath = os.path.join(os.getcwd(), 'Alexandria/Alexandria-Regular.ttf')
+prop = fm.FontProperties(fname=fpath)
+sns.set(font='Alexandria')
 
 logo_loc = 'https://github.com/Blandalytics/PLV_viz/blob/main/data/PL-text-wht.png?raw=true'
 logo = Image.open(urllib.request.urlopen(logo_loc))
