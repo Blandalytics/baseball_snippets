@@ -3,6 +3,7 @@ enableStaticServing = true
 
 [theme]
 base = 'dark'
+font = "Alexandria:https://fonts.googleapis.com/css2?family=Alexandria:ital,wght@0,400..700;1,400..700&display=swap"
 backgroundColor = "#101222"
 dataframeBorderColor = "#707280"
 dataframeHeaderBackgroundColor = "#101222"
