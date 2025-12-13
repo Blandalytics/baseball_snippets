@@ -186,7 +186,7 @@ def plot_draft_data(df,player,start_date):
   sns.lineplot(chart_df,
                x='end_date',
                y='ADP',
-               color='w')
+               color='#F1C647')
   sns.lineplot(chart_df,
                x='end_date',
                y='Min Pick',color=chart_red,
@@ -206,7 +206,7 @@ def plot_draft_data(df,player,start_date):
   adp_val = chart_df.iloc[-1]['ADP']
   chart_range = ax.get_ylim()[1] - ax.get_ylim()[0]
   ax.text(chart_df.iloc[-1]['end_date'] + datetime.timedelta(days=2),
-          adp_val,
+          adp_val,color='#F1C647',
           f'ADP: {adp_val:.1f}',
            ha='left',va='center')
   
