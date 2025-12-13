@@ -248,9 +248,10 @@ def plot_draft_data(df,player,start_date):
   pl_ax.imshow(logo)
   pl_ax.axis('off')
   
-  fig.suptitle(f"\nRolling 14-Days: {chart_start} - {chart_end}",x=0.55,y=1,fontsize=14)
+  # fig.suptitle(f"\nRolling 14-Days: {chart_start} - {chart_end}",x=0.55,y=1,fontsize=14)
   fig.text(0.4725,1,f"{player}",ha='right',va='top',color='#F1C647',fontsize=14)
-  fig.text(0.4725,1,f"'s NFBC Draft Data",ha='left',va='top',color='w',fontsize=14)
+  fig.text(0.4725,1,"'s NFBC Draft Data",ha='left',va='top',color='w',fontsize=14)
+  fig.text(0.4,0.97,f"Rolling 14-Days: {chart_start} - {chart_end}",ha='left',va='top',color='w',fontsize=14)
   sns.despine(left=True)
   st.pyplot(fig)
 
