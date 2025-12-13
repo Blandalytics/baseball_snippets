@@ -65,8 +65,8 @@ sns.set_theme(
     font='Alexandria'
     )
 
-chart_red = sns.color_palette('vlag',n_colors=10000)[-1]
-chart_blue = sns.color_palette('vlag',n_colors=10000)[0]
+chart_red = '#D74C36'#sns.color_palette('vlag',n_colors=10000)[-1]
+chart_blue = '#72CBFD'#sns.color_palette('vlag',n_colors=10000)[0]
 
 def format_dollar_amount(amount):
     formatted_absolute_amount = '${:.1f}'.format(abs(amount))
