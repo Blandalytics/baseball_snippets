@@ -13,3 +13,4 @@ scipy
 lxml
 pytz
 CairoSVG
+pyfonts
