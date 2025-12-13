@@ -12,9 +12,10 @@ from matplotlib import colors
 import matplotlib.font_manager as fm
 import os
 
-fpath = os.path.join(os.getcwd(), 'Alexandria/Alexandria-Regular.ttf')
-prop = fm.FontProperties(fname=fpath)
-sns.set(font='Alexandria')
+from pyfonts import set_default_font, load_google_font
+
+font = load_google_font("Alexandria")
+fm.fontManager.addfont(str(font.get_file()))
 
 logo_loc = 'https://github.com/Blandalytics/PLV_viz/blob/main/data/PL-text-wht.png?raw=true'
 logo = Image.open(urllib.request.urlopen(logo_loc))
@@ -60,7 +61,8 @@ sns.set_theme(
         'grid.linestyle': '-',
         'legend.facecolor':pl_background,
         'text.color': pl_white
-     }
+     },
+    font='Alexandria'
     )
 
 chart_red = sns.color_palette('vlag',n_colors=10000)[-1]
