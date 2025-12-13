@@ -249,9 +249,7 @@ def plot_draft_data(df,player,start_date):
   pl_ax.axis('off')
   
   line_one_text = f"{player}'s NFBC Draft Data"
-  st.write(len(line_one_text))
   line_two_text = f"Rolling 14-Days: {chart_start} - {chart_end}"
-  st.write(len(line_two_text))
   fig.text(0.25,1,line_one_text,ha='left',va='top',color='w',fontsize=14)
   fig.text(0.25,1,f"{player}",ha='left',va='top',color='#F1C647',fontsize=14)
   fig.text(0.25,0.95,line_two_text,ha='left',va='top',color='w',fontsize=14)
