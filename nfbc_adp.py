@@ -249,7 +249,7 @@ def plot_draft_data(df,player,start_date):
   pl_ax.axis('off')
   
   fig.suptitle(f"{player}'s NFBC Draft Data\nRolling 14-Days: {chart_start} - {chart_end}",x=0.55,y=1,fontsize=14)
-  fig.text(0.47,1,f"{player}",ha='right',va='top',color='#F1C647',fontsize=14)
+  fig.text(0.475,1,f"{player}",ha='right',va='top',color='#F1C647',fontsize=14)
   sns.despine(left=True)
   st.pyplot(fig)
 
