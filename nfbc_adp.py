@@ -224,7 +224,7 @@ def plot_draft_data(df,player,start_date):
           f'Max Pick: {max_val:.0f}',
            ha='left',va='center',color=chart_blue)
    
-  text_mask = max_val - (adp_val + chart_df.iloc[-1]['StDev Est'])  >= chart_range * 0.075
+  text_mask = max_val - (adp_val + chart_df.iloc[-1]['StDev Est'])  >= chart_range * 0.05
   ax.text(chart_df.iloc[-1]['end_date'] + datetime.timedelta(days=2),
           chart_df.iloc[-1]['ADP'] + chart_df.iloc[-1]['StDev Est'],
           'St Dev (est)' if text_mask else '',
