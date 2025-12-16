@@ -150,13 +150,13 @@ def position_chart(adp_start_date,nfbc_adp_df=nfbc_adp_df):
         'All':'#ffffff'
     }
     fig, ax = plt.subplots(figsize=(6,5))
-    sns.lineplot(pd.DataFrame(med_values,index=pd.date_range(start=adp_start_date, end=nfbc_adp_df['end_date'].max()).melt(value_name='Cost',ignore_index=False).reset_index().rename(columns={'index':'Date'}),
+    sns.lineplot(pd.DataFrame(med_values,index=pd.date_range(start=adp_start_date, end=nfbc_adp_df['end_date'].max())).melt(value_name='Cost',ignore_index=False).reset_index().rename(columns={'index':'Date'}),
                  x='Date',
                  y='Cost',
                  hue='variable',
                 palette=['#ffffff']*9,
                 linewidth=3,legend=False)
-    sns.lineplot(pd.DataFrame(med_values,index=pd.date_range(start=adp_start_date, end=nfbc_adp_df['end_date'].max()).melt(value_name='Cost',ignore_index=False).reset_index().rename(columns={'index':'Date'}),
+    sns.lineplot(pd.DataFrame(med_values,index=pd.date_range(start=adp_start_date, end=nfbc_adp_df['end_date'].max())).melt(value_name='Cost',ignore_index=False).reset_index().rename(columns={'index':'Date'}),
                  x='Date',
                  y='Cost',
                  hue='variable',
@@ -172,7 +172,7 @@ def position_chart(adp_start_date,nfbc_adp_df=nfbc_adp_df):
     ax.set_yticklabels([f'{y/100:+.0%}' for y in ax.get_yticks()])
     ax.legend(title='',edgecolor=pl_background)
     ax.axhline(0,color='w',alpha=0.5,linestyle='--')
-    fig.suptitle('Change in Median Cost, by Position')
+    fig.suptitle('Median Change in Draft Pick Cost, by Position')
     sns.despine()
     st.pyplot(fig)
 
