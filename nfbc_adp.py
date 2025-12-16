@@ -178,7 +178,7 @@ def position_chart(adp_start_date,nfbc_adp_df=nfbc_adp_df):
     sns.despine()
     st.pyplot(fig)
 
-position_chart(adp_start_date)
+# position_chart(adp_start_date)
 
 adp_diff_df = (pd
                .merge(nfbc_adp_df.loc[nfbc_adp_df['end_date'] == adp_start_date,['Player ID','Player','yahoo_pos','ADP']],
