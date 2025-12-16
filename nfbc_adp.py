@@ -111,6 +111,18 @@ with col2:
 @st.cache_data(show_spinner=f"Generating positional chart")
 def position_chart(adp_start_date,nfbc_adp_df=nfbc_adp_df):
     start_string = adp_start_date.strftime('%-m/%-d')
+    color_map = {
+          'SP':'#0C3E9B', 
+          'RP':'#2674C5', 
+          'C':'#696666', 
+          '1B':'#794C30', 
+          '2B':'#B5168A', 
+          '3B':'#286F04', 
+          'SS':'#872B2C', 
+          'OF':'#B1550D', 
+          'All':'#ffffff'
+      }
+    position_list = ['C', '1B', '2B', '3B', 'SS', 'OF', 'SP', 'RP']
     med_values = {x:[] for x in position_list}
     for end_date in pd.date_range(start=adp_start_date, end=nfbc_adp_df['end_date'].max()):
         for pos in med_values.keys():
@@ -138,17 +150,7 @@ def position_chart(adp_start_date,nfbc_adp_df=nfbc_adp_df):
                                )]
     
     med_values.update({'All':all_values})
-    color_map = {
-        'SP':'#0C3E9B', 
-        'RP':'#2674C5', 
-        'C':'#696666', 
-        '1B':'#794C30', 
-        '2B':'#B5168A', 
-        '3B':'#286F04', 
-        'SS':'#872B2C', 
-        'OF':'#B1550D', 
-        'All':'#ffffff'
-    }
+  
     fig, ax = plt.subplots(figsize=(6,5))
     sns.lineplot(pd.DataFrame(med_values,index=pd.date_range(start=adp_start_date, end=nfbc_adp_df['end_date'].max())).melt(value_name='Cost',ignore_index=False).reset_index().rename(columns={'index':'Date'}),
                  x='Date',
