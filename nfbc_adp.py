@@ -7,6 +7,7 @@ import urllib
 import datetime
 from PIL import Image
 from matplotlib import ticker
+import matplotlib.ticker as mtick
 import matplotlib.dates as mdates
 from matplotlib import colors
 import matplotlib.font_manager as fm
@@ -106,6 +107,76 @@ with col2:
         nfbc_adp_df = nfbc_adp_df.loc[position_mask].copy()
     
     pos_text = '' if pos_filter =='All' else f' ({pos_filter}-Eligible)'
+
+@st.cache_data(show_spinner=f"Generating positional chart")
+def position_chart(adp_start_date,nfbc_adp_df=nfbc_adp_df):
+    start_string = adp_start_date.strftime('%-m/%-d')
+    med_values = {x:[] for x in position_list}
+    for end_date in pd.date_range(start=adp_start_date, end=nfbc_adp_df['end_date'].max()):
+        for pos in med_values.keys():
+            med_values[pos] += [(pd
+                               .merge(nfbc_adp_df.loc[(pd.to_datetime(nfbc_adp_df['end_date']).dt.date == adp_start_date) & (nfbc_adp_df['yahoo_pos'].str.contains(pos)),['Player ID','Player','yahoo_pos','ADP']].query('ADP <= 400'),
+                                      nfbc_adp_df.loc[(nfbc_adp_df['end_date'] == end_date) & (nfbc_adp_df['yahoo_pos'].str.contains(pos)),['Player ID','Player','ADP']].query('ADP <= 400'),
+                                      how='inner',
+                                      on=['Player ID','Player'],
+                                      suffixes=['_early','_current'])
+                               .assign(perc_diff = lambda x: (-(x['ADP_current']-x['ADP_early'])/x['ADP_early']) * 100)
+                               ['perc_diff']
+                               .median()
+                               )]
+    all_values = []
+    for end_date in pd.date_range(start=adp_start_date, end=nfbc_adp_df['end_date'].max()):
+        all_values += [(pd
+                               .merge(nfbc_adp_df.loc[(pd.to_datetime(nfbc_adp_df['end_date']).dt.date == adp_start_date),['Player ID','Player','yahoo_pos','ADP']].query('ADP <= 400'),
+                                      nfbc_adp_df.loc[(nfbc_adp_df['end_date'] == end_date),['Player ID','Player','ADP']].query('ADP <= 400'),
+                                      how='inner',
+                                      on=['Player ID','Player'],
+                                      suffixes=['_early','_current'])
+                               .assign(perc_diff = lambda x: (-(x['ADP_current']-x['ADP_early'])/x['ADP_early']) * 100)
+                               ['perc_diff']
+                               .median()
+                               )]
+    
+    med_values.update({'All':all_values})
+    color_map = {
+        'SP':'#0C3E9B', 
+        'RP':'#2674C5', 
+        'C':'#696666', 
+        '1B':'#794C30', 
+        '2B':'#B5168A', 
+        '3B':'#286F04', 
+        'SS':'#872B2C', 
+        'OF':'#B1550D', 
+        'All':'#ffffff'
+    }
+    fig, ax = plt.subplots(figsize=(6,5))
+    sns.lineplot(pd.DataFrame(med_values,index=pd.date_range(start=adp_start_date, end=nfbc_adp_df['end_date'].max()).melt(value_name='Cost',ignore_index=False).reset_index().rename(columns={'index':'Date'}),
+                 x='Date',
+                 y='Cost',
+                 hue='variable',
+                palette=['#ffffff']*9,
+                linewidth=3,legend=False)
+    sns.lineplot(pd.DataFrame(med_values,index=pd.date_range(start=adp_start_date, end=nfbc_adp_df['end_date'].max()).melt(value_name='Cost',ignore_index=False).reset_index().rename(columns={'index':'Date'}),
+                 x='Date',
+                 y='Cost',
+                 hue='variable',
+                palette=color_map,
+                linewidth=2.5)
+    locator = mdates.AutoDateLocator(minticks=3, maxticks=7)
+    formatter = mdates.ConciseDateFormatter(locator,
+                                            show_offset=False,
+                                           formats=['%-m/%-d/%y', '%-m/%-d', '%-m/%-d', '%H:%M', '%H:%M', '%S.%f'])
+    ax.xaxis.set_major_locator(locator)
+    ax.xaxis.set_major_formatter(formatter)
+    ax.set(ylim=(min(-6,ax.get_ylim()[0]),ax.get_ylim()[1]))
+    ax.set_yticklabels([f'{y/100:+.0%}' for y in ax.get_yticks()])
+    ax.legend(title='',edgecolor=pl_background)
+    ax.axhline(0,color='w',alpha=0.5,linestyle='--')
+    fig.suptitle('Change in Median Cost, by Position')
+    sns.despine()
+    st.pyplot(fig)
+
+plot_draft_data(adp_start_date)
 
 adp_diff_df = (pd
                .merge(nfbc_adp_df.loc[nfbc_adp_df['end_date'] == adp_start_date,['Player ID','Player','yahoo_pos','ADP']],
