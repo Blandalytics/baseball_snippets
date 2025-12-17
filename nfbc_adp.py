@@ -217,7 +217,9 @@ with col1:
                  )
 
 with col2:
-    st.write(f'Biggest fallers since {adp_start_date.strftime('%-m/%-d/%y')}{pos_text}')
+    # st.write(f'Biggest fallers since {adp_start_date.strftime('%-m/%-d/%y')}{pos_text}')
+    new_title = f'<p style="color:#72CBFD; font-size: 20px;">Biggest fallers since {adp_start_date.strftime('%-m/%-d/%y')}{pos_text}</p>'
+    st.markdown(new_title, unsafe_allow_html=True)
     st.dataframe(adp_diff_df.drop(columns=['Pos']).sort_values('% Diff',ascending=False).head(25)
                  .style
                  .format(precision=1, thousands='')
