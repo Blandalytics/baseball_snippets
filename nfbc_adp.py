@@ -15,7 +15,14 @@ import os
 
 from pyfonts import set_default_font, load_google_font
 
-st.set_page_config(page_title='NFBC Draft Data', page_icon='⚾',
+def letter_logo():
+    logo_loc = 'https://github.com/Blandalytics/baseball_snippets/blob/main/teal_letter_logo.png?raw=true'
+    logo = Image.open(urllib.request.urlopen(logo_loc))
+    return logo
+
+letter_logo = letter_logo()
+
+st.set_page_config(page_title='NFBC Draft Data', page_icon=letter_logo,#'⚾',
                    layout="wide"
                   )
 
@@ -338,7 +345,7 @@ def plot_draft_data(df,player,start_date):
   fig.text(0.25,1,f"{player}",ha='left',va='top',color='#F1C647',fontsize=14)
   fig.text(0.25,0.95,line_two_text,ha='left',va='top',color='w',fontsize=14)
   sns.despine(left=True)
-  st.pyplot(fig)
+  st.pyplot(fig,width='content')
 
 plot_draft_data(nfbc_adp_df,player,adp_start_date)
 st.write(f'ADP differences since {adp_start_date.strftime('%-m/%-d/%y')}{pos_text}')
