@@ -15,16 +15,21 @@ import os
 
 from pyfonts import set_default_font, load_google_font
 
+st.set_page_config(page_title='NFBC Draft Data', page_icon='⚾',
+                   layout="wide"
+                  )
+
 font = load_google_font("Alexandria")
 fm.fontManager.addfont(str(font.get_file()))
 
 logo_loc = 'https://github.com/Blandalytics/PLV_viz/blob/main/data/PL-text-wht.png?raw=true'
 logo = Image.open(urllib.request.urlopen(logo_loc))
-st.image(logo, width=200)
 
-# st.title("NFBC Draft Data, over Time")
-new_title = '<p style="color:#72CBFD; font-weight: bold; font-size: 42px;">NFBC Draft Data, over Time</p>'
+new_title = '<p style="color:#72CBFD; font-weight: bold; font-size: 42px; text-align:center;">NFBC Draft Data, over Time</p>'
 st.markdown(new_title, unsafe_allow_html=True)
+
+filter_text = '<p style="text-align:center;">To change player or timeframe, tap the >> in the upper left of the page</p>'
+st.markdown(filter_text, unsafe_allow_html=True)
 
 @st.cache_data(ttl=600,show_spinner=f"Loading draft data")
 def load_data():
@@ -37,12 +42,9 @@ def load_data():
   return df
 
 nfbc_adp_df = load_data()
-default_player = 'Ben Rice'
-default_player_pos = nfbc_adp_df.loc[nfbc_adp_df['Player']==default_player,'yahoo_pos'].iloc[0]
-default_player_group = ['H'] if 'P' not in ', '.join(default_player_pos) else ['P']
 
 update_date = nfbc_adp_df['end_date'].max().strftime('%-m/%-d/%y')
-st.write(f'Data is through {update_date}')
+
 ## Set Styling
 # Plot Style
 pl_white = '#FEFEFE'
@@ -69,14 +71,13 @@ sns.set_theme(
 chart_red = '#D74C36'#sns.color_palette('vlag',n_colors=10000)[-1]
 chart_blue = '#72CBFD'#sns.color_palette('vlag',n_colors=10000)[0]
 
-def format_dollar_amount(amount):
-    formatted_absolute_amount = '${:.1f}'.format(abs(amount))
-    if round(amount, 2) < 0:
-        return f'-{formatted_absolute_amount}'
-    return formatted_absolute_amount
-
-col1, col2 = st.columns(2)
-with col1:
+with st.sidebar:
+    st.image(logo, width=200)
+    st.write(f'Data is through {update_date}')
+    default_player = 'Ben Rice'
+    default_player_pos = nfbc_adp_df.loc[nfbc_adp_df['Player']==default_player,'yahoo_pos'].iloc[0]
+    default_player_group = ['H'] if 'P' not in ', '.join(default_player_pos) else ['P']
+  
     adp_start_date = st.date_input("ADP Start Date", 
                                    datetime.date(2025,10,15),
                                    min_value=datetime.date(2025,10,1),
@@ -84,7 +85,7 @@ with col1:
                                    format="MM/DD/YYYY")
     adp_thresh = 1000
     start_string = adp_start_date.strftime('%-m/%-d')
-with col2:
+
     pos_filters = [
         'All',
         'H','P',
@@ -107,6 +108,12 @@ with col2:
         nfbc_adp_df = nfbc_adp_df.loc[position_mask].copy()
     
     pos_text = '' if pos_filter =='All' else f' ({pos_filter}-Eligible)'
+
+def format_dollar_amount(amount):
+    formatted_absolute_amount = '${:.1f}'.format(abs(amount))
+    if round(amount, 2) < 0:
+        return f'-{formatted_absolute_amount}'
+    return formatted_absolute_amount
 
 @st.cache_data(show_spinner=f"Generating positional chart")
 def position_chart(adp_start_date,nfbc_adp_df=nfbc_adp_df):
