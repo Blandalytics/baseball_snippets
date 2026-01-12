@@ -109,6 +109,27 @@ with st.sidebar:
     
     pos_text = '' if pos_filter =='All' else f' ({pos_filter}-Eligible)'
 
+    player_list = list(
+      nfbc_adp_df
+      .assign(weighted_adp = lambda x: x['# Picks'].mul(x['ADP']))
+      .groupby('Player')
+      [['# Picks','weighted_adp']]
+      .sum()
+      .assign(adp = lambda x: x['weighted_adp'].div(x['# Picks']))
+      .sort_values('adp')
+      .rename(columns={'# Picks':'num_picks'})
+      .query('num_picks >= 500')
+      .index
+    )
+    
+    if pos_filter in ['All']+default_player_group+default_player_pos:
+        player_index = player_list.index(default_player)
+    else:
+        player_index = 0
+    
+    player = st.selectbox('Choose a player:', player_list,
+                          index=player_index)
+
 def format_dollar_amount(amount):
     formatted_absolute_amount = '${:.1f}'.format(abs(amount))
     if round(amount, 2) < 0:
@@ -238,28 +259,7 @@ with col2:
                  hide_index=True
                  )
 
-player_list = list(
-  nfbc_adp_df
-  .assign(weighted_adp = lambda x: x['# Picks'].mul(x['ADP']))
-  .groupby('Player')
-  [['# Picks','weighted_adp']]
-  .sum()
-  .assign(adp = lambda x: x['weighted_adp'].div(x['# Picks']))
-  .sort_values('adp')
-  .rename(columns={'# Picks':'num_picks'})
-  .query('num_picks >= 500')
-  .index
-)
 
-if pos_filter in ['All']+default_player_group+default_player_pos:
-    player_index = player_list.index(default_player)
-else:
-    player_index = 0
-
-player = st.selectbox('Choose a player:', player_list,
-                      index=player_index)
-
-start_date = datetime.date(2024,10,21)
 def plot_draft_data(df,player,start_date):
   chart_df = df.loc[(df['Player']==player) & (df['end_date'] >= start_date)].copy()
   chart_start = start_date.strftime('%-m/%-d/%y')
