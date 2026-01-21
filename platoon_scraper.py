@@ -50,7 +50,9 @@ def get_page_content(team_slug: str) -> BeautifulSoup:
     Fetch and parse the HTML content for a team's roster page
     """
     url = f"{BASE_URL}{team_slug}"
-    print(f"Fetching {url}...")
+
+    ### Commented out print statement
+    # print(f"Fetching {url}...")
     
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
@@ -135,8 +137,9 @@ def scrape_all_teams() -> pd.DataFrame:
         try:
             soup = get_page_content(team_slug)
             platooned = extract_platooned_players(soup, team_code)
-            
-            print(f"  Found {len(platooned)} platooned players for {team_code}")
+
+            ### Commented out print statement
+            # print(f"  Found {len(platooned)} platooned players for {team_code}")
             all_platooned_players.extend(platooned)
             
             # Be respectful with rate limiting
@@ -156,8 +159,9 @@ def main():
     """
     Main execution function
     """
-    print("Starting FanGraphs Roster Resource platoon scraper...")
-    print(f"Scraping {len(TEAMS)} teams...\n")
+    ### Commented out print statement
+    # print("Starting FanGraphs Roster Resource platoon scraper...")
+    # print(f"Scraping {len(TEAMS)} teams...\n")
     
     # Scrape all teams
     df = scrape_all_teams()
@@ -167,7 +171,7 @@ def main():
     output_file = 'platooned_players.csv'
     df.to_csv(output_file, index=False)
 
-    ### Unnecessary print statements
+    ### Commented out print statements
     # print(f"\n{'='*60}")
     # print(f"Scraping complete!")
     # print(f"Total platooned players found: {len(df)}")
