@@ -107,7 +107,7 @@ def extract_platooned_players(soup: BeautifulSoup, team_code: str) -> List[Dict[
                 player_name = player_data.get('player', '')
                 if player_name:
                     platooned_players.append({
-                        'Player': player_name,
+                        'Name': player_name,
                         'Team': team_code,
                         'Platoon Start': 'L'
                     })
@@ -115,7 +115,7 @@ def extract_platooned_players(soup: BeautifulSoup, team_code: str) -> List[Dict[
                 player_name = player_data.get('player', '')
                 if player_name:
                     platooned_players.append({
-                        'Player': player_name,
+                        'Name': player_name,
                         'Team': team_code,
                         'Platoon Start': 'R'
                     })
