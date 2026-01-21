@@ -107,17 +107,17 @@ def extract_platooned_players(soup: BeautifulSoup, team_code: str) -> List[Dict[
                 player_name = player_data.get('player', '')
                 if player_name:
                     platooned_players.append({
-                        'player': player_name,
-                        'team': team_code,
-                        'platooned': 'L'
+                        'Player': player_name,
+                        'Team': team_code,
+                        'Platoon': 'L'
                     })
             elif platoon_value == 'vsR':
                 player_name = player_data.get('player', '')
                 if player_name:
                     platooned_players.append({
-                        'player': player_name,
-                        'team': team_code,
-                        'platooned': 'R'
+                        'Player': player_name,
+                        'Team': team_code,
+                        'Platoon': 'R'
                     })
         
     except (json.JSONDecodeError, KeyError, IndexError) as e:
