@@ -3,9 +3,9 @@ FanGraphs Roster Resource Platoon Scraper
 Scrapes all 30 MLB team pages to identify platooned players
 """
 
-import requests
-from bs4 import BeautifulSoup
-import pandas as pd
+import requests #2.32.3
+from bs4 import BeautifulSoup #4.12.3
+import pandas as pd #2.2.2
 import time
 from typing import List, Dict
 
