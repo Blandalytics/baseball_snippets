@@ -105,7 +105,7 @@ with st.sidebar:
         nfbc_adp_df = nfbc_adp_df.copy()
     elif pos_filter in ['H','P']:
         if pos_filter=='H':
-            position_mask = nfbc_adp_df['yahoo_pos'].apply(lambda x: 'P' not in ', '.join(x))
+            position_mask = nfbc_adp_df['yahoo_pos'].apply(lambda x: ('P' not in ', '.join(x)) | ('T' in ', '.join(x)))
             nfbc_adp_df = nfbc_adp_df.loc[position_mask].copy()
         else:
             position_mask = nfbc_adp_df['yahoo_pos'].apply(lambda x: 'P' in ', '.join(x))
