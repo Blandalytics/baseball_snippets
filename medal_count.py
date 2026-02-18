@@ -22,7 +22,7 @@ def load_data():
   
   # Pass content to pandas
   tables = pd.read_html(response.text)
-  return tables[2]
+  return tables[2].iloc[:-1].copy()
 
 medal_df = load_data().rename(columns={'NOC':'Country','Total':'Medals'})
 
