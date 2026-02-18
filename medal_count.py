@@ -11,7 +11,7 @@ st.title('Olympic Medal Counts')
 
 @st.cache_data(ttl=10*60,show_spinner="Loading medal data")
 def load_data():
-  tables=pd.read_html("https://en.wikipedia.org/wiki/2024_Summer_Olympics_medal_table")
+  tables=pd.read_html("https://en.wikipedia.org/wiki/2026_Winter_Olympics_medal_table")
   return tables[3].iloc[:-1].copy()
 
 medal_df = load_data().rename(columns={'NOC':'Country','Total':'Medals'})
