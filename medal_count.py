@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import requests
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -11,8 +12,17 @@ st.title('Olympic Medal Counts')
 
 @st.cache_data(ttl=10*60,show_spinner="Loading medal data")
 def load_data():
-  tables=pd.read_html("https://en.wikipedia.org/wiki/2026_Winter_Olympics_medal_table")
-  return tables[3].iloc[:-1].copy()
+  url = "https://en.wikipedia.org/wiki/2026_Winter_Olympics_medal_table"
+  headers = {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+  }
+  
+  # Fetch content
+  response = requests.get(url, headers=headers)
+  
+  # Pass content to pandas
+  tables = pd.read_html(response.text)
+  return tables[2]
 
 medal_df = load_data().rename(columns={'NOC':'Country','Total':'Medals'})
 
