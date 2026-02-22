@@ -323,6 +323,7 @@ def plot_draft_data(df,player,start_date):
   
   ax.set(xlim=(ax.get_xlim()[0],chart_df['end_date'].max()),
          ylim=(ax.get_ylim()[1],max(0,ax.get_ylim()[0])),
+         ylabel='ADP Cost',
          xlabel='')
   
   locator = mdates.AutoDateLocator(minticks=3, maxticks=7)
