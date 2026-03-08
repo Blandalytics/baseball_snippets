@@ -16,7 +16,7 @@ import os
 from pyfonts import set_default_font, load_google_font
 
 def letter_logo():
-    logo_loc = 'https://github.com/Blandalytics/baseball_snippets/blob/main/teal_letter_logo.png?raw=true'
+    logo_loc = 'https://res.cloudinary.com/dduabusaf/image/upload/v1772839606/teal_letter_logo_owufaj.png'
     logo = Image.open(urllib.request.urlopen(logo_loc))
     return logo
 
