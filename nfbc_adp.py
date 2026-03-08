@@ -334,7 +334,7 @@ def plot_draft_data(df,player,start_date):
   ax.xaxis.set_major_formatter(formatter)
   
   # Add PL logo
-  logo_loc = 'https://github.com/Blandalytics/PLV_viz/blob/main/data/PL-text-wht.png?raw=true'
+  logo_loc = 'https://res.cloudinary.com/dduabusaf/image/upload/v1772839288/PitcherList_Stats_watermark_with_logo_k9e3xa.webp'
   logo = Image.open(urllib.request.urlopen(logo_loc)).crop((50,150,1300, 400))
   pl_ax = fig.add_axes([0.44,-0.04,0.2,0.2], anchor='S', zorder=1)
   pl_ax.imshow(logo)
