@@ -18,16 +18,20 @@ from pyfonts import set_default_font, load_google_font
 @st.cache_data(ttl=3600)
 def load_logo():
     logo_loc = 'https://res.cloudinary.com/dduabusaf/image/upload/v1772839288/PitcherList_Stats_watermark_with_logo_k9e3xa.webp'
-    logo = Image.open(urllib.request.urlopen(logo_loc))
-    return logo
+    # logo = Image.open(urllib.request.urlopen(logo_loc))
+    # return logo
+    with Image.open(urllib.request.urlopen(logo_loc)) as logo:
+        return logo
 
 logo = load_logo()
 
 @st.cache_data(ttl=3600)
 def letter_logo():
     logo_loc = 'https://res.cloudinary.com/dduabusaf/image/upload/v1772839606/teal_letter_logo_owufaj.png'
-    logo = Image.open(urllib.request.urlopen(logo_loc))
-    return logo
+    # logo = Image.open(urllib.request.urlopen(logo_loc))
+    # return logo
+    with Image.open(urllib.request.urlopen(logo_loc)) as logo:
+        return logo
 
 letter_logo = letter_logo()
 
@@ -46,13 +50,15 @@ st.markdown(filter_text, unsafe_allow_html=True)
 
 @st.cache_data(ttl=600,show_spinner=f"Loading draft data")
 def load_data():
-  df = pd.read_parquet('https://github.com/Blandalytics/baseball_snippets/blob/main/nfbc_adp_data.parquet?raw=true')
-  df['start_date'] = pd.to_datetime(df['start_date']).dt.date
-  df['end_date'] = pd.to_datetime(df['end_date']).dt.date
-  df['yahoo_pos'] = np.where(df['Position(s)'].apply(lambda x: 'P' in ', '.join(x)),
-                             df['yahoo_pos'].str.split(', '),#df['yahoo_pos'].apply(lambda x: [y.replace('DH','UT') for y in x]),
-                             df['Position(s)'].str.split(', '))
-  return df
+    # df = pd.read_parquet('https://github.com/Blandalytics/baseball_snippets/blob/main/nfbc_adp_data.parquet?raw=true')
+    with pd.read_parquet('https://github.com/Blandalytics/baseball_snippets/blob/main/nfbc_adp_data.parquet?raw=true') as df:
+    
+        df['start_date'] = pd.to_datetime(df['start_date']).dt.date
+        df['end_date'] = pd.to_datetime(df['end_date']).dt.date
+        df['yahoo_pos'] = np.where(df['Position(s)'].apply(lambda x: 'P' in ', '.join(x)),
+                                   df['yahoo_pos'].str.split(', '),#df['yahoo_pos'].apply(lambda x: [y.replace('DH','UT') for y in x]),
+                                    df['Position(s)'].str.split(', '))
+        return df
 
 nfbc_adp_df = load_data()
 
