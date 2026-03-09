@@ -15,6 +15,15 @@ import os
 
 from pyfonts import set_default_font, load_google_font
 
+@st.cache_data(ttl=3600)
+def load_logo():
+    logo_loc = 'https://res.cloudinary.com/dduabusaf/image/upload/v1772839288/PitcherList_Stats_watermark_with_logo_k9e3xa.webp'
+    logo = Image.open(urllib.request.urlopen(logo_loc))
+    return logo
+
+logo = load_logo()
+
+@st.cache_data(ttl=3600)
 def letter_logo():
     logo_loc = 'https://res.cloudinary.com/dduabusaf/image/upload/v1772839606/teal_letter_logo_owufaj.png'
     logo = Image.open(urllib.request.urlopen(logo_loc))
@@ -28,9 +37,6 @@ st.set_page_config(page_title='NFBC Draft Data', page_icon=letter_logo,#'⚾',
 
 font = load_google_font("Alexandria")
 fm.fontManager.addfont(str(font.get_file()))
-
-logo_loc = 'https://github.com/Blandalytics/PLV_viz/blob/main/data/PL-text-wht.png?raw=true'
-logo = Image.open(urllib.request.urlopen(logo_loc))
 
 new_title = '<p style="color:#72CBFD; font-weight: bold; font-size: 42px; text-align:center;">NFBC Draft Data, over Time</p>'
 st.markdown(new_title, unsafe_allow_html=True)
