@@ -50,7 +50,7 @@ st.markdown(filter_text, unsafe_allow_html=True)
 
 @st.cache_data(ttl=600,show_spinner=f"Loading draft data")
 def load_data():
-    df = pd.read_parquet('https://github.com/Blandalytics/baseball_snippets/blob/main/nfbc_adp_data.parquet?raw=true')
+    df = pd.read_parquet('https://huggingface.co/datasets/blandalytics/nfbc_draft_data/blob/main/nfbc_adp_data.parquet')
     # with pd.read_parquet('https://github.com/Blandalytics/baseball_snippets/blob/main/nfbc_adp_data.parquet?raw=true') as df:
     
     df['start_date'] = pd.to_datetime(df['start_date']).dt.date
