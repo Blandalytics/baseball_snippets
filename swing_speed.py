@@ -248,13 +248,16 @@ def speed_dist(swing_data,player,stat,handedness):
                     color=player_color,
                     cut=0)
     if all_swings==True:
-        xlim = (max(swing_data[stat].quantile(0.01),swing_data.loc[swing_data['Hitter']==player,stat].quantile(0.02)),
+        xlim = (min(swing_data[stat].quantile(0.01),swing_data.loc[swing_data['Hitter']==player,stat].quantile(0.02)),
                  max(200,swing_data.loc[swing_data['Hitter']==player,stat].quantile(0.99)) if stat == 'swing_time' else swing_data[stat].max())
     else:
         xlim = (ax.get_xlim()[0],ax.get_xlim()[1])
 
     if stat=='squared_up_frac':
         xlim = (38,xlim[1])
+
+    if stat=='bat_speed':
+        xlim = (54,90)
     
     ax.set(xlim=xlim,
            xlabel=stat_name_dict[stat],
