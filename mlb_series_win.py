@@ -191,19 +191,23 @@ def games_played_chart(series_len):
                  edgecolor='w')
     for p in ax.patches:
         height_check = p.get_height() + 1 > ax.get_ylim()[1]/10
+        bbox = dict() if height_check else dict(boxstyle="round",pad=0.25,alpha=1,
+                                                edgecolor='w',linewidth=1,
+                                                facecolor=lower_seed_color)
         ax.annotate(f"{p.get_height():.1f}%\n" if p.get_height() >= 0.05 else '~0%\n', 
                     (p.get_x() + p.get_width() / 2, 
                      (p.get_y() + p.get_height()/2 - 1) if height_check else (p.get_y() + p.get_height() - ax.get_ylim()[1]/30)),
                     ha="center", 
                      va="center" if height_check else "bottom",
-                     color='w' if height_check else lower_seed_color,
+                     color='w',
+                     bbox=bbox,
                     fontsize=font_size)
     ax.legend(ncol=2,bbox_to_anchor=(0.49,0.92),loc='lower center',
               labels=[higher_seed_team+f' Win: {sum(games[0])/series_sims:.1%}',lower_seed_team+f' Win: {1-sum(games[0])/series_sims:.1%}'],edgecolor='w',framealpha=0)
 
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(100,0))
     ax.set_xticks(game_space)
-    ax.set(xlabel='Win in X Games',ylabel='',ylim=(0,ax.get_ylim()[1]*1.02))
+    ax.set(xlabel='Win in X Games',ylabel='',ylim=(0,ax.get_ylim()[1]*1.1))
     pl_ax = fig.add_axes([0.05,-0.04,0.2,0.1], anchor='S', zorder=1)
     # width, height = logo.size
     # pl_ax.imshow(logo.crop((0, 0, width, height-150)))
