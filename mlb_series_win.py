@@ -155,7 +155,7 @@ def series_chart(fill_dict):
                 ha='center',va='center',
                bbox=dict(boxstyle="round",pad=0.25,alpha=1,
                          edgecolor='w',linewidth=1,
-                         color='w'))
+                         facecolor=higher_seed_color))
     ax.set_xticks(list(fill_dict.keys()))
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(1,decimals=0))
     ax.set(xlim=(0,max(fill_dict.keys())+1),
