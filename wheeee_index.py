@@ -22,26 +22,61 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from st_aggrid import GridOptionsBuilder, AgGrid, GridUpdateMode, ColumnsAutoSizeMode
 
-st.title('Wheeee! Index')
-st.write('This is an attempt to quantify how much "Wheeee!" a baseball game has (s/o to Sarah Langs for [making this a thing!](https://x.com/search?q=from%3ASlangsOnSports%20wheeee&src=typed_query&f=live))')
+from pyfonts import set_default_font, load_google_font
+import matplotlib.font_manager as fm
 
-chart_white = '#FEFEFE'
-chart_accent = '#162B50'
+@st.cache_data(ttl=3600)
+def load_logo():
+    logo_loc = 'https://res.cloudinary.com/dduabusaf/image/upload/v1772839288/PitcherList_Stats_watermark_with_logo_k9e3xa.webp'
+    logo = Image.open(urllib.request.urlopen(logo_loc))
+    return logo
+
+logo = load_logo()
+
+@st.cache_data(ttl=3600)
+def letter_logo():
+    logo_loc = 'https://res.cloudinary.com/dduabusaf/image/upload/v1772839606/teal_letter_logo_owufaj.png'
+    logo = Image.open(urllib.request.urlopen(logo_loc))
+    return logo
+
+base_font = 'DM Sans'
+font = load_google_font(base_font, weight=700)
+fm.fontManager.addfont(str(font.get_file()))
+
+## Set Styling
+# Plot Style
+pl_white = '#FFFFFF'
+pl_background = '#292C42'
+pl_text = '#00D4FF'#'#72CBFD'
+pl_line_color = '#8D96B3'
+pl_highlight = '#F1C647'
+pl_highlight_gradient = ['#F1C647','#F5A05E']
+pl_highlight_cmap = sns.color_palette(f'blend:{pl_highlight_gradient[0]},{pl_highlight_gradient[1]}', as_cmap=True)
 
 sns.set_theme(
     style={
-        'axes.edgecolor': chart_accent,
-        'axes.facecolor': chart_white,
-        'axes.labelcolor': chart_white,
-        'xtick.color': chart_accent,
-        'ytick.color': chart_accent,
-        'figure.facecolor':chart_white,
-        'grid.color': chart_white,
+        'axes.edgecolor': pl_line_color,
+        'axes.facecolor': pl_background,
+        'axes.labelcolor': pl_white,
+        'xtick.color': pl_line_color,
+        'ytick.color': pl_line_color,
+        'figure.facecolor':pl_background,
+        'grid.color': pl_background,
         'grid.linestyle': '-',
-        'legend.facecolor':chart_white,
-        'text.color': 'k'
-     }
+        'legend.facecolor':pl_background,
+        'text.color': pl_white
+     },
+    font=base_font
     )
+mpl.rcParams.update({"font.weight": 700})
+
+letter_logo = letter_logo()
+
+st.set_page_config(page_title='MLB Series Simulator', page_icon=letter_logo)
+
+new_title = '<p style="color:#72CBFD; font-weight: bold; font-size: 42px; text-align:center;">MLB Series Simulator</p>'
+st.markdown(new_title, unsafe_allow_html=True)
+st.write('This is an attempt to quantify how much "Wheeee!" a baseball game has (s/o to Sarah Langs for [making this a thing!](https://x.com/search?q=from%3ASlangsOnSports%20wheeee&src=typed_query&f=live))')
 
 color_df = pl.read_csv('https://github.com/Blandalytics/PLV_viz/blob/main/mlb_team_colors.csv?raw=true')
 color_dict = color_df[['Short Code','Color 1']].rows_by_key(key=["Short Code"],unique=True)
@@ -390,7 +425,7 @@ def game_chart(game_choice_id):
              ha='center', fontsize=12)
     fig.text(0.32,0.735,f'{gei:.1f} Wins',
              ha='center', fontsize=12,
-             color='k' if abs(win_prob_index-.5)<.2 else chart_white,
+             color='k' if abs(win_prob_index-.5)<.2 else 'w',
              bbox=dict(boxstyle='round', pad=0.25,
                        fc=sns.color_palette('vlag',n_colors=1001)[int(np.clip(win_prob_index*1000,0,1000))], 
                        ec="k"))
@@ -399,7 +434,7 @@ def game_chart(game_choice_id):
              ha='center', fontsize=12)
     fig.text(0.62,0.735,f'{biggest_win_swing:.0%}',
              ha='center', fontsize=12,
-             color='k' if abs(win_swing_index-.5)<.2 else chart_white,
+             color='k' if abs(win_swing_index-.5)<.2 else 'w',
              bbox=dict(boxstyle='round', pad=0.25,
                        fc=sns.color_palette('vlag',n_colors=1001)[int(np.clip(win_swing_index*1000,0,1000))], 
                        ec="k"))
@@ -407,13 +442,14 @@ def game_chart(game_choice_id):
     fig.text(0.41,0.12,'mlb-win-prob.streamlit.app',
              ha='center', fontsize=12)
     
-    logo_loc = 'https://github.com/Blandalytics/baseball_snippets/blob/main/PitcherList_Full_Black.png?raw=true'
-    logo = Image.open(urllib.request.urlopen(logo_loc))
+    # logo_loc = 'https://github.com/Blandalytics/baseball_snippets/blob/main/PitcherList_Full_Black.png?raw=true'
+    # logo = Image.open(urllib.request.urlopen(logo_loc))
     
     # Add PL logo
     pl_ax = fig.add_axes([0.675,0.085,0.2,0.1], anchor='NE', zorder=1)
-    width, height = logo.size
-    pl_ax.imshow(logo.crop((0, 0, width, height-150)))
+    # width, height = logo.size
+    # pl_ax.imshow(logo.crop((0, 0, width, height-150)))
+    pl_ax.imshow(logo)
     pl_ax.axis('off')
     
     sns.despine()
