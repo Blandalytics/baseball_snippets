@@ -200,7 +200,7 @@ def games_played_chart(series_len):
                          color='w',
                         fontsize=font_size)
         else:
-            ax.annotate(f"{p.get_height():.1f}%\n" if p.get_height() >= 0.05 else '~0%\n', 
+            ax.annotate(f"{p.get_height():.1f}%" if p.get_height() >= 0.05 else '~0%', 
                         (p.get_x() + p.get_width() / 2, 
                          (p.get_y() + p.get_height() - ax.get_ylim()[1]/30)),
                         ha="center", 
