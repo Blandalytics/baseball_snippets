@@ -7,6 +7,8 @@ import seaborn as sns
 
 import urllib
 from PIL import Image
+from pyfonts import set_default_font, load_google_font
+import matplotlib.font_manager as fm
 
 @st.cache_data(ttl=3600)
 def load_logo():
