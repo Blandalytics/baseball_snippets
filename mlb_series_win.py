@@ -58,8 +58,9 @@ def best_of_prob(games, higher_seed_win_prob,
     return series_wins, series_games
 
 team_df = pd.read_csv('https://docs.google.com/spreadsheets/d/1zbYqHg685OyP_D-E_QO2_oENfEAKx0tpnkWhjlRBAMA/export?gid=0&format=csv').rename(columns={
-  'RS/G':'Runs Scored',
-  'RA/G':'Runs Allowed'
+    'Team Team':'Team',
+    'RS/G RS/G':'Runs Scored',
+    'RA/G RA/G':'Runs Allowed'
 })
 
 col1, col2 = st.columns(2)
