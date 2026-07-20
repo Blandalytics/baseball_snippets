@@ -8,13 +8,57 @@ import seaborn as sns
 import urllib
 from PIL import Image
 
-st.set_page_config(page_title='MLB Series Simulator', page_icon='📊')
+@st.cache_data(ttl=3600)
+def load_logo():
+    logo_loc = 'https://res.cloudinary.com/dduabusaf/image/upload/v1772839288/PitcherList_Stats_watermark_with_logo_k9e3xa.webp'
+    logo = Image.open(urllib.request.urlopen(logo_loc))
+    return logo
 
-logo_loc = 'https://github.com/Blandalytics/baseball_snippets/blob/main/PitcherList_Full_Black.png?raw=true'
-logo = Image.open(urllib.request.urlopen(logo_loc))
-# st.image(logo, use_column_width=True)
+logo = load_logo()
 
-st.title('MLB Series Simulator')
+@st.cache_data(ttl=3600)
+def letter_logo():
+    logo_loc = 'https://res.cloudinary.com/dduabusaf/image/upload/v1772839606/teal_letter_logo_owufaj.png'
+    logo = Image.open(urllib.request.urlopen(logo_loc))
+    return logo
+
+base_font = 'DM Sans'
+font = load_google_font(base_font, weight=700)
+fm.fontManager.addfont(str(font.get_file()))
+
+## Set Styling
+# Plot Style
+pl_white = '#FFFFFF'
+pl_background = '#292C42'
+pl_text = '#00D4FF'#'#72CBFD'
+pl_line_color = '#8D96B3'
+pl_highlight = '#F1C647'
+pl_highlight_gradient = ['#F1C647','#F5A05E']
+pl_highlight_cmap = sns.color_palette(f'blend:{pl_highlight_gradient[0]},{pl_highlight_gradient[1]}', as_cmap=True)
+
+sns.set_theme(
+    style={
+        'axes.edgecolor': pl_line_color,
+        'axes.facecolor': pl_background,
+        'axes.labelcolor': pl_white,
+        'xtick.color': pl_line_color,
+        'ytick.color': pl_line_color,
+        'figure.facecolor':pl_background,
+        'grid.color': pl_background,
+        'grid.linestyle': '-',
+        'legend.facecolor':pl_background,
+        'text.color': pl_white
+     },
+    font=base_font
+    )
+mpl.rcParams.update({"font.weight": 700})
+
+letter_logo = letter_logo()
+
+st.set_page_config(page_title='MLB Series Simulator', page_icon=letter_logo)
+
+new_title = '<p style="color:#72CBFD; font-weight: bold; font-size: 42px; text-align:center;">MLB Series Simulator</p>'
+st.markdown(new_title, unsafe_allow_html=True)
 sims = 100000
 max_series_len = 15
 
@@ -63,14 +107,19 @@ team_df = pd.read_csv('https://docs.google.com/spreadsheets/d/1zbYqHg685OyP_D-E_
     'RA/G RA/G':'Runs Allowed'
 })
 
-col1, col2 = st.columns(2)
-with col1:
+with st.sidebar:
     higher_seed_team = st.selectbox('Higher seed:',list(team_df['Team']),index=1)
-with col2:
     lower_seed_team = st.selectbox('Lower seed:',list(team_df['Team']),index=5)
 
-# higher_seed_team, lower_seed_team = (team_1, team_2) if team_df[team_df['Team']==team_1]['Win%'].values[0] >= team_df[team_df['Team']==team_2]['Win%'].values[0] else (team_2, team_1)
-
+    series_len = st.slider(
+          "How many games can be in the series?",
+          min_value=3,
+          max_value=max_series_len,
+          value=7,
+          step=2
+      )
+    all_home = st.checkbox("All higher seed home games")
+    
 higher_seed_rs,higher_seed_ra = team_df[team_df['Team']==higher_seed_team][['Runs Scored','Runs Allowed']].values[0]
 higher_seed_color = team_df[team_df['Team']==higher_seed_team]['Color'].values[0]
 higher_seed_code = team_df[team_df['Team']==higher_seed_team]['Code'].values[0]
@@ -113,8 +162,9 @@ def series_chart(fill_dict):
     fig.suptitle(f'{higher_seed_team} over {lower_seed_team} Series Win%\n(Single Game, Neutral Site xWin%: {est_win_prob:.1%})',
                 y=1.02)
     pl_ax = fig.add_axes([0.03,-0.015,0.2,0.1], anchor='NE', zorder=1)
-    width, height = logo.size
-    pl_ax.imshow(logo.crop((0, 0, width, height-150)))
+    # width, height = logo.size
+    # pl_ax.imshow(logo.crop((0, 0, width, height-150)))
+    pl_ax.imshow(logo)
     pl_ax.axis('off')
     sns.despine(bottom=True)
     st.pyplot(fig)
@@ -122,15 +172,6 @@ def series_chart(fill_dict):
 # if st.button("Simulate series"):
 fill_dict = series_sims(est_win_prob,sims,hfa)
 series_chart(fill_dict)
-
-series_len = st.slider(
-      "How many games can be in the series?",
-      min_value=3,
-      max_value=max_series_len,
-      value=7,
-      step=2
-  )
-all_home = st.checkbox("All higher seed home games")
 
 def games_played_chart(series_len):
     series_sims = 250000
@@ -170,21 +211,22 @@ def games_played_chart(series_len):
     st.pyplot(fig)
 games_played_chart(series_len)
 
-st.write(f'''
-- [PythagenPat Run Environment exponent](https://legacy.baseballprospectus.com/glossary/index.php?mode=viewstat&stat=136)
-
-pat_exp = [(runs_scored + runs_allowed) / game] ^ .285
-
-''')
-st.write(f'''
-- [Pythagorean Team Win% Estimate](https://www.mlb.com/glossary/advanced-stats/pythagorean-winning-percentage)
-
-team_win% = (runs_scored ^ pat_exp) / [(runs_scored ^ pat_exp) + (runs_allowed ^ pat_exp)]
-
-''')
-st.write(f'''
-- [Log 5 Win% Estimate](https://web.williams.edu/Mathematics/sjmiller/public_html/103/Log5WonLoss_Paper.pdf)
-
-combined_win% = [favored_win% - (favored_win% * underdog_win%)]/[favored_win% + underdog_win% - (2 * favored_win% * underdog_win%)]
-
-''')
+with st.expander("See explanation"):
+    st.write(f'''
+    - [PythagenPat Run Environment exponent](https://legacy.baseballprospectus.com/glossary/index.php?mode=viewstat&stat=136)
+    
+    pat_exp = [(runs_scored + runs_allowed) / game] ^ .285
+    
+    ''')
+    st.write(f'''
+    - [Pythagorean Team Win% Estimate](https://www.mlb.com/glossary/advanced-stats/pythagorean-winning-percentage)
+    
+    team_win% = (runs_scored ^ pat_exp) / [(runs_scored ^ pat_exp) + (runs_allowed ^ pat_exp)]
+    
+    ''')
+    st.write(f'''
+    - [Log 5 Win% Estimate](https://web.williams.edu/Mathematics/sjmiller/public_html/103/Log5WonLoss_Paper.pdf)
+    
+    combined_win% = [favored_win% - (favored_win% * underdog_win%)]/[favored_win% + underdog_win% - (2 * favored_win% * underdog_win%)]
+    
+    ''')
