@@ -111,6 +111,7 @@ team_df = pd.read_csv('https://docs.google.com/spreadsheets/d/1zbYqHg685OyP_D-E_
 })
 
 with st.sidebar:
+    st.image(logo, width=200)
     higher_seed_team = st.selectbox('Higher seed:',list(team_df['Team']),index=1)
     lower_seed_team = st.selectbox('Lower seed:',list(team_df['Team']),index=5)
 
