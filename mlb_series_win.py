@@ -154,7 +154,7 @@ def series_chart(fill_dict):
                 color='w',
                 ha='center',va='center',
                bbox=dict(boxstyle="round",pad=0.25,alpha=1,
-                         edgecolor='w',linewidth=1,
+                         edgecolor='w',linewidth=2,
                          color=higher_seed_color))
     ax.set_xticks(list(fill_dict.keys()))
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(1,decimals=0))
@@ -164,7 +164,7 @@ def series_chart(fill_dict):
            xlabel='Series Length ("Best of X")')
     fig.suptitle(f'{higher_seed_team} over {lower_seed_team} Series Win%',y=1)
     fig.text(0.5,0.9,f'(Single Game, Neutral Site xWin%: {est_win_prob:.1%})',ha='center',fontsize=9)
-    pl_ax = fig.add_axes([0.03,-0.02,0.2,0.1], anchor='S', zorder=1)
+    pl_ax = fig.add_axes([0.03,-0.025,0.2,0.1], anchor='S', zorder=1)
     # width, height = logo.size
     # pl_ax.imshow(logo.crop((0, 0, width, height-150)))
     pl_ax.imshow(logo)
@@ -198,19 +198,19 @@ def games_played_chart(series_len):
                      va="center" if height_check else "bottom",
                      color='w' if height_check else lower_seed_color,
                     fontsize=font_size)
-    ax.legend(ncol=2,bbox_to_anchor=(0.49,0.9),loc='lower center',
+    ax.legend(ncol=2,bbox_to_anchor=(0.49,0.91),loc='lower center',
               labels=[higher_seed_team+f' Win: {sum(games[0])/series_sims:.1%}',lower_seed_team+f' Win: {1-sum(games[0])/series_sims:.1%}'],edgecolor='w',framealpha=0)
 
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(100,0))
     ax.set_xticks(game_space)
     ax.set(xlabel='Win in X Games',ylabel='',ylim=(0,ax.get_ylim()[1]*1.02))
-    pl_ax = fig.add_axes([0.04,-0.02,0.2,0.1], anchor='S', zorder=1)
+    pl_ax = fig.add_axes([0.04,-0.025,0.2,0.1], anchor='S', zorder=1)
     # width, height = logo.size
     # pl_ax.imshow(logo.crop((0, 0, width, height-150)))
     pl_ax.imshow(logo)
     pl_ax.axis('off')
     home_text = f', all @{higher_seed_code}' if all_home else ''
-    fig.suptitle(f'{higher_seed_team}/{lower_seed_team} Series\n',y=1.02)
+    fig.suptitle(f'{higher_seed_team}/{lower_seed_team} Series Outcomes',y=1.02)
     fig.text(0.5,0.92,f'Games Played Distribution (Best of {series_len}{home_text})',ha='center',fontsize=9)
     sns.despine()
     st.pyplot(fig)
