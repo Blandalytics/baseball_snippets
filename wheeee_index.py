@@ -345,7 +345,7 @@ def game_chart(game_choice_id):
     ax.axhline(0,color=color_dict[away_abbr][0],alpha=1,xmin=7/(chart_outs+1.25),xmax=(chart_outs+1)/(chart_outs+1.25))
     for inning in range(int((chart_outs-1)/6)+1):
         ax.text((inning+0.5)*6,0.5,inning+1,ha='center',va='center',
-                bbox=dict(boxstyle='round', facecolor=chart_white, alpha=0.5,edgecolor='k'))
+                bbox=dict(boxstyle='round', facecolor='w', alpha=0.5,edgecolor='k'))
         ax.axvline((inning+1)*6,linestyle='--',alpha=0.25,ymin=(0.25+0.1)/1.5,ymax=(0.75+0.1)/1.5,color='k')
     
     custom_map = colors.ListedColormap(sns.light_palette(color_dict[away_abbr][0], n_colors=50, reverse=True) + 
@@ -392,13 +392,13 @@ def game_chart(game_choice_id):
     excite_ax.text(0,0.9,'Wheeee!\nIndex',ha='center',va='center',fontsize=14)
     if excite_index==10:
         excite_ax.text(0,-0.15,f'{excite_index:.0f}',ha='center',va='center',size=16,
-                       color='k' if abs(excite_index-5)<2 else chart_white,
+                       color='k' if abs(excite_index-5)<2 else 'w',
                        bbox=dict(boxstyle='circle', pad=0.5,
                                  fc=sns.color_palette('vlag',n_colors=1001)[int(excite_index*100)], 
                                  ec="k"))
     else:
         excite_ax.text(0,-0.15,f'{excite_index:.1f}',ha='center',va='center',size=14,
-                       color='k' if abs(excite_index-5)<2 else chart_white,
+                       color='k' if abs(excite_index-5)<2 else 'w',
                        bbox=dict(boxstyle='circle', pad=0.5,
                                  fc=sns.color_palette('vlag',n_colors=1001)[int(excite_index*100)], 
                                  ec="k"))
