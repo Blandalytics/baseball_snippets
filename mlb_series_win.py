@@ -192,7 +192,7 @@ def games_played_chart(series_len):
     for p in ax.patches:
         height_check = p.get_height() + 1 > ax.get_ylim()[1]/10
         if height_check:
-            ax.annotate(f"{p.get_height():.1f}%\n" if p.get_height() >= 0.05 else '~0%\n', 
+            ax.annotate(f"{p.get_height():.1f}%" if p.get_height() >= 0.05 else '~0%', 
                         (p.get_x() + p.get_width() / 2, 
                          (p.get_y() + p.get_height()/2 - 1)),
                         ha="center", 
