@@ -72,9 +72,9 @@ mpl.rcParams.update({"font.weight": 700})
 
 letter_logo = letter_logo()
 
-st.set_page_config(page_title='MLB Series Simulator', page_icon=letter_logo)
+st.set_page_config(page_title='MLB Excitement Stats', page_icon=letter_logo)
 
-new_title = '<p style="color:#72CBFD; font-weight: bold; font-size: 42px; text-align:center;">MLB Series Simulator</p>'
+new_title = '<p style="color:#72CBFD; font-weight: bold; font-size: 42px; text-align:center;">MLB Wheeee! Index</p>'
 st.markdown(new_title, unsafe_allow_html=True)
 st.write('This is an attempt to quantify how much "Wheeee!" a baseball game has (s/o to Sarah Langs for [making this a thing!](https://x.com/search?q=from%3ASlangsOnSports%20wheeee&src=typed_query&f=live))')
 
