@@ -162,9 +162,9 @@ def series_chart(fill_dict):
            ylim=(min(0.3,round(min(fill_dict.values())-0.05,1)),
                  max(0.7,round(max(fill_dict.values())+0.05,1))),
            xlabel='Series Length ("Best of X")')
-    fig.suptitle(f'{higher_seed_team} over {lower_seed_team} Series Win%',y=1.02)
-    fig.text(0.5,0.97,f'(Single Game, Neutral Site xWin%: {est_win_prob:.1%})',ha='center')
-    pl_ax = fig.add_axes([0.03,-0.015,0.2,0.1], anchor='S', zorder=1)
+    fig.suptitle(f'{higher_seed_team} over {lower_seed_team} Series Win%',y=1)
+    fig.text(0.5,0.92,f'(Single Game, Neutral Site xWin%: {est_win_prob:.1%})',ha='center')
+    pl_ax = fig.add_axes([0.03,-0.02,0.2,0.1], anchor='S', zorder=1)
     # width, height = logo.size
     # pl_ax.imshow(logo.crop((0, 0, width, height-150)))
     pl_ax.imshow(logo)
@@ -204,14 +204,14 @@ def games_played_chart(series_len):
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(100,0))
     ax.set_xticks(game_space)
     ax.set(xlabel='Win in X Games',ylabel='',ylim=(0,ax.get_ylim()[1]*1.02))
-    pl_ax = fig.add_axes([0.04,-0.015,0.2,0.1], anchor='S', zorder=1)
+    pl_ax = fig.add_axes([0.04,-0.02,0.2,0.1], anchor='S', zorder=1)
     # width, height = logo.size
     # pl_ax.imshow(logo.crop((0, 0, width, height-150)))
     pl_ax.imshow(logo)
     pl_ax.axis('off')
     home_text = f', all @{higher_seed_code}' if all_home else ''
-    fig.suptitle(f'{higher_seed_team}/{lower_seed_team} Series\n',y=1.06)
-    fig.text(0.5,1,f'Games Played Distribution (Best of {series_len}{home_text})',ha='center')
+    fig.suptitle(f'{higher_seed_team}/{lower_seed_team} Series\n',y=1.02)
+    fig.text(0.5,0.94,f'Games Played Distribution (Best of {series_len}{home_text})',ha='center')
     sns.despine()
     st.pyplot(fig)
 games_played_chart(series_len)
