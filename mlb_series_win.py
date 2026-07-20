@@ -198,7 +198,7 @@ def games_played_chart(series_len):
                      va="center" if height_check else "bottom",
                      color='w' if height_check else lower_seed_color,
                     fontsize=font_size)
-    ax.legend(ncol=2,bbox_to_anchor=(0.49,0.91),loc='lower center',
+    ax.legend(ncol=2,bbox_to_anchor=(0.49,0.92),loc='lower center',
               labels=[higher_seed_team+f' Win: {sum(games[0])/series_sims:.1%}',lower_seed_team+f' Win: {1-sum(games[0])/series_sims:.1%}'],edgecolor='w',framealpha=0)
 
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(100,0))
@@ -210,9 +210,9 @@ def games_played_chart(series_len):
     pl_ax.imshow(logo)
     pl_ax.axis('off')
     home_text = f', all @{higher_seed_code}' if all_home else ''
-    fig.suptitle(f'{higher_seed_team}/{lower_seed_team} Series Outcomes',y=1.02)
-    fig.text(0.5,0.92,f'Games Played Distribution (Best of {series_len}{home_text})',ha='center',fontsize=9)
-    sns.despine(trim=True)
+    fig.suptitle(f'{higher_seed_team}/{lower_seed_team} Series Outcomes',y=1.03)
+    fig.text(0.5,0.93,f'Games Played Distribution (Best of {series_len}{home_text})',ha='center',fontsize=9)
+    sns.despine(trim=True,bottom=True)
     st.pyplot(fig)
 games_played_chart(series_len)
 
