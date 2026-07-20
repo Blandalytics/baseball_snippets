@@ -146,8 +146,8 @@ def series_sims(est_win_prob,sims,hfa,series_max=max_series_len):
 def series_chart(fill_dict):
     fig, ax = plt.subplots(figsize=(6,4))
     ax.axhline(0.5,linestyle='--',alpha=0.25,color='w')
-    sns.lineplot(fill_dict,color=lower_seed_color,linewidth=3)
     sns.lineplot(fill_dict,color='w',linewidth=4)
+    sns.lineplot(fill_dict,color=lower_seed_color,linewidth=3)
     for series_len in fill_dict.keys():
         ax.text(series_len,fill_dict[series_len],
                 f'{fill_dict[series_len]:.1%}' if round(fill_dict[series_len],3)<1 else '~100%',
