@@ -211,7 +211,7 @@ def games_played_chart(series_len):
                                                 edgecolor='w',linewidth=1,
                                                 facecolor=lower_seed_color),
                         fontsize=font_size)
-    ax.legend(ncol=2,bbox_to_anchor=(0.49,0.92),loc='lower center',
+    ax.legend(ncol=2,bbox_to_anchor=(0.49,0.93),loc='lower center',
               labels=[higher_seed_team+f' Win: {sum(games[0])/series_sims:.1%}',lower_seed_team+f' Win: {1-sum(games[0])/series_sims:.1%}'],edgecolor='w',framealpha=0)
 
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(100,0))
