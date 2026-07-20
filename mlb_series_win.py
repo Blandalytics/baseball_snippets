@@ -159,8 +159,8 @@ def series_chart(fill_dict):
     ax.set_xticks(list(fill_dict.keys()))
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(1,decimals=0))
     ax.set(xlim=(0,max(fill_dict.keys())+1),
-           ylim=(max(-0.09,min(0.3,round(min(fill_dict.values())-0.09,1))),
-                 min(1.09,max(0.7,round(max(fill_dict.values())+0.05,1)))),
+           ylim=(min(0.3,round(min(fill_dict.values())-0.07,1)),
+                 max(0.7,round(max(fill_dict.values())+0.07,1))),
            xlabel='Series Length ("Best of X")')
     fig.suptitle(f'{higher_seed_team} over {lower_seed_team} Series Win%',y=1)
     fig.text(0.5,0.9,f'(Single Game, Neutral Site xWin%: {est_win_prob:.1%})',ha='center',fontsize=9)
