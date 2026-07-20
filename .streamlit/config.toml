@@ -8,3 +8,8 @@ backgroundColor = "#101222"
 dataframeBorderColor = "#32344a"
 dataframeHeaderBackgroundColor = "#101222"
 textColor = '#ffffff'
+
+[theme.sidebar]
+primaryColor = "#0076B8"
+backgroundColor = "#32344A"
+secondaryBackgroundColor = "292C42"
