@@ -215,7 +215,7 @@ def games_played_chart(series_len):
 
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(100,0))
     ax.set_xticks(game_space)
-    ax.set(xlabel='Win in X Games',ylabel='',ylim=(0,ax.get_ylim()[1]*1.1))
+    ax.set(xlabel='Win in X Games',ylabel='',ylim=(0,ax.get_ylim()[1]*1.2))
     pl_ax = fig.add_axes([0.05,-0.04,0.2,0.1], anchor='S', zorder=1)
     # width, height = logo.size
     # pl_ax.imshow(logo.crop((0, 0, width, height-150)))
