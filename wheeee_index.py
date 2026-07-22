@@ -420,7 +420,7 @@ def game_chart(game_choice_id):
 
     fig.suptitle(f'{away_name} @ {home_name}',
                 fontsize=25,x=0.415,y=0.9)
-    fig.text(0.415,0.79,f'{game_date} - Game ID: {game_choice_id:.0f}',
+    fig.text(0.415,0.77,f'{game_date} - Game ID: {game_choice_id:.0f}',
                 fontsize=12,ha='center')
     fig.text(0.375,0.1,'Volatility',
              ha='center', fontsize=16)
