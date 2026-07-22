@@ -302,7 +302,7 @@ with col2:
 def game_chart(game_choice_id):
     r = requests.get(f'https://baseballsavant.mlb.com/gf?game_pk={game_choice_id}')
     x = r.json()
-    game_date = datetime.datetime.strptime(x['gameDate'],'%Y-%m-%d').strftime('%-m/%-d/%y')
+    game_date = x['gameDate']#datetime.datetime.strptime(x['gameDate'],'%Y-%m-%d').strftime('%-m/%-d/%y')
     hline_y = 0.5
     single_game_df = game_df.filter(pl.col('game_pk')==game_choice_id)
     home_name = single_game_df['home_team'][0]
