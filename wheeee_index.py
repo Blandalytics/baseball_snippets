@@ -90,8 +90,8 @@ st.write('- Biggest Swing: largest 6-out swing in win probability')
 color_df = pl.read_csv('https://github.com/Blandalytics/PLV_viz/blob/main/mlb_team_colors.csv?raw=true')
 color_dict = color_df[['Short Code','Color 1']].rows_by_key(key=["Short Code"],unique=True)
 logo_dict = color_df[['Short Code','Logo']].rows_by_key(key=["Short Code"],unique=True)
-col1, col2 = st.columns(2)
 
+col1, col2 = st.columns(2)
 with col1:
     today = (datetime.datetime.now(pytz.utc)-timedelta(hours=16)).date()
     date = st.date_input("Select a game date:", today, min_value=datetime.date(2020, 3, 28), max_value=today)
@@ -138,7 +138,7 @@ def fetch_pitches(game_pk):
                               pl.lit(date.year).alias("year_played"))
             )
     if not df_list:
-        pitches = pl.DataFrame()
+        pitches = pl.DataFrame(df_list)
     else:
         pitches = pl.concat(df_list, how="diagonal_relaxed").with_columns(pl.col("game_pk").cast(pl.Int32),
                                                                           pl.col("ab_number").cast(pl.Int32))
@@ -163,7 +163,7 @@ def fetch_win_prob(game_pk):
                 .with_columns(pl.lit(game_pk).alias("game_pk"))
             )
     if not wp_list:
-        win_probs = pl.DataFrame()
+        win_probs = pl.DataFrame(wp_list)
     else:
         win_probs = pl.concat(wp_list, how="diagonal_relaxed").with_columns(pl.col("game_pk").cast(pl.Int32),
                                                                             pl.col("ab_number").cast(pl.Int32))
