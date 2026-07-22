@@ -106,6 +106,7 @@ def fetch_game_ids(date):
     if x['totalGames']==0:
         date_list = []
     else:
+        date_list = []
         for game in x['dates'][0]['games']:
             if 'rescheduleGameDate' in list(game.keys()):
                 if game['rescheduleGameDate']!=date:
