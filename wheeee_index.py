@@ -113,7 +113,7 @@ def fetch_game_ids(date):
                     continue
             if game['status']['abstractGameState']=='Preview':
                 continue
-            date_list = [game['gamePk']]
+            date_list += [game['gamePk']]
     return date_list
 
 def fetch_pitches(game_pk):
