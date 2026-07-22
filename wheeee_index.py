@@ -18,6 +18,10 @@ import urllib
 import cairosvg
 from PIL import Image
 
+from matplotlib.colors import LinearSegmentedColormap
+from matplotlib.path import Path
+from matplotlib.patches import PathPatch
+
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from st_aggrid import GridOptionsBuilder, AgGrid, GridUpdateMode, ColumnsAutoSizeMode
