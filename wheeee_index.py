@@ -289,7 +289,7 @@ def game_table(win_prob_df):
         .with_columns(pl.col('watch_scale').clip(0,10).alias('watch_score'))
     )
 
-    return play_df, agg_df.sort('watch_scale')
+    return play_df, agg_df.sort('watch_scale',descending=True)
 
 days_games = fetch_game_ids(date)
 game_df, table_df = game_table(threaded_data(days_games))
