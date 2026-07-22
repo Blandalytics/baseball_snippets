@@ -172,51 +172,51 @@ def fetch_win_prob(game_pk):
 def merge_dfs(game_pk):
     pitch_df = fetch_pitches(game_pk)
     wpa_df = fetch_win_prob(game_pk)
-    # combined_df = (
-    #     pitch_df
-    #     .join(wpa_df,
-    #            how='inner',
-    #            on=['game_pk','ab_number'])
-    #     .sort('game_total_pitches')
-    #     .group_by(['game_pk','ab_number'])
-    #     .agg(pl.last(['home_team','home_abbrev','home_score','away_team','away_abbrev','away_score','inning','outs','homeTeamWinProbabilityAdded','homeTeamWinProbability','awayTeamWinProbability','events']))
-    #     .sort(['game_pk','ab_number'])
-    #     .with_columns(
-    #         pl.concat_str(
-    #             [
-    #                 pl.col("away_team"),
-    #                 pl.lit("@"),
-    #                 pl.col("home_team"),
-    #                 pl.lit("-"),
-    #                 pl.col("game_pk"),
-    #             ],
-    #             separator=" ",
-    #         ).alias("game_name"),
-    #         (pl
-    #          .when(pl.col('outs').shift(1)<3)
-    #          .then(pl.col('outs') - pl.col('outs').shift(1,fill_value=0))
-    #          .otherwise(pl.col('outs'))
-    #          .alias('outs_made')
-    #          ),
-    #         (pl
-    #          .when(pl.col('events').str.contains("Double Play|GIDP"))
-    #          .then(pl.lit(2))
-    #          .when(pl.col('events').str.contains("Triple Play"))
-    #          .then(pl.lit(3))
-    #          .when(pl.col('events').str.contains("Out|out|Caught|Sac|Pickoff"))
-    #          .then(pl.lit(1))
-    #          .otherwise(pl.lit(0))
-    #          .alias('ab_outs')
-    #          )
-    #     )
-    #     .with_columns(
-    #         pl.col("ab_outs").cum_sum().over('game_name').alias("game_outs"),
-    #         (-(pl.max_horizontal("homeTeamWinProbability", "awayTeamWinProbability")/100*np.log2(pl.max_horizontal("homeTeamWinProbability", "awayTeamWinProbability")/100).replace(float("-inf"), 0))-(pl.min_horizontal("homeTeamWinProbability", "awayTeamWinProbability")/100*np.log2(pl.min_horizontal("homeTeamWinProbability", "awayTeamWinProbability")/100).replace(float("-inf"), 0))).alias('tension'),
-    #         ((pl.col('homeTeamWinProbability') / 100 * np.log2(pl.col('homeTeamWinProbability') / pl.col('homeTeamWinProbability').shift(1)).replace(float("-inf"), 0) + pl.col('awayTeamWinProbability') / 100 * np.log2(pl.col('awayTeamWinProbability') / pl.col('awayTeamWinProbability').shift(1)).replace(float("-inf"), 0))).alias('k_l_excite')
-    #     )
-    # )
+    combined_df = (
+        pitch_df
+        .join(wpa_df,
+               how='inner',
+               on=['game_pk','ab_number'])
+        .sort('game_total_pitches')
+        .group_by(['game_pk','ab_number'])
+        .agg(pl.last(['home_team','home_abbrev','home_score','away_team','away_abbrev','away_score','inning','outs','homeTeamWinProbabilityAdded','homeTeamWinProbability','awayTeamWinProbability','events']))
+        .sort(['game_pk','ab_number'])
+        .with_columns(
+            pl.concat_str(
+                [
+                    pl.col("away_team"),
+                    pl.lit("@"),
+                    pl.col("home_team"),
+                    pl.lit("-"),
+                    pl.col("game_pk"),
+                ],
+                separator=" ",
+            ).alias("game_name"),
+            (pl
+             .when(pl.col('outs').shift(1)<3)
+             .then(pl.col('outs') - pl.col('outs').shift(1,fill_value=0))
+             .otherwise(pl.col('outs'))
+             .alias('outs_made')
+             ),
+            (pl
+             .when(pl.col('events').str.contains("Double Play|GIDP"))
+             .then(pl.lit(2))
+             .when(pl.col('events').str.contains("Triple Play"))
+             .then(pl.lit(3))
+             .when(pl.col('events').str.contains("Out|out|Caught|Sac|Pickoff"))
+             .then(pl.lit(1))
+             .otherwise(pl.lit(0))
+             .alias('ab_outs')
+             )
+        )
+        .with_columns(
+            pl.col("ab_outs").cum_sum().over('game_name').alias("game_outs"),
+            (-(pl.max_horizontal("homeTeamWinProbability", "awayTeamWinProbability")/100*np.log2(pl.max_horizontal("homeTeamWinProbability", "awayTeamWinProbability")/100).replace(float("-inf"), 0))-(pl.min_horizontal("homeTeamWinProbability", "awayTeamWinProbability")/100*np.log2(pl.min_horizontal("homeTeamWinProbability", "awayTeamWinProbability")/100).replace(float("-inf"), 0))).alias('tension'),
+            ((pl.col('homeTeamWinProbability') / 100 * np.log2(pl.col('homeTeamWinProbability') / pl.col('homeTeamWinProbability').shift(1)).replace(float("-inf"), 0) + pl.col('awayTeamWinProbability') / 100 * np.log2(pl.col('awayTeamWinProbability') / pl.col('awayTeamWinProbability').shift(1)).replace(float("-inf"), 0))).alias('k_l_excite')
+        )
+    )
 
-    return pitch_df#combined_df
+    return combined_df
 
 def threaded_data(game_list_input):
     games_data = []
@@ -225,7 +225,7 @@ def threaded_data(game_list_input):
         for future in as_completed(futures):
             games_data.append(future.result())
     combined_df = pl.concat(games_data, how="diagonal_relaxed")
-    return combined_df#.filter(pl.col("game_name").is_not_null())
+    return combined_df.filter(pl.col("game_name").is_not_null())
 
 def game_table(win_prob_df):
     play_df = (
@@ -286,17 +286,16 @@ def game_table(win_prob_df):
     return play_df, agg_df.sort('watch_scale')
 
 days_games = fetch_game_ids(date)
-# game_df, table_df = game_table(threaded_data(days_games))
-game_df = threaded_data(days_games)
+game_df, table_df = game_table(threaded_data(days_games))
 
-# if table_df.shape[0]==0:
-#     st.write('No games played')
-#     st.stop()
+if table_df.shape[0]==0:
+    st.write('No games played')
+    st.stop()
 
-# with col2:
-#     game_list = table_df['game_name'].to_list()
-#     game_choice = st.selectbox('Choose a game:',game_list)
-#     game_choice_id = agg_df.row(by_predicate=(pl.col("game_name") == game_choice))[-1]
+with col2:
+    game_list = table_df['game_name'].to_list()
+    game_choice = st.selectbox('Choose a game:',game_list)
+    game_choice_id = table_df.row(by_predicate=(pl.col("game_name") == game_choice))[-1]
 
 def game_chart(game_choice_id):
     r = requests.get(f'https://baseballsavant.mlb.com/gf?game_pk={game_choice_id}')
@@ -459,16 +458,15 @@ def game_chart(game_choice_id):
     st.pyplot(fig)
 
 st.dataframe(game_df)
-# game_chart(game_choice_id)
+game_chart(game_choice_id)
 
 st.header(f'Excitement stats for {date:%-m/%-d/%y} games:')
-# st.dataframe(agg_df
-#              .with_columns(pl.col('game_name').str.head(pl.col('game_name').str.len_bytes()-2-pl.col('excitement_index').cast(pl.String).str.len_bytes()).alias('Game'),
-#                            pl.col('game_pk').alias('Game ID'),
-#                            pl.col('homeTeamWinProbabilityAdded').alias('Δ Win Prob/54 Outs (%)'),
-#                            pl.col('win_swing').alias('Biggest Swing (%)'),
-#                            pl.col('excitement_index').alias('Wheeee! Index'))
-#              [['Game','Game ID','Δ Win Prob/54 Outs (%)','Biggest Swing (%)','Wheeee! Index']])
+st.dataframe(table_df.with_columns(
+    (pl.col('excite_scale').clip(0,1).round(2)*10).alias('Volatility'),
+    (pl.col('tension_scale').clip(0,1).round(2)*10).alias('Tension'),
+    (pl.col('watch_score').round(1)).alias('Excitement Index'),
+).rename({'game_name':'Game',
+          'win_swing':'Biggest Swing'})[['Game','Volatility','Tension','Biggest Swing','Excitement Index']].sort('Excitement Index',descending=True))
 
 # st.header('Glossary')
 # st.write(f'''
