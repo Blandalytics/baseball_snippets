@@ -298,7 +298,7 @@ def game_table(win_prob_df):
     return play_df, agg_df.sort('watch_scale')
 
 days_games = fetch_game_ids(date)
-game_df, table_df = game_table(threaded_data([days_games]))
+game_df, table_df = game_table(threaded_data(days_games))
 
 if table_df.shape[0]==0:
     st.write('No games played')
