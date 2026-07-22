@@ -237,7 +237,7 @@ def threaded_data(game_list_input):
         for future in as_completed(futures):
             games_data.append(future.result())
     combined_df = pl.concat(games_data, how="diagonal_relaxed")
-    return combined_df.filter(pl.col("game_name").is_not_null())
+    return combined_df#.filter(pl.col("game_name").is_not_null())
 
 def game_table(win_prob_df):
     play_df = (
