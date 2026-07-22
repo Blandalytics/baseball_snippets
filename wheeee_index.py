@@ -297,7 +297,7 @@ if table_df.shape[0]==0:
 with col2:
     game_list = table_df['game_name'].to_list()
     game_choice = st.selectbox('Choose a game:',game_list)
-    game_choice_id = table_df.row(by_predicate=(pl.col("game_name") == game_choice))[-1]
+    game_choice_id = table_df.row(by_predicate=(pl.col("game_name") == game_choice))[1]
 
 def game_chart(game_choice_id):
     r = requests.get(f'https://baseballsavant.mlb.com/gf?game_pk={game_choice_id}')
