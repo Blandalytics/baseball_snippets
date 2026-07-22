@@ -111,7 +111,7 @@ def fetch_game_ids(date):
             if 'rescheduleGameDate' in list(game.keys()):
                 if game['rescheduleGameDate']!=date:
                     continue
-            if game['status']['abstractGameState']=='Preview':
+            if game['status']['detailedState'] in ['Pre-Game','Warmup']:
                 continue
             date_list += [game['gamePk']]
     return date_list
