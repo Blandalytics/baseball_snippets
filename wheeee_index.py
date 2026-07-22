@@ -395,13 +395,13 @@ def game_chart(game_choice_id):
     excite_ax = fig.add_axes([0.82,0.8,0.1,0.1], anchor='NE', zorder=1)
     excite_ax.text(0,0.9,'Excitement\nIndex',ha='center',va='center',fontsize=14)
     if abs(watch_index-5)==5:
-        excite_ax.text(0,-0.4,f'{watch_index:.0f}',ha='center',va='center',size=24,
+        excite_ax.text(0,-0.4,f'{watch_index:.0f}',ha='center',va='center',size=20,
                        color='k' if abs(watch_index-5)<2.5 else 'w',
                        bbox=dict(boxstyle='circle', pad=0.3,
                                  fc=sns.color_palette('vlag',n_colors=1001)[int(watch_index*100)],
                                  ec=pl_background))
     else:
-        excite_ax.text(0,-0.4,f'{watch_index:.1f}',ha='center',va='center',size=22,
+        excite_ax.text(0,-0.4,f'{watch_index:.1f}',ha='center',va='center',size=18,
                        color='k' if abs(watch_index-5)<2.5 else 'w',
                        bbox=dict(boxstyle='circle', pad=0.3,
                                  fc=sns.color_palette('vlag',n_colors=1001)[int(watch_index*100)],
