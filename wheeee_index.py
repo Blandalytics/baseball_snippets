@@ -39,6 +39,14 @@ def letter_logo():
     logo = Image.open(urllib.request.urlopen(logo_loc))
     return logo
 
+letter_logo = letter_logo()
+
+def load_team_logo(team_abbr):
+    cairosvg.svg2png(url=logo_dict[team_abbr][0],
+                     write_to="team_logo.png")
+    image = Image.open('team_logo.png')
+    return image
+
 base_font = 'DM Sans'
 font = load_google_font(base_font, weight=700)
 fm.fontManager.addfont(str(font.get_file()))
@@ -56,101 +64,66 @@ pl_highlight_cmap = sns.color_palette(f'blend:{pl_highlight_gradient[0]},{pl_hig
 sns.set_theme(
     style={
         'axes.edgecolor': pl_line_color,
-        'axes.facecolor': pl_background,
+        'axes.facecolor': pl_white,
         'axes.labelcolor': pl_white,
         'xtick.color': pl_line_color,
         'ytick.color': pl_line_color,
-        'figure.facecolor':pl_background,
+        'figure.facecolor':pl_white,
         'grid.color': pl_background,
         'grid.linestyle': '-',
         'legend.facecolor':pl_background,
-        'text.color': pl_white
+        'text.color': 'k'
      },
     font=base_font
     )
 mpl.rcParams.update({"font.weight": 700})
 
-letter_logo = letter_logo()
-
 st.set_page_config(page_title='MLB Excitement Stats', page_icon=letter_logo)
 
-new_title = '<p style="color:#72CBFD; font-weight: bold; font-size: 42px; text-align:center;">MLB Wheeee! Index</p>'
+new_title = '<p style="color:#72CBFD; font-weight: bold; font-size: 42px; text-align:center;">MLB Excitement Index</p>'
 st.markdown(new_title, unsafe_allow_html=True)
-st.write('This is an attempt to quantify how much "Wheeee!" a baseball game has (s/o to Sarah Langs for [making this a thing!](https://x.com/search?q=from%3ASlangsOnSports%20wheeee&src=typed_query&f=live))')
+st.write('Excitement Index quantifies how much excitement a baseball game has, based on three components:')
+st.write('- [Volatility](https://inpredictable.substack.com/p/quantifying-excitement): how much does the win probability change throughout the game (0-10)')
+st.write('- [Tension](https://www.inpredictable.com/2020/04/an-update-to-tension-index-with-assist_11.html): how uncertain the outcome of the game is (0-10)')
+st.write('- Biggest Swing: largest 6-out swing in win probability')
 
 color_df = pl.read_csv('https://github.com/Blandalytics/PLV_viz/blob/main/mlb_team_colors.csv?raw=true')
 color_dict = color_df[['Short Code','Color 1']].rows_by_key(key=["Short Code"],unique=True)
 logo_dict = color_df[['Short Code','Logo']].rows_by_key(key=["Short Code"],unique=True)
-
-def colored_line_between_pts(x, y, c, ax, **lc_kwargs):
-    """
-    Plot a line with a color specified between (x, y) points by a third value.
-
-    It does this by creating a collection of line segments between each pair of
-    neighboring points. The color of each segment is determined by the
-    made up of two straight lines each connecting the current (x, y) point to the
-    midpoints of the lines connecting the current point with its two neighbors.
-    This creates a smooth line with no gaps between the line segments.
-
-    Parameters
-    ----------
-    x, y : array-like
-        The horizontal and vertical coordinates of the data points.
-    c : array-like
-        The color values, which should have a size one less than that of x and y.
-    ax : Axes
-        Axis object on which to plot the colored line.
-    **lc_kwargs
-        Any additional arguments to pass to matplotlib.collections.LineCollection
-        constructor. This should not include the array keyword argument because
-        that is set to the color argument. If provided, it will be overridden.
-
-    Returns
-    -------
-    matplotlib.collections.LineCollection
-        The generated line collection representing the colored line.
-    """
-    if "array" in lc_kwargs:
-        warnings.warn('The provided "array" keyword argument will be overridden')
-
-    # Check color array size (LineCollection still works, but values are unused)
-    if len(c) != len(x) - 1:
-        warnings.warn(
-            "The c argument should have a length one less than the length of x and y. "
-            "If it has the same length, use the colored_line function instead."
-        )
-
-    # Create a set of line segments so that we can color them individually
-    # This creates the points as an N x 1 x 2 array so that we can stack points
-    # together easily to get the segments. The segments array for line collection
-    # needs to be (numlines) x (points per line) x 2 (for x and y)
-    points = np.array([x, y]).T.reshape(-1, 1, 2)
-    segments = np.concatenate([points[:-1], points[1:]], axis=1)
-    lc = LineCollection(segments, **lc_kwargs)
-
-    # Set the values used for colormapping
-    lc.set_array(c)
-
-    return ax.add_collection(lc)
 col1, col2 = st.columns(2)
 
 with col1:
     today = (datetime.datetime.now(pytz.utc)-timedelta(hours=16)).date()
     date = st.date_input("Select a game date:", today, min_value=datetime.date(2020, 3, 28), max_value=today)
 
-def fetch_game_ids(date,regular_season=False):
-    r = requests.get(f'https://statsapi.mlb.com/api/v1/schedule?sportId=1&date={date}')
-    x = r.json()
-    if x['totalGames']==0:
+def fetch_game_ids(date,regular_season=False,entire_season=False):
+    if entire_season:
+        r = requests.get(f'https://statsapi.mlb.com/api/v1/schedule?sportId=1&startDate={entire_season}-03-01&endDate={entire_season}-11-01&gameType=R')
+        x = r.json()
         date_list = []
-    elif regular_season:
-        date_list = pl.DataFrame(x['dates'][0]['games']).filter(pl.col('gameType')=='R')['gamePk'].to_list()
-    else: 
-        date_list = pl.DataFrame(x['dates'][0]['games'])['gamePk'].to_list()
+        if x['totalGames']==0:
+            date_list += []
+        else:
+            for game_day in tqdm.tqdm(x['dates']):
+                date_list += pl.DataFrame(game_day['games'])['gamePk'].to_list()
+    else:
+        r = requests.get(f'https://statsapi.mlb.com/api/v1/schedule?sportId=1&date={date}')
+        x = r.json()
+        if x['totalGames']==0:
+            date_list = []
+        elif regular_season:
+            date_list = pl.DataFrame(x['dates'][0]['games']).filter(pl.col('gameType')=='R')['gamePk'].to_list()
+        else:
+            date_list = pl.DataFrame(x['dates'][0]['games'])['gamePk'].to_list()
     return date_list
-    
+
 def fetch_pitches(game_pk):
-    df_list = []
+    df_list = [pl.DataFrame({
+        'game_pk':game_pk,
+        'ab_number':0,
+        'game_total_pitches':0,
+        'outs':0
+    })]
     r = requests.get(f'https://baseballsavant.mlb.com/gf?game_pk={game_pk}')
     x = r.json()
 
@@ -184,7 +157,15 @@ def fetch_pitches(game_pk):
     return pitches
 
 def fetch_win_prob(game_pk):
-    wp_list = []
+    wp_list = [pl.DataFrame({
+        'game_pk':game_pk,
+        'ab_number':0,
+        'homeTeamWinProbability':50,
+        'awayTeamWinProbability':50,
+        'hwp':0,
+        'awp':0,
+        'homeTeamWinProbabilityAdded':0
+    })]
     r = requests.get(f'https://baseballsavant.mlb.com/gf?game_pk={game_pk}')
     x = r.json()
 
@@ -196,27 +177,13 @@ def fetch_win_prob(game_pk):
     if not wp_list:
         win_probs = pl.DataFrame()
     else:
-        win_probs = pl.concat(wp_list, how="vertical_relaxed").with_columns(pl.col("game_pk").cast(pl.Int32),
+        win_probs = pl.concat(wp_list, how="diagonal_relaxed").with_columns(pl.col("game_pk").cast(pl.Int32),
                                                                             pl.col("ab_number").cast(pl.Int32))
     return win_probs
-    
-@st.cache_data(ttl=90,show_spinner=f"Loading data")
-def threaded_data(game_list_input):
-    pitch_data = []
-    win_prob_data = []
-    
-    with ThreadPoolExecutor() as executor:
-        futures = {executor.submit(fetch_pitches, game_pk): game_pk for game_pk in game_list_input}
-        for future in as_completed(futures):
-            pitch_data.append(future.result())
-    
-    with ThreadPoolExecutor() as executor:
-        futures = {executor.submit(fetch_win_prob, game_pk): game_pk for game_pk in game_list_input}
-        for future in as_completed(futures):
-            win_prob_data.append(future.result())
 
-    pitch_df = pl.concat(pitch_data, how="diagonal_relaxed")
-    wpa_df = pl.concat(win_prob_data, how="diagonal_relaxed")
+def merge_dfs(game_pk):
+    pitch_df = fetch_pitches(game_pk)
+    wpa_df = fetch_win_prob(game_pk)
     combined_df = (
         pitch_df
         .join(wpa_df,
@@ -224,7 +191,7 @@ def threaded_data(game_list_input):
                on=['game_pk','ab_number'])
         .sort('game_total_pitches')
         .group_by(['game_pk','ab_number'])
-        .agg(pl.last(['home_team','home_abbrev','home_score','away_team','away_abbrev','away_score','inning','outs','homeTeamWinProbabilityAdded','homeTeamWinProbability']))
+        .agg(pl.last(['home_team','home_abbrev','home_score','away_team','away_abbrev','away_score','inning','outs','homeTeamWinProbabilityAdded','homeTeamWinProbability','awayTeamWinProbability','events']))
         .sort(['game_pk','ab_number'])
         .with_columns(
             pl.concat_str(
@@ -242,237 +209,284 @@ def threaded_data(game_list_input):
              .then(pl.col('outs') - pl.col('outs').shift(1,fill_value=0))
              .otherwise(pl.col('outs'))
              .alias('outs_made')
+             ),
+            (pl
+             .when(pl.col('events').str.contains("Double Play|GIDP"))
+             .then(pl.lit(2))
+             .when(pl.col('events').str.contains("Triple Play"))
+             .then(pl.lit(3))
+             .when(pl.col('events').str.contains("Out|out|Caught|Sac|Pickoff"))
+             .then(pl.lit(1))
+             .otherwise(pl.lit(0))
+             .alias('ab_outs')
              )
         )
         .with_columns(
-            pl.col("outs_made").cum_sum().over('game_name').alias("game_outs")
+            pl.col("ab_outs").cum_sum().over('game_name').alias("game_outs"),
+            (-(pl.max_horizontal("homeTeamWinProbability", "awayTeamWinProbability")/100*np.log2(pl.max_horizontal("homeTeamWinProbability", "awayTeamWinProbability")/100).replace(float("-inf"), 0))-(pl.min_horizontal("homeTeamWinProbability", "awayTeamWinProbability")/100*np.log2(pl.min_horizontal("homeTeamWinProbability", "awayTeamWinProbability")/100).replace(float("-inf"), 0))).alias('tension'),
+            ((pl.col('homeTeamWinProbability') / 100 * np.log2(pl.col('homeTeamWinProbability') / pl.col('homeTeamWinProbability').shift(1)).replace(float("-inf"), 0) + pl.col('awayTeamWinProbability') / 100 * np.log2(pl.col('awayTeamWinProbability') / pl.col('awayTeamWinProbability').shift(1)).replace(float("-inf"), 0))).alias('k_l_excite')
         )
     )
-    
+
     return combined_df
 
-win_prob_df = threaded_data(fetch_game_ids(date))
+def threaded_data(game_list_input):
+    games_data = []
+    with ThreadPoolExecutor(max_workers=16) as executor:
+        futures = {executor.submit(merge_dfs, game_pk): game_pk for game_pk in game_list_input}
+        for future in as_completed(futures):
+            games_data.append(future.result())
+    combined_df = pl.concat(games_data, how="diagonal_relaxed")
+    return combined_df.filter(pl.col("game_name").is_not_null())
 
-test_df = (
-    win_prob_df
-    .group_by(['game_name','home_team','away_team','home_abbrev','away_abbrev','game_outs'])
-    .agg(
-        pl.col('homeTeamWinProbabilityAdded').sum(),
-        pl.col('homeTeamWinProbability').last().alias("home_win_prob"),
-        pl.col('home_score').last(),
-        pl.col('away_score').last()
+def game_table(win_prob_df):
+    play_df = (
+        win_prob_df
+        .group_by(['game_name','game_pk','home_team','away_team','home_abbrev','away_abbrev','inning','ab_number','events'])
+        .agg(
+            pl.col('k_l_excite').last(),
+            pl.col('tension').last(),
+            pl.col('homeTeamWinProbabilityAdded').sum(),
+            pl.col('homeTeamWinProbability').last().alias("home_win_prob"),
+            pl.col('home_score').last(),
+            pl.col('away_score').last(),
+            pl.col('game_outs').last()
+        )
+        .sort(['game_pk','ab_number'])
     )
-    .sort(['game_name','game_outs'])
-    .rolling(index_column="game_outs", period="6i",group_by=["game_name",'home_team','away_team','home_abbrev','away_abbrev']).agg(
-        pl.max("home_win_prob").alias("rolling_max_prob"),
-        pl.min("home_win_prob").alias("rolling_min_prob"),
-        pl.last("home_win_prob").alias("rolling_last_prob"),
-        pl.last("home_score"),
-        pl.last("away_score")
-    )
-    .with_columns(
-        pl.col('game_name').str.tail(6).alias('game_pk'),
-        (pl.col("rolling_max_prob") - pl.col("rolling_min_prob")).alias('win_swing'),
-        (pl
-         .when(pl.col('game_name')==pl.col('game_name').shift(1))
-         .then(pl.col("rolling_last_prob") - pl.col("rolling_last_prob").shift(1))
-         .otherwise(pl.col("rolling_last_prob")-50)
-         .alias('homeTeamWinProbabilityAdded')
-         )
-    )
-)
-    
-agg_df = (
-    test_df
-    .group_by('game_name')
-    .agg(
-        pl.col('game_outs').max(),
-        pl.col('homeTeamWinProbabilityAdded').abs().sum(),
-        pl.col('win_swing').max()
-    )
-    .with_columns(((np.log(54/pl.col('game_outs') * pl.col('homeTeamWinProbabilityAdded'))-4.6)/(5.86-4.6)).alias('win_prob_index'), # 100 and 350%
-                  ((np.log(pl.col('win_swing'))-3)/(4.32-3)).alias('win_swing_index') # 20 and 75%
-                 )
-    .with_columns(pl.mean_horizontal('win_prob_index','win_swing_index').mul(10).alias('raw_excitement_index'))
-    .with_columns(pl.col('raw_excitement_index').round(1).clip(0,10).alias('excitement_index'))
-    
-    .with_columns(pl.col('game_name').str.tail(6).alias('game_pk'),
-                  pl.concat_str(pl.col('game_name').str.head(pl.col('game_name').str.len_bytes()-9),pl.lit(': '),pl.col('excitement_index')).alias('game_name'),
-                 )
-    .sort('raw_excitement_index',descending=True)
-)
 
+    swing_df = (
+        win_prob_df
+        .group_by(['game_name','game_pk','home_team','away_team','home_abbrev','away_abbrev','game_outs'])
+        .agg(
+            pl.col('homeTeamWinProbability').last().alias("home_win_prob")
+        )
+        .sort(['game_pk','game_outs'])
+        .rolling(index_column="game_outs", period="6i",group_by=["game_name",'home_team','away_team','home_abbrev','away_abbrev']).agg(
+            pl.max("home_win_prob").alias("rolling_max_prob"),
+            pl.min("home_win_prob").alias("rolling_min_prob")
+        )
+        .with_columns((pl.col("rolling_max_prob") - pl.col("rolling_min_prob")).alias('win_swing'))
+    )
 
-if agg_df.shape[0]==0:
+    agg_df = (
+        play_df
+        .group_by(['game_name','game_pk'])
+        .agg(
+            pl.col('game_outs').max(),
+            pl.col('k_l_excite').abs().sum(),
+            pl.col('tension').mean()
+        )
+        .with_columns(
+            (pl.col('tension')*100).alias('tension_adj'),
+            (2**pl.col('k_l_excite')).alias('k_l_excite_adj'),
+        )
+    )
+    agg_df = (
+        pl.concat([agg_df,
+                   swing_df.group_by('game_name').agg(pl.col('win_swing').max().alias("win_swing"))
+                   ], how="align_inner")
+        .with_columns(
+            ((pl.col('k_l_excite') - 0.25)/2).alias('excite_scale'),
+            ((pl.col('tension') - 0.35)/0.575).alias('tension_scale'),
+            ((pl.col('win_swing') - 21)/60).alias('swing_scale')
+        )
+        .with_columns((((pl.col('excite_scale').clip(0,2.5)+pl.col('tension_scale').clip(0,2.5)+pl.col('swing_scale').clip(0,2.5))/3)**(0.75)*10).alias('watch_scale'))
+        .with_columns(pl.col('watch_scale').clip(0,10).alias('watch_score'))
+    )
+
+    return play_df, agg_df.sort('watch_scale')
+
+days_games = fetch_game_ids(date)
+game_df, table_df = game_table(threaded_data([days_games]))
+
+if table_df.shape[0]==0:
     st.write('No games played')
     st.stop()
 
 with col2:
-    game_list = agg_df['game_name'].to_list()
+    game_list = table_df['game_name'].to_list()
     game_choice = st.selectbox('Choose a game:',game_list)
     game_choice_id = agg_df.row(by_predicate=(pl.col("game_name") == game_choice))[-1]
 
 def game_chart(game_choice_id):
-    single_game_df = test_df.filter(pl.col('game_pk')==game_choice_id)
+    r = requests.get(f'https://baseballsavant.mlb.com/gf?game_pk={game_choice_id}')
+    game_date = datetime.datetime.strptime(r.json()['game_date'],'%Y-%m-%d').strftime('%-m/%-d/%y')
+    hline_y = 0.5
+    single_game_df = game_df.filter(pl.col('game_pk')==game_choice_id)
     home_name = single_game_df['home_team'][0]
     away_name = single_game_df['away_team'][0]
     home_abbr = single_game_df['home_abbrev'][0]
     away_abbr = single_game_df['away_abbrev'][0]
     home_score = single_game_df['home_score'][0]
     away_score = single_game_df['away_score'][0]
-    
+    home_color = 'k' if color_dict[home_abbr][0]=='#FFFFFF' else color_dict[home_abbr][0]
+    away_color = 'k' if color_dict[away_abbr][0]=='#FFFFFF' else color_dict[away_abbr][0]
+
     # Add start row for 50%
     append_row = single_game_df[0]
-    append_row = append_row.with_columns(pl.lit(-1).alias('game_outs'),
-                                         pl.lit(50).alias('rolling_last_prob'),
+    append_row = append_row.with_columns(pl.lit(-1).alias('ab_number'),
+                                         pl.lit(50).alias('home_win_prob'),
                                          pl.lit(0).alias('homeTeamWinProbabilityAdded'))
     single_game_df = pl.concat([append_row,single_game_df], how="vertical_relaxed")
-    x = single_game_df.select(pl.col('game_outs')).to_numpy().ravel()
-    y = single_game_df.select(pl.col('rolling_last_prob')).to_numpy().ravel() / 100
-    
-    gei = agg_df.filter(pl.col('game_pk')==game_choice_id)['homeTeamWinProbabilityAdded'][0] / 100
-    win_prob_index = agg_df.filter(pl.col('game_pk')==game_choice_id)['win_prob_index'][0]
-    biggest_win_swing = agg_df.filter(pl.col('game_pk')==game_choice_id)['win_swing'][0] / 100
-    win_swing_index = agg_df.filter(pl.col('game_pk')==game_choice_id)['win_swing_index'][0]
-    excite_index = agg_df.filter(pl.col('game_pk')==game_choice_id)['excitement_index'][0]
-    
-    game_outs = max(x)
-    chart_outs = 54 if game_outs <51 else game_outs
-    
+    x = single_game_df.select(pl.col('ab_number')).to_numpy().ravel()
+    y = single_game_df.select(pl.col('home_win_prob')).to_numpy().ravel() / 100
+
+    excite_index = table_df.filter(pl.col('game_pk')==game_choice_id)['excite_scale'].clip(0,1)[0]*10
+    tension_index = table_df.filter(pl.col('game_pk')==game_choice_id)['tension_scale'].clip(0,1)[0]*10
+    biggest_swing = table_df.filter(pl.col('game_pk')==game_choice_id)['win_swing'][0]
+    win_swing_index = table_df.filter(pl.col('game_pk')==game_choice_id)['swing_scale'].clip(0,1)[0]*10
+    watch_index = table_df.filter(pl.col('game_pk')==game_choice_id)['watch_score'].clip(0,10)[0]
+
+    game_abs = max(x)
+    # chart_outs = 54 if game_outs <51 else game_outs
+
     # Create a figure and plot the line on it
     fig, ax = plt.subplots(figsize=(7,5))
-    ax.axhline(1,color=color_dict[home_abbr][0],alpha=1,xmin=7/(chart_outs+1.25),xmax=(chart_outs+1)/(chart_outs+1.25))
-    ax.axhline(0,color=color_dict[away_abbr][0],alpha=1,xmin=7/(chart_outs+1.25),xmax=(chart_outs+1)/(chart_outs+1.25))
-    for inning in range(int((chart_outs-1)/6)+1):
-        ax.text((inning+0.5)*6,0.5,inning+1,ha='center',va='center',
-                bbox=dict(boxstyle='round', facecolor='w', alpha=0.5,edgecolor='k'))
-        ax.axvline((inning+1)*6,linestyle='--',alpha=0.25,ymin=(0.25+0.1)/1.5,ymax=(0.75+0.1)/1.5,color='k')
-    
-    custom_map = colors.ListedColormap(sns.light_palette(color_dict[away_abbr][0], n_colors=50, reverse=True) + 
+    ax.axhline(1.005,color=home_color,alpha=1,xmin=(game_abs/4.25)/(game_abs+1.25),xmax=(game_abs+1)/(game_abs+1.25))
+    ax.axhline(-0.005,color=away_color,alpha=1,xmin=(game_abs/4.25)/(game_abs+1.25),xmax=(game_abs+1)/(game_abs+1.25))
+    inning_text_dict = game_df.filter(pl.col('game_pk')==game_choice_id).group_by('inning').agg(pl.median('ab_number'),
+                                                                                            pl.max('ab_number').alias('ab_max')).sort('inning').to_dict(as_series=False)
+    for inning in inning_text_dict['inning']:
+        ab_number = inning_text_dict['ab_number'][inning_text_dict['inning'].index(inning)]
+        ab_max = inning_text_dict['ab_max'][inning_text_dict['inning'].index(inning)]
+        ax.text(ab_number-0.5,0.5,inning,ha='center',va='center',color=pl_background,
+                bbox=dict(boxstyle='round', facecolor='w', alpha=0.75,edgecolor=pl_background))
+        if inning != inning_text_dict['inning'][-1]:
+            ax.axvline(ab_max,linestyle='--',alpha=0.25,ymin=(0.25+0.1)/1.5,ymax=(0.75+0.1)/1.5,color=pl_background)
+
+    custom_map = colors.ListedColormap(sns.light_palette(color_dict[away_abbr][0], n_colors=50, reverse=True) +
                                        sns.light_palette(color_dict[home_abbr][0], n_colors=50))
-    contrast_map = colors.ListedColormap(sns.dark_palette(color_dict[away_abbr][0], n_colors=50, reverse=True) + 
+    contrast_map = colors.ListedColormap(sns.dark_palette(color_dict[away_abbr][0], n_colors=50, reverse=True) +
                                        sns.dark_palette(color_dict[home_abbr][0], n_colors=50))
-    ax.axhline(0.5,color='k',alpha=0.5)
-    
-    nc = 50
-    xvals = np.linspace(-1, game_outs, int(game_outs+1) * 5)
-    y1 = np.interp(xvals, x, y)
-    y_base = np.full(len(xvals), 0.5)
-    normalize = colors.Normalize(vmin=0, vmax=1)
-    
-    for ii in range(len(xvals)-1):
-        y_n = np.linspace(y1[ii], y_base[ii], nc)
-        y_n1 = np.linspace(y1[ii+1], y_base[ii+1], nc)
-        for kk in range(nc - 1):
-            p = patches.Polygon([[xvals[ii], y_n[kk]], 
-                                 [xvals[ii+1], y_n1[kk]], 
-                                 [xvals[ii+1], y_n1[kk+1]], 
-                                 [xvals[ii], y_n[kk+1]]], color=custom_map(normalize((y_n[kk]+y_n1[kk])/2)))
-            ax.add_patch(p)
-    
-    plt.plot(xvals, y1, alpha=0)
-    xvals_line = np.linspace(-1, game_outs, int(game_outs+1) * 50)
-    yinterp_line = np.interp(xvals_line, x, y)
-    dydx = 0.5 * (yinterp_line[:-1] + yinterp_line[1:])
-    shadow = colored_line_between_pts(np.array(xvals_line),
-                                      yinterp_line, 
-                                      dydx,
-                                      ax, 
-                                      linewidth=2.25,
-                                      cmap=contrast_map,
-                                      norm=normalize, 
-                                      alpha=1/3
-                            )
-    
-    ax.set(xlim=(-1,chart_outs+0.25),
+    ax.axhline(0.5,color=pl_background,alpha=0.5)
+
+    sns.lineplot(x=x,y=y,color=pl_background)
+    verts = np.column_stack([x, y]).tolist()
+    verts += [[x[-1], hline_y], [x[0], hline_y]]
+    clip_path = Path(verts + [verts[0]])
+    clip_patch = PathPatch(clip_path, transform=ax.transData, facecolor="none", edgecolor="none")
+    ax.add_patch(clip_patch)
+
+    # Gradient image spanning the fill's vertical range, colored by y-value
+    # (i.e. distance from the reference line), then clipped to that polygon.
+    y_min = 0
+    y_max = 1
+    gradient = np.linspace(y_min, y_max, 256).reshape(-1, 1)
+
+    im = ax.imshow(
+        gradient,
+        extent=[x[0], x[-1], y_min, y_max],
+        origin="lower",
+        aspect="auto",
+        cmap=sns.blend_palette([away_color,'w',home_color],as_cmap=True),
+        vmin=y_min,
+        vmax=y_max,
+        zorder=1,
+    )
+    im.set_clip_path(clip_patch)
+
+    ax.set(xlim=(-1,game_abs+0.25),
            ylim=(1.1,-.4))
     ax.axis('off')
-    
-    excite_ax = fig.add_axes([0.82,0.81,0.1,0.1], anchor='NE', zorder=1)
-    excite_ax.text(0,0.9,'Wheeee!\nIndex',ha='center',va='center',fontsize=14)
-    if excite_index==10:
-        excite_ax.text(0,-0.15,f'{excite_index:.0f}',ha='center',va='center',size=16,
-                       color='k' if abs(excite_index-5)<2 else 'w',
-                       bbox=dict(boxstyle='circle', pad=0.5,
-                                 fc=sns.color_palette('vlag',n_colors=1001)[int(excite_index*100)], 
-                                 ec="k"))
+
+    excite_ax = fig.add_axes([0.82,0.8,0.1,0.1], anchor='NE', zorder=1)
+    excite_ax.text(0,0.75,'Excitement\nIndex',ha='center',va='center',fontsize=15)
+    if abs(watch_index-5)==5:
+        excite_ax.text(0,-0.4,f'{watch_index:.0f}',ha='center',va='center',size=24,
+                       color='k' if abs(watch_index-5)<2.5 else 'w',
+                       bbox=dict(boxstyle='circle', pad=0.3,
+                                 fc=sns.color_palette('vlag',n_colors=1001)[int(watch_index*100)],
+                                 ec=pl_background))
     else:
-        excite_ax.text(0,-0.15,f'{excite_index:.1f}',ha='center',va='center',size=14,
-                       color='k' if abs(excite_index-5)<2 else 'w',
-                       bbox=dict(boxstyle='circle', pad=0.5,
-                                 fc=sns.color_palette('vlag',n_colors=1001)[int(excite_index*100)], 
-                                 ec="k"))
+        excite_ax.text(0,-0.4,f'{watch_index:.1f}',ha='center',va='center',size=22,
+                       color='k' if abs(watch_index-5)<2.5 else 'w',
+                       bbox=dict(boxstyle='circle', pad=0.3,
+                                 fc=sns.color_palette('vlag',n_colors=1001)[int(watch_index*100)],
+                                 ec=pl_background))
     excite_ax.axis('off')
-    
+
     home_team_ax = fig.add_axes([0.12,0.115,0.1,0.12], anchor='NW', zorder=1)
-    cairosvg.svg2png(url=logo_dict[home_abbr][0], 
-                     write_to="home.png")
-    image = Image.open('home.png')
+    image = load_team_logo(home_abbr)
     home_team_ax.imshow(image,aspect='equal')
     home_team_ax.axis('off')
-    
+    ax.text((game_abs/7),1,f'{home_score:.0f}',
+            color=pl_highlight if home_score > away_score else 'k',
+            fontsize=30,ha='center',va='center')
+
     away_team_ax = fig.add_axes([0.12,0.625,0.1,0.12], anchor='NW', zorder=1)
-    cairosvg.svg2png(url=logo_dict[away_abbr][0],
-                     write_to="away.png")
-    image = Image.open('away.png')
+    image = load_team_logo(away_abbr)
     away_team_ax.imshow(image,aspect='equal')
     away_team_ax.axis('off')
-    
-    
-    fig.suptitle(f'Win Probability - {date:%-m/%-d/%y}\n{away_name} {away_score:.0f} @ {home_name} {home_score:.0f}',
-                fontsize=20,x=0.45,y=0.95)
-    fig.text(0.32,0.785,'Δ Win Prob/54 Outs',
-             ha='center', fontsize=12)
-    fig.text(0.32,0.735,f'{gei:.1f} Wins',
-             ha='center', fontsize=12,
-             color='k' if abs(win_prob_index-.5)<.2 else 'w',
+    ax.text((game_abs/7),0,f'{away_score:.0f}',
+            color=pl_highlight if away_score > home_score else 'k',
+            fontsize=30,ha='center',va='center')
+
+
+    fig.suptitle(f'{away_name} @ {home_name}',
+                fontsize=25,x=0.415,y=0.9)
+    fig.text(0.415,0.79,f'{game_date} - Game ID: {game_choice_id:.0f}',
+                fontsize=12,ha='center')
+    fig.text(0.375,0.1,'Volatility',
+             ha='center', fontsize=16)
+    fig.text(0.375,0.025,f'{excite_index:.0f}' if abs(excite_index-5)==5 else f'{excite_index:.1f}',
+             ha='center', fontsize=20 if abs(excite_index-5)==5 else 16,
+             color='k' if abs(excite_index-5)<2.5 else 'w',
              bbox=dict(boxstyle='round', pad=0.25,
-                       fc=sns.color_palette('vlag',n_colors=1001)[int(np.clip(win_prob_index*1000,0,1000))], 
-                       ec="k"))
-    
-    fig.text(0.62,0.785,'Biggest Swing',
-             ha='center', fontsize=12)
-    fig.text(0.62,0.735,f'{biggest_win_swing:.0%}',
-             ha='center', fontsize=12,
-             color='k' if abs(win_swing_index-.5)<.2 else 'w',
+                       fc=sns.color_palette('vlag',n_colors=1001)[int(np.clip(excite_index*100,0,1000))],
+                       ec='k'))
+
+    fig.text(0.55,0.1,'Tension',
+             ha='center', fontsize=16)
+    fig.text(0.55,0.025,f'{tension_index:.0f}' if abs(tension_index-5)==5 else f'{tension_index:.1f}',
+             ha='center', fontsize=20 if abs(tension_index-5)==5 else 16,
+             color='k' if abs(tension_index-5)<2.5 else 'w',
              bbox=dict(boxstyle='round', pad=0.25,
-                       fc=sns.color_palette('vlag',n_colors=1001)[int(np.clip(win_swing_index*1000,0,1000))], 
-                       ec="k"))
-    
-    fig.text(0.41,0.12,'mlb-win-prob.streamlit.app',
-             ha='center', fontsize=12)
-    
-    # logo_loc = 'https://github.com/Blandalytics/baseball_snippets/blob/main/PitcherList_Full_Black.png?raw=true'
-    # logo = Image.open(urllib.request.urlopen(logo_loc))
-    
+                       fc=sns.color_palette('vlag',n_colors=1001)[int(np.clip(tension_index*100,0,1000))],
+                       ec='k'))
+
+    fig.text(0.775,0.1,'Biggest Swing',
+             ha='center', fontsize=16)
+    fig.text(0.775,0.025,f'{biggest_swing:.0f}%',
+             ha='center', fontsize=16,
+             color='k' if abs(win_swing_index-5)<2.5 else 'w',
+             bbox=dict(boxstyle='round', pad=0.25,
+                       fc=sns.color_palette('vlag',n_colors=1001)[int(np.clip(win_swing_index*100,0,1000))],
+                       ec='k'))
+    fig.text(0.55,0.69,'Game Win Probability',
+             ha='center', fontsize=14)
+    fig.text(0.14,0.02,'Data: MLB',
+             ha='left', fontsize=10)
+
     # Add PL logo
-    pl_ax = fig.add_axes([0.675,0.085,0.2,0.1], anchor='NE', zorder=1)
-    # width, height = logo.size
-    # pl_ax.imshow(logo.crop((0, 0, width, height-150)))
-    pl_ax.imshow(logo)
-    pl_ax.axis('off')
-    
+    # pl_ax = fig.add_axes([0.675,0.04,0.2,0.1], anchor='NE', zorder=1)
+    # pl_ax.set_facecolor(pl_background)
+    # # width, height = logo.size
+    # # pl_ax.imshow(logo.crop((0, 0, width, height-150)))
+    # pl_ax.imshow(logo)
+    # pl_ax.axis('off')
+
     sns.despine()
     st.pyplot(fig)
     
 game_chart(game_choice_id)
 
-st.header(f'Wheeee! stats for {date:%-m/%-d/%y} games:')
-st.dataframe(agg_df
-             .with_columns(pl.col('game_name').str.head(pl.col('game_name').str.len_bytes()-2-pl.col('excitement_index').cast(pl.String).str.len_bytes()).alias('Game'),
-                           pl.col('game_pk').alias('Game ID'),
-                           pl.col('homeTeamWinProbabilityAdded').alias('Δ Win Prob/54 Outs (%)'),
-                           pl.col('win_swing').alias('Biggest Swing (%)'),
-                           pl.col('excitement_index').alias('Wheeee! Index'))
-             [['Game','Game ID','Δ Win Prob/54 Outs (%)','Biggest Swing (%)','Wheeee! Index']])
+st.header(f'Excitement stats for {date:%-m/%-d/%y} games:')
+# st.dataframe(agg_df
+#              .with_columns(pl.col('game_name').str.head(pl.col('game_name').str.len_bytes()-2-pl.col('excitement_index').cast(pl.String).str.len_bytes()).alias('Game'),
+#                            pl.col('game_pk').alias('Game ID'),
+#                            pl.col('homeTeamWinProbabilityAdded').alias('Δ Win Prob/54 Outs (%)'),
+#                            pl.col('win_swing').alias('Biggest Swing (%)'),
+#                            pl.col('excitement_index').alias('Wheeee! Index'))
+#              [['Game','Game ID','Δ Win Prob/54 Outs (%)','Biggest Swing (%)','Wheeee! Index']])
 
-st.header('Glossary')
-st.write(f'''
-- **Δ Win Prob/54 Outs**: The total change in win probability for the game, normalized to 54 outs (a median game is ~180%). Derived from [Luke Benz's Game Excitement Index](https://lukebenz.com/post/gei/)
-''')
-st.write(f'''
-- **Biggest Swing**: Largest swing in win probability across 6 outs (after the 1st inning; a median game is ~40%)
-''')
-st.write(f'''
-- **Wheeee Index**: Combination of Δ Win Prob/54 Outs and Biggest Swing, scaled 0-10
-''')
+# st.header('Glossary')
+# st.write(f'''
+# - **Δ Win Prob/54 Outs**: The total change in win probability for the game, normalized to 54 outs (a median game is ~180%). Derived from [Luke Benz's Game Excitement Index](https://lukebenz.com/post/gei/)
+# ''')
+# st.write(f'''
+# - **Biggest Swing**: Largest swing in win probability across 6 outs (after the 1st inning; a median game is ~40%)
+# ''')
+# st.write(f'''
+# - **Wheeee Index**: Combination of Δ Win Prob/54 Outs and Biggest Swing, scaled 0-10
+# ''')
