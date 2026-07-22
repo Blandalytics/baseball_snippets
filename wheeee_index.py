@@ -395,7 +395,7 @@ def game_chart(game_choice_id):
     excite_ax = fig.add_axes([0.82,0.8,0.1,0.1], anchor='NE', zorder=1)
     excite_ax.text(0,0.9,'Excitement\nIndex',ha='center',va='center',fontsize=14)
     if abs(watch_index-5)==5:
-        excite_ax.text(0,-0.4,f'{watch_index:.0f}',ha='center',va='center',size=20,
+        excite_ax.text(0,-0.4,f'{watch_index:.0f}',ha='center',va='center',size=18,
                        color='k' if abs(watch_index-5)<2.5 else 'w',
                        bbox=dict(boxstyle='circle', pad=0.3,
                                  fc=sns.color_palette('vlag',n_colors=1001)[int(watch_index*100)],
@@ -432,7 +432,7 @@ def game_chart(game_choice_id):
     fig.text(0.375,0.1,'Volatility',
              ha='center', fontsize=16)
     fig.text(0.375,0.015,f'{excite_index:.0f}' if abs(excite_index-5)==5 else f'{excite_index:.1f}',
-             ha='center', fontsize=20 if abs(excite_index-5)==5 else 16,
+             ha='center', fontsize=16,
              color='k' if abs(excite_index-5)<2.5 else 'w',
              bbox=dict(boxstyle='round', pad=0.25,
                        fc=sns.color_palette('vlag',n_colors=1001)[int(np.clip(excite_index*100,0,1000))],
@@ -441,7 +441,7 @@ def game_chart(game_choice_id):
     fig.text(0.55,0.1,'Tension',
              ha='center', fontsize=16)
     fig.text(0.55,0.015,f'{tension_index:.0f}' if abs(tension_index-5)==5 else f'{tension_index:.1f}',
-             ha='center', fontsize=20 if abs(tension_index-5)==5 else 16,
+             ha='center', fontsize=16,
              color='k' if abs(tension_index-5)<2.5 else 'w',
              bbox=dict(boxstyle='round', pad=0.25,
                        fc=sns.color_palette('vlag',n_colors=1001)[int(np.clip(tension_index*100,0,1000))],
