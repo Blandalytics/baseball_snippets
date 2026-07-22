@@ -106,7 +106,13 @@ def fetch_game_ids(date):
     if x['totalGames']==0:
         date_list = []
     else:
-        date_list = pl.DataFrame(x['dates'][0]['games'])['gamePk'].to_list()
+        for game in x['dates'][0]['games']:
+            if 'rescheduleGameDate' in list(game.keys()):
+                if game['rescheduleGameDate']!=date:
+                    continue
+            elif game['status']['abstractGameState']=='Preview':
+                continue
+            date_list = [game['gamePk']]
     return date_list
 
 def fetch_pitches(game_pk):
