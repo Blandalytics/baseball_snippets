@@ -301,7 +301,8 @@ with col2:
 
 def game_chart(game_choice_id):
     r = requests.get(f'https://baseballsavant.mlb.com/gf?game_pk={game_choice_id}')
-    game_date = datetime.datetime.strptime(r.json()['gameDate'],'%Y-%m-%d').strftime('%-m/%-d/%y')
+    x = r.json()
+    game_date = datetime.datetime.strptime(x['gameDate'],'%Y-%m-%d').strftime('%-m/%-d/%y')
     hline_y = 0.5
     single_game_df = game_df.filter(pl.col('game_pk')==game_choice_id)
     home_name = single_game_df['home_team'][0]
@@ -459,7 +460,6 @@ def game_chart(game_choice_id):
     sns.despine()
     st.pyplot(fig)
 
-st.dataframe(game_df)
 game_chart(game_choice_id)
 
 st.header(f'Excitement stats for {date:%-m/%-d/%y} games:')
