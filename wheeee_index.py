@@ -96,25 +96,13 @@ with col1:
     today = (datetime.datetime.now(pytz.utc)-timedelta(hours=16)).date()
     date = st.date_input("Select a game date:", today, min_value=datetime.date(2020, 3, 28), max_value=today)
 
-def fetch_game_ids(date,regular_season=False,entire_season=False):
-    if entire_season:
-        r = requests.get(f'https://statsapi.mlb.com/api/v1/schedule?sportId=1&startDate={entire_season}-03-01&endDate={entire_season}-11-01&gameType=R')
-        x = r.json()
+def fetch_game_ids(date):
+    r = requests.get(f'https://statsapi.mlb.com/api/v1/schedule?sportId=1&date={date}')
+    x = r.json()
+    if x['totalGames']==0:
         date_list = []
-        if x['totalGames']==0:
-            date_list += []
-        else:
-            for game_day in tqdm.tqdm(x['dates']):
-                date_list += pl.DataFrame(game_day['games'])['gamePk'].to_list()
     else:
-        r = requests.get(f'https://statsapi.mlb.com/api/v1/schedule?sportId=1&date={date}')
-        x = r.json()
-        if x['totalGames']==0:
-            date_list = []
-        elif regular_season:
-            date_list = pl.DataFrame(x['dates'][0]['games']).filter(pl.col('gameType')=='R')['gamePk'].to_list()
-        else:
-            date_list = pl.DataFrame(x['dates'][0]['games'])['gamePk'].to_list()
+        date_list = pl.DataFrame(x['dates'][0]['games'])['gamePk'].to_list()
     return date_list
 
 def fetch_pitches(game_pk):
