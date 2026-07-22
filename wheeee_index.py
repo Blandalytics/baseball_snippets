@@ -393,7 +393,7 @@ def game_chart(game_choice_id):
     ax.axis('off')
 
     excite_ax = fig.add_axes([0.82,0.8,0.1,0.1], anchor='NE', zorder=1)
-    excite_ax.text(0,0.9,'Excitement\nIndex',ha='center',va='center',fontsize=15)
+    excite_ax.text(0,0.9,'Excitement\nIndex',ha='center',va='center',fontsize=14)
     if abs(watch_index-5)==5:
         excite_ax.text(0,-0.4,f'{watch_index:.0f}',ha='center',va='center',size=24,
                        color='k' if abs(watch_index-5)<2.5 else 'w',
@@ -456,7 +456,7 @@ def game_chart(game_choice_id):
                        fc=sns.color_palette('vlag',n_colors=1001)[int(np.clip(win_swing_index*100,0,1000))],
                        ec='k'))
     fig.text(0.55,0.69,'Game Win Probability',
-             ha='center', fontsize=14)
+             ha='center', fontsize=12)
     fig.text(0.14,0.02,'Data: MLB',
              ha='left', fontsize=10)
 
