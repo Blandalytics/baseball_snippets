@@ -408,7 +408,7 @@ def game_chart(game_choice_id):
     image = load_team_logo(home_abbr)
     home_team_ax.imshow(image,aspect='equal')
     home_team_ax.axis('off')
-    ax.text((game_abs/7),1,f' {home_score:.0f} ',
+    ax.text((game_abs/7),1,f'  {home_score:.0f}  ',
             color=pl_highlight if home_score > away_score else 'k',
             fontsize=30,ha='center',va='center',
             bbox=dict(boxstyle='round', pad=0,
@@ -419,7 +419,7 @@ def game_chart(game_choice_id):
     image = load_team_logo(away_abbr)
     away_team_ax.imshow(image,aspect='equal')
     away_team_ax.axis('off')
-    ax.text((game_abs/7),0,f' {away_score:.0f} ',
+    ax.text((game_abs/7),0,f'  {away_score:.0f}  ',
             color=pl_highlight if away_score > home_score else 'k',
             fontsize=30,ha='center',va='center',
             bbox=dict(boxstyle='round', pad=0,
