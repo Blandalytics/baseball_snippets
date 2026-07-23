@@ -14,4 +14,3 @@ lxml
 pytz
 CairoSVG
 pyfonts
-html
