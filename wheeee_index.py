@@ -1,5 +1,6 @@
 import streamlit as st
 import datetime
+import html
 from datetime import timedelta
 import numpy as np
 import polars as pl
