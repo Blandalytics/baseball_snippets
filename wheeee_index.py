@@ -265,7 +265,7 @@ def fetch_game_ids(date):
             if "rescheduleGameDate" in list(game.keys()):
                 if game["rescheduleGameDate"] != date:
                     continue
-            if game["status"]["detailedState"] in ["Pre-Game", "Warmup"]:
+            if game["status"]["detailedState"] in ["Pre-Game", "Warmup", "Scheduled"]:
                 continue
             date_list += [game["gamePk"]]
     return date_list
