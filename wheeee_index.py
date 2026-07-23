@@ -368,8 +368,8 @@ def game_chart(game_choice_id):
 
     # Gradient image spanning the fill's vertical range, colored by y-value
     # (i.e. distance from the reference line), then clipped to that polygon.
-    y_min = 0
-    y_max = 1
+    y_min = 0.25
+    y_max = 0.75
     gradient = np.linspace(y_min, y_max, 256).reshape(-1, 1)
 
     im = ax.imshow(
