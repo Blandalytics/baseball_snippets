@@ -122,10 +122,38 @@ html, body, [data-testid="stAppViewContainer"]{color:var(--text-cell); font-fami
 }
 [data-testid="stMarkdownContainer"] a{color:var(--cyan-header);}
 [data-testid="stMarkdownContainer"] p, [data-testid="stMarkdownContainer"] li{color:var(--text-nav);}
-[data-testid="stDateInput"] input{
-  background:var(--surface-3) !important; border-color:var(--border-tab) !important;
-  color:var(--text-cell) !important; font-family:'Work Sans',sans-serif !important;
+/* Date input — styled to match the Dropdown trigger for visual pairing with
+   the selectbox next to it. st.date_input is still a BaseWeb input (not
+   react-aria), so it's targeted via data-baseweb — verified against the live
+   DOM, not guessed. */
+[data-testid="stDateInput"] div[data-baseweb="input"]{
+  position:relative; height:36px; border-radius:8px;
+  background:linear-gradient(144.79deg,#245297 0%,#0a2e63 100%) !important;
+  box-shadow:0 6px 20px rgba(0,0,0,0.36);
+  border:none !important; overflow:hidden;
 }
+[data-testid="stDateInput"] div[data-baseweb="input"]::after{
+  content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.3);
+}
+[data-testid="stDateInput"] div[data-baseweb="input"]:focus-within{
+  border-radius:8px 8px 0 0;
+}
+[data-testid="stDateInput"] div[data-baseweb="base-input"]{
+  background:transparent !important; height:100%;
+}
+[data-testid="stDateInputField"]{
+  background:transparent !important; border:none !important; box-shadow:none !important;
+  color:var(--text-cell) !important; font:700 14px/1.2 'Work Sans',sans-serif !important;
+  padding-left:13px !important; height:100% !important;
+}
+[data-testid="stDateInputField"]:focus-visible{outline:none;}
+[data-baseweb="popover"]{
+  background:linear-gradient(118.49deg,#245297 0%,#0a2e63 100%) !important;
+  box-shadow:0 0 0 1px rgba(0,80,100,0.4), 0 6px 20px rgba(0,0,0,0.36) !important;
+  border-radius:8px !important; border:none !important;
+}
+[data-baseweb="calendar"]{background:transparent !important;}
 /* Dropdown — st.selectbox styled to the guide's "Dropdowns" component.
    Streamlit (1.60+) renders this as a react-aria ComboBox, not the older
    BaseWeb Select, so it's targeted by role/data-testid rather than
