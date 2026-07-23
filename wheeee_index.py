@@ -60,7 +60,7 @@ for _weight in (600, 700, 800):
 # Plot Style
 pl_white = "#FFFFFF"
 pl_background = "#292C42"
-pl_text = "#00D4FF"  #'#72CBFD'
+pl_text = "#55e8ff"  #'#72CBFD'
 pl_line_color = "#8D96B3"
 pl_highlight = "#F1C647"
 pl_highlight_gradient = ["#F1C647", "#F5A05E"]
@@ -142,7 +142,7 @@ table.plpd-data td.gold{color:var(--gold); font-weight:700;}
     unsafe_allow_html=True,
 )
 
-new_title = '<p style="color:#72CBFD; font-weight: bold; font-size: 42px; text-align:center;">MLB Excitement Index</p>'
+new_title = '<p style="color:#55e8ff; font-weight: bold; font-size: 42px; text-align:center;">MLB Excitement Index</p>'
 st.markdown(new_title, unsafe_allow_html=True)
 
 color_df = pl.read_csv(
