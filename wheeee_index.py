@@ -800,7 +800,6 @@ def game_chart(game_choice_id):
 game_chart(game_choice_id)
 
 st.header(f"Excitement stats for {date:%-m/%-d/%y} games:")
-st.header(f"Excitement stats for {date:%-m/%-d/%y} games:")
 
 results_df = (
     table_df.with_columns(
