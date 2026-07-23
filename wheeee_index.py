@@ -412,7 +412,7 @@ def game_chart(game_choice_id):
             color=pl_highlight if home_score > away_score else 'k',
             fontsize=30,ha='center',va='center',
             bbox=dict(boxstyle='round', pad=0,
-                       fc='w',fa=0.8,linewidth=2,
+                       fc='w',alpha=0.8,linewidth=2,
                        ec=home_color if home_score > away_score else 'w'))
 
     away_team_ax = fig.add_axes([0.12,0.625,0.1,0.12], anchor='NW', zorder=1)
@@ -423,7 +423,7 @@ def game_chart(game_choice_id):
             color=pl_highlight if away_score > home_score else 'k',
             fontsize=30,ha='center',va='center',
             bbox=dict(boxstyle='round', pad=0,
-                       fc='w',fa=0.8,linewidth=2,
+                       fc='w',alpha=0.8,linewidth=2,
                        ec=away_color if away_score > home_score else 'w'))
 
 
