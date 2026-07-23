@@ -410,7 +410,10 @@ def game_chart(game_choice_id):
     home_team_ax.axis('off')
     ax.text((game_abs/7),1,f'{home_score:.0f}',
             color=pl_highlight if home_score > away_score else 'k',
-            fontsize=30,ha='center',va='center')
+            fontsize=30,ha='center',va='center',
+            bbox=dict(boxstyle='round', pad=0.25,
+                       fc='w',linewidth=2,
+                       ec=home_color if home_score > away_score else 'w'))
 
     away_team_ax = fig.add_axes([0.12,0.625,0.1,0.12], anchor='NW', zorder=1)
     image = load_team_logo(away_abbr)
@@ -418,7 +421,10 @@ def game_chart(game_choice_id):
     away_team_ax.axis('off')
     ax.text((game_abs/7),0,f'{away_score:.0f}',
             color=pl_highlight if away_score > home_score else 'k',
-            fontsize=30,ha='center',va='center')
+            fontsize=30,ha='center',va='center',
+            bbox=dict(boxstyle='round', pad=0.25,
+                       fc='w',linewidth=2,
+                       ec=away_color if away_score > home_score else 'w'))
 
 
     fig.suptitle(f'{away_name} @ {home_name}',
