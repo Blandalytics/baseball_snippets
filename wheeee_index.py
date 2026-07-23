@@ -532,6 +532,12 @@ def game_table(win_prob_df):
             pl.col("tension").mean(),
         )
         .with_columns(
+            pl.when(pl.col("game_outs")<51)
+                    .then(pl.col("k_l_excite") * 51 / pl.col("game_outs"))
+                    .otherwise(pl.col("k_l_excite"))
+                    .alias("k_l_excite")
+        )
+        .with_columns(
             (pl.col("tension") * 100).alias("tension_adj"),
             (2 ** pl.col("k_l_excite")).alias("k_l_excite_adj"),
         )
@@ -545,12 +551,6 @@ def game_table(win_prob_df):
                 ),
             ],
             how="align_inner",
-        )
-        .with_columns(
-            pl.when(pl.col("game_outs")<51)
-                    .then(pl.col("k_l_excite") * 51 / pl.col("game_outs"))
-                    .otherwise(pl.col("k_l_excite"))
-                    .alias("k_l_excite")
         )
         .with_columns(
             ((pl.col("k_l_excite") - 0.25) / 2).alias("excite_scale"),
