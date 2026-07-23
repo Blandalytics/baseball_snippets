@@ -341,8 +341,8 @@ def game_chart(game_choice_id):
 
     # Create a figure and plot the line on it
     fig, ax = plt.subplots(figsize=(7,4))
-    ax.axhline(1.005,color=home_color,alpha=1,xmin=(game_abs/4.25)/(game_abs+1.25),xmax=(game_abs+1)/(game_abs+1.25))
-    ax.axhline(-0.005,color=away_color,alpha=1,xmin=(game_abs/4.25)/(game_abs+1.25),xmax=(game_abs+1)/(game_abs+1.25))
+    ax.axhline(1.005,color=home_color,alpha=1,xmin=(game_abs/5)/(game_abs+1.25),xmax=(game_abs+1)/(game_abs+1.25))
+    ax.axhline(-0.005,color=away_color,alpha=1,xmin=(game_abs/5)/(game_abs+1.25),xmax=(game_abs+1)/(game_abs+1.25))
     inning_text_dict = game_df.filter(pl.col('game_pk')==game_choice_id).group_by('inning').agg(pl.median('ab_number'),
                                                                                             pl.max('ab_number').alias('ab_max')).sort('inning').to_dict(as_series=False)
     for inning in inning_text_dict['inning']:
