@@ -144,13 +144,13 @@ html, body, [data-testid="stAppViewContainer"]{color:var(--text-cell); font-fami
   border-radius:8px 8px 0 0;
 }
 [data-testid="stSelectbox"] input[role="combobox"]{
-  background:transparent !important; border:none !important; box-shadow:none !important;
+  border:none !important; box-shadow:none !important;
   color:var(--text-cell) !important; font:700 14px/1.2 'Work Sans',sans-serif !important;
   padding-left:13px !important;
 }
 [data-testid="stSelectbox"] input[role="combobox"]:focus-visible{outline:none;}
 [data-testid="stSelectbox"] button[aria-haspopup="listbox"]{
-  background:transparent !important; border:none !important;
+  bacborder:none !important;
 }
 [data-testid="stSelectbox"] button[aria-haspopup="listbox"] svg{
   color:#fff; fill:#fff; width:14px; height:14px;
@@ -165,7 +165,7 @@ html, body, [data-testid="stAppViewContainer"]{color:var(--text-cell); font-fami
   box-shadow:inset 0 1px 0 rgba(255,255,255,0.3);
 }
 [data-testid="stSelectboxVirtualDropdown"] [role="listbox"]{
-  padding-top:9px; padding-bottom:9px; background:transparent !important;
+  padding-top:9px; padding-bottom:9px;
 }
 [data-testid="stSelectboxVirtualDropdown"] [role="option"] [data-item-hl]{
   font:400 12px/1.2 'Work Sans',sans-serif; color:var(--text-cell) !important;
