@@ -86,10 +86,6 @@ st.set_page_config(page_title='MLB Excitement Stats', page_icon=letter_logo)
 
 new_title = '<p style="color:#72CBFD; font-weight: bold; font-size: 42px; text-align:center;">MLB Excitement Index</p>'
 st.markdown(new_title, unsafe_allow_html=True)
-st.write('Excitement Index quantifies how much excitement a baseball game has, based on three components:')
-st.write('- [Volatility](https://inpredictable.substack.com/p/quantifying-excitement): how much does the win probability change throughout the game (0-10)')
-st.write('- [Tension](https://www.inpredictable.com/2020/04/an-update-to-tension-index-with-assist_11.html): how uncertain the outcome of the game is (0-10)')
-st.write('- Biggest Swing: largest 6-out swing in win probability')
 
 color_df = pl.read_csv('https://github.com/Blandalytics/PLV_viz/blob/main/mlb_team_colors.csv?raw=true')
 color_dict = color_df[['Short Code','Color 1']].rows_by_key(key=["Short Code"],unique=True)
@@ -481,13 +477,8 @@ st.dataframe(table_df.with_columns(
 ).rename({'game_name':'Game',
           'win_swing':'Biggest Swing'})[['Game','Volatility','Tension','Biggest Swing','Excitement Index']].sort('Excitement Index',descending=True))
 
-# st.header('Glossary')
-# st.write(f'''
-# - **Δ Win Prob/54 Outs**: The total change in win probability for the game, normalized to 54 outs (a median game is ~180%). Derived from [Luke Benz's Game Excitement Index](https://lukebenz.com/post/gei/)
-# ''')
-# st.write(f'''
-# - **Biggest Swing**: Largest swing in win probability across 6 outs (after the 1st inning; a median game is ~40%)
-# ''')
-# st.write(f'''
-# - **Wheeee Index**: Combination of Δ Win Prob/54 Outs and Biggest Swing, scaled 0-10
-# ''')
+st.header('Glossary')
+st.write('Excitement Index quantifies how exciting a baseball game was, on a 0-10 scale, based on three components:')
+st.write('- [Volatility](https://inpredictable.substack.com/p/quantifying-excitement): how much did the win probability change throughout the game (0-10)')
+st.write('- [Tension](https://www.inpredictable.com/2020/04/an-update-to-tension-index-with-assist_11.html): how uncertain the outcome of the game was, on average (0-10)')
+st.write('- Biggest Swing: largest 6-out swing in win probability')
