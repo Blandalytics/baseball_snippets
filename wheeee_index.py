@@ -48,35 +48,48 @@ def load_team_logo(team_abbr):
     image = Image.open("team_logo.png")
     return image
 
-
 base_font = "DM Sans"
-font = load_google_font(base_font, weight=700)
-fm.fontManager.addfont(str(font.get_file()))
+for _weight in (400, 700):
+    _f = load_google_font(base_font, weight=_weight)
+    fm.fontManager.addfont(str(_f.get_file()))
+for _weight in (600, 700, 800):
+    _f = load_google_font("Work Sans", weight=_weight)
+    fm.fontManager.addfont(str(_f.get_file()))
 
-## Set Styling
-# Plot Style
-pl_white = "#FFFFFF"
-pl_background = "#292C42"
-pl_text = "#00D4FF"  #'#72CBFD'
-pl_line_color = "#8D96B3"
-pl_highlight = "#F1C647"
-pl_highlight_gradient = ["#F1C647", "#F5A05E"]
-pl_highlight_cmap = sns.color_palette(
-    f"blend:{pl_highlight_gradient[0]},{pl_highlight_gradient[1]}", as_cmap=True
-)
+## Set Styling — PLPD Design System (Subtle Glass Over Mesh, v1.1)
+# Only the tokens the matplotlib chart itself needs; the page-chrome CSS below
+# carries the full token set separately.
+surface_1 = "#13152A"
+surface_3 = "#21243A"
+cyan = "#55e8ff"
+cyan_header = "#73efff"
+text_cell = "#f0f1f5"
+text_team = "#B4BBD7"
+border_table = "#768ABE"
+red = "#f4707c"
+gold = "#f5b950"
+
+# Excitement-badge heat scale: calm (cyan) -> neutral (near-white) -> hot (red).
+# Domain-layer chart color per the style guide — chrome elsewhere stays on-system.
+heat_cmap = sns.blend_palette([cyan, text_cell, red], as_cmap=True)
+
+
+def heat_color(value_0_to_10):
+    return heat_cmap(float(np.clip(value_0_to_10 / 10, 0, 1)))
+
 
 sns.set_theme(
     style={
-        "axes.edgecolor": pl_line_color,
-        "axes.facecolor": pl_white,
-        "axes.labelcolor": pl_white,
-        "xtick.color": pl_line_color,
-        "ytick.color": pl_line_color,
-        "figure.facecolor": pl_white,
-        "grid.color": pl_background,
+        "axes.edgecolor": border_table,
+        "axes.facecolor": "none",
+        "axes.labelcolor": text_cell,
+        "xtick.color": text_team,
+        "ytick.color": text_team,
+        "figure.facecolor": "none",
+        "grid.color": border_table,
         "grid.linestyle": "-",
-        "legend.facecolor": pl_background,
-        "text.color": "k",
+        "legend.facecolor": surface_3,
+        "text.color": text_cell,
     },
     font=base_font,
 )
