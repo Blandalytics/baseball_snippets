@@ -639,7 +639,7 @@ def game_chart(game_choice_id):
         "watch_score"
     ].clip(0, 10)[0]
 
-    game_abs = max(x)
+    game_abs = max(51,max(x))
     # chart_outs = 54 if game_outs <51 else game_outs
 
     # Create a figure and plot the line on it
