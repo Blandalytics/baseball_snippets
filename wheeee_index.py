@@ -68,6 +68,16 @@ pl_highlight_cmap = sns.color_palette(
     f"blend:{pl_highlight_gradient[0]},{pl_highlight_gradient[1]}", as_cmap=True
 )
 
+surface_1 = "#13152A"
+surface_3 = "#21243A"
+cyan = "#55e8ff"
+cyan_header = "#73efff"
+text_cell = "#f0f1f5"
+text_team = "#B4BBD7"
+border_table = "#768ABE"
+red = "#f4707c"
+gold = "#f5b950"
+
 sns.set_theme(
     style={
         "axes.edgecolor": pl_line_color,
@@ -112,10 +122,60 @@ html, body, [data-testid="stAppViewContainer"]{color:var(--text-cell); font-fami
 }
 [data-testid="stMarkdownContainer"] a{color:var(--cyan-header);}
 [data-testid="stMarkdownContainer"] p, [data-testid="stMarkdownContainer"] li{color:var(--text-nav);}
-[data-testid="stDateInput"] input, [data-testid="stSelectbox"] div[data-baseweb="select"] > div{
+[data-testid="stDateInput"] input{
   background:var(--surface-3) !important; border-color:var(--border-tab) !important;
   color:var(--text-cell) !important; font-family:'Work Sans',sans-serif !important;
 }
+/* Dropdown — st.selectbox styled to the guide's "Dropdowns" component.
+   Streamlit (1.60+) renders this as a react-aria ComboBox, not the older
+   BaseWeb Select, so it's targeted by role/data-testid rather than
+   data-baseweb — verified against the live DOM, not guessed. */
+[data-testid="stSelectbox"] div[role="group"]{
+  position:relative; height:36px; border-radius:8px;
+  background:linear-gradient(144.79deg,#245297 0%,#0a2e63 100%) !important;
+  box-shadow:0 6px 20px rgba(0,0,0,0.36);
+  border:none !important; overflow:hidden;
+}
+[data-testid="stSelectbox"] div[role="group"]::after{
+  content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.3);
+}
+[data-testid="stSelectbox"] div[role="group"]:has(input[aria-expanded="true"]){
+  border-radius:8px 8px 0 0;
+}
+[data-testid="stSelectbox"] input[role="combobox"]{
+  background:transparent !important; border:none !important; box-shadow:none !important;
+  color:var(--text-cell) !important; font:700 14px/1.2 'Work Sans',sans-serif !important;
+  padding-left:13px !important;
+}
+[data-testid="stSelectbox"] input[role="combobox"]:focus-visible{outline:none;}
+[data-testid="stSelectbox"] button[aria-haspopup="listbox"]{
+  background:transparent !important; border:none !important;
+}
+[data-testid="stSelectbox"] button[aria-haspopup="listbox"] svg{
+  color:#fff; fill:#fff; width:14px; height:14px;
+}
+[data-testid="stSelectboxVirtualDropdown"]{
+  background:linear-gradient(118.49deg,rgba(36,82,151,0.6) 0%,rgba(10,46,99,0.6) 100%) !important;
+  box-shadow:0 0 0 1px rgba(0,80,100,0.4), 0 6px 20px rgba(0,0,0,0.36) !important;
+  border-radius:0 0 8px 8px !important; border:none !important;
+}
+[data-testid="stSelectboxVirtualDropdown"]::after{
+  content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.3);
+}
+[data-testid="stSelectboxVirtualDropdown"] [role="listbox"]{
+  padding-top:9px; padding-bottom:9px; background:transparent !important;
+}
+[data-testid="stSelectboxVirtualDropdown"] [role="option"] [data-item-hl]{
+  font:400 12px/1.2 'Work Sans',sans-serif; color:var(--text-cell) !important;
+  padding-left:14px; height:100%; display:flex; align-items:center;
+  background:transparent !important;
+}
+[data-testid="stSelectboxVirtualDropdown"] [role="option"][data-focused="true"]{
+  background:linear-gradient(154.81deg,#4071ba 0%,#204b8c 100%) !important;
+}
+*:focus-visible{outline:2px solid var(--cyan); outline-offset:2px;}
 .plpd-table-wrap{
   border:1px solid var(--border-table); border-radius:10px; overflow:hidden; position:relative;
   box-shadow:0 0 0 1px rgba(7,9,18,0.3), 0 18px 30px rgba(0,0,0,0.28);
