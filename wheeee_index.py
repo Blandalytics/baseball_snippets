@@ -801,49 +801,62 @@ def game_chart(game_choice_id):
         )
     excite_ax.axis("off")
 
-    home_team_ax = fig.add_axes([0.13, 0.115, 0.1, 0.12], anchor="NW", zorder=1)
+    home_team_ax = fig.add_axes([0.1275, 0.12, 0.11, 0.11], anchor="NW", zorder=1)
     image = load_team_logo(home_abbr)
     home_team_ax.imshow(image, aspect="equal")
     home_team_ax.axis("off")
-    home_rect = patches.Rectangle((-0.5, 0.875), width=game_abs * 0.21, 
-                                  height=0.25, facecolor="w",zorder=10,
+    home_rect = patches.Rectangle((-0.9, 0.875), width=game_abs * 0.215,
+                                  height=0.25, facecolor=pl_background,zorder=10,
                                   linewidth=2,
                                 #  boxstyle="round",
                                  edgecolor=pl_highlight if home_score > away_score else pl_background)
     ax.add_patch(home_rect)
+    home_rect2 = patches.Rectangle((-0.54, 0.885), width=game_abs * 0.105,
+                                  height=0.236, facecolor="w",zorder=10,
+                                  linewidth=0,
+                                #  boxstyle="round",
+                                 edgecolor=pl_background)
+    ax.add_patch(home_rect2)
     ax.text(
         (game_abs * 0.15),
-        1,
+        1.02,
         f"{home_score:.0f}",
-        color=pl_highlight if home_score > away_score else "k",
+        color=pl_highlight if home_score > away_score else "w",
         fontsize=30,
         ha="center",
         va="center",
         zorder=10,
     )
 
-    away_team_ax = fig.add_axes([0.13, 0.625, 0.1, 0.12], anchor="NW", zorder=1)
+    away_team_ax = fig.add_axes([0.1275, 0.625, 0.11, 0.11], anchor="NW", zorder=1)
     image = load_team_logo(away_abbr)
     away_team_ax.imshow(image, aspect="equal")
     away_team_ax.axis("off")
-    away_rect = patches.Rectangle((-0.5, -0.13), width=game_abs * 0.21, 
-                                  height=0.25, facecolor="w",zorder=10,
+    
+    away_rect = patches.Rectangle((-0.9, -0.13), width=game_abs * 0.215,
+                                  height=0.25, facecolor=pl_background,zorder=10,
                                   linewidth=2,
                                 #  boxstyle="round",
                                  edgecolor=pl_highlight if away_score > home_score else pl_background)
     ax.add_patch(away_rect)
+    away_rect2 = patches.Rectangle((-0.54, -0.12), width=game_abs * 0.105,
+                                  height=0.236, facecolor="w",zorder=10,
+                                  linewidth=0,
+                                #  boxstyle="round",
+                                 edgecolor=pl_background)
+    ax.add_patch(away_rect2)
     ax.text(
         (game_abs * 0.15),
         0,
         f"{away_score:.0f}",
-        color=pl_highlight if away_score > home_score else "k",
+        color=pl_highlight if away_score > home_score else "w",
         fontsize=30,
         ha="center",
         va="center",
         zorder=10,
     )
 
-    fig.text(0.415,0.92,f"{away_name} @ {home_name}", fontsize=25,ha="center",va="top")
+    fig.suptitle(f"{away_name} @ {home_name}", fontsize=25, x=0.415, y=0.9)
     fig.text(
         0.415,
         0.79,
