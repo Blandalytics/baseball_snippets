@@ -684,7 +684,7 @@ def game_chart(game_choice_id):
         color=pl_highlight if home_score > away_score else "w",
         alpha=1,
         xmin=(game_abs / 5) / (game_abs + 1.25),
-        xmax=(game_abs + 1) / (game_abs + 1.5),
+        xmax=(game_abs + 1) / (game_abs + 1.4),
         linewidth=2,
         zorder=9
     )
@@ -693,7 +693,7 @@ def game_chart(game_choice_id):
         color=pl_highlight if away_score > home_score else "w",
         alpha=1,
         xmin=(game_abs / 5) / (game_abs + 1.25),
-        xmax=(game_abs + 1) / (game_abs + 1.5),
+        xmax=(game_abs + 1) / (game_abs + 1.4),
         linewidth=2,
         zorder=9
     )
