@@ -49,12 +49,14 @@ def load_team_logo(team_abbr):
     return image
 
 base_font = "DM Sans"
-for _weight in (400, 700):
-    _f = load_google_font(base_font, weight=_weight)
-    fm.fontManager.addfont(str(_f.get_file()))
-for _weight in (600, 700, 800):
-    _f = load_google_font("Work Sans", weight=_weight)
-    fm.fontManager.addfont(str(_f.get_file()))
+# for _weight in (400, 700):
+#     _f = load_google_font(base_font, weight=_weight)
+#     fm.fontManager.addfont(str(_f.get_file()))
+# for _weight in (600, 700, 800):
+#     _f = load_google_font("Work Sans", weight=_weight)
+#     fm.fontManager.addfont(str(_f.get_file()))
+font = load_google_font(base_font, weight=700)
+fm.fontManager.addfont(str(font.get_file()))
 
 ## Set Styling
 # Plot Style
@@ -666,20 +668,24 @@ def game_chart(game_choice_id):
     # chart_outs = 54 if game_outs <51 else game_outs
 
     # Create a figure and plot the line on it
-    fig, ax = plt.subplots(figsize=(7, 4))
+    fig, ax = plt.subplots(figsize=(7, 5))
     ax.axhline(
-        1.005,
-        color=home_color,
+        1,
+        color=pl_highlight if home_score > away_score else "w",
         alpha=1,
         xmin=(game_abs / 5) / (game_abs + 1.25),
-        xmax=(game_abs + 1) / (game_abs + 1.25),
+        xmax=(game_abs + 1) / (game_abs + 1.5),
+        linewidth=2,
+        zorder=9
     )
     ax.axhline(
-        -0.005,
-        color=away_color,
+        0,
+        color=pl_highlight if away_score > home_score else "w",
         alpha=1,
         xmin=(game_abs / 5) / (game_abs + 1.25),
-        xmax=(game_abs + 1) / (game_abs + 1.25),
+        xmax=(game_abs + 1) / (game_abs + 1.5),
+        linewidth=2,
+        zorder=9
     )
     inning_text_dict = (
         game_df.filter(pl.col("game_pk") == game_choice_id)
@@ -701,7 +707,7 @@ def game_chart(game_choice_id):
             va="center",
             color=pl_background,
             bbox=dict(
-                boxstyle="round", facecolor="w", alpha=0.75, edgecolor=pl_background
+                boxstyle="round", facecolor="w", alpha=0.9,edgecolor=pl_background
             ),
         )
         if inning != inning_text_dict["inning"][-1]:
@@ -711,12 +717,12 @@ def game_chart(game_choice_id):
                 alpha=0.25,
                 ymin=(0.25 + 0.1) / 1.5,
                 ymax=(0.75 + 0.1) / 1.5,
-                color=pl_background,
+                color='w',
             )
 
-    ax.axhline(0.5, color=pl_background, alpha=0.5)
+    ax.axhline(0.5, color='w', alpha=0.5,xmax=(game_abs + 1) / (game_abs + 1.5))
 
-    sns.lineplot(x=x, y=y, color=pl_background)
+    sns.lineplot(x=x, y=y, color='w',linewidth=1)
     verts = np.column_stack([x, y]).tolist()
     verts += [[x[-1], hline_y], [x[0], hline_y]]
     clip_path = Path(verts + [verts[0]])
@@ -736,18 +742,18 @@ def game_chart(game_choice_id):
         extent=[x[0], x[-1], y_min, y_max],
         origin="lower",
         aspect="auto",
-        cmap=sns.blend_palette([away_color, "w", home_color], as_cmap=True),
+        cmap=sns.blend_palette([away_color, pl_background, home_color], as_cmap=True),
         vmin=y_min,
         vmax=y_max,
         zorder=1,
     )
     im.set_clip_path(clip_patch)
 
-    ax.set(xlim=(-1, game_abs + 0.25), ylim=(1.1, -0.4))
+    ax.set(xlim=(-1, game_abs + 0.25), ylim=(1.135, -0.4))
     ax.axis("off")
 
     excite_ax = fig.add_axes([0.82, 0.8, 0.1, 0.1], anchor="NE", zorder=1)
-    excite_ax.text(0, 0.9, "Excitement\nIndex", ha="center", va="center", fontsize=14)
+    excite_ax.text(0, 0.8, "Excitement\nIndex", ha="center", va="center", fontsize=14)
     if round(watch_index, 1) >= 10:
         excite_ax.text(
             0,
@@ -755,13 +761,14 @@ def game_chart(game_choice_id):
             f"{watch_index:.0f}",
             ha="center",
             va="center",
-            size=18,
+            size=24,
             color="w",
             bbox=dict(
                 boxstyle="circle",
-                pad=0.3,
+                pad=0.4,
                 fc=sns.color_palette("vlag", n_colors=1001)[-1],
-                ec=pl_background,
+                ec=pl_highlight,
+                linewidth=2
             ),
         )
     else:
@@ -777,65 +784,66 @@ def game_chart(game_choice_id):
                 boxstyle="circle",
                 pad=0.3,
                 fc=sns.color_palette("vlag", n_colors=1001)[int(watch_index * 100)],
-                ec=pl_background,
+                ec='w',
             ),
         )
     excite_ax.axis("off")
 
-    home_team_ax = fig.add_axes([0.12, 0.115, 0.1, 0.12], anchor="NW", zorder=1)
+    home_team_ax = fig.add_axes([0.13, 0.115, 0.1, 0.12], anchor="NW", zorder=1)
     image = load_team_logo(home_abbr)
     home_team_ax.imshow(image, aspect="equal")
     home_team_ax.axis("off")
+    home_rect = patches.Rectangle((-0.5, 0.875), width=game_abs * 0.21, 
+                                  height=0.25, facecolor="w",zorder=10,
+                                  linewidth=2,
+                                #  boxstyle="round",
+                                 edgecolor=pl_highlight if home_score > away_score else pl_background)
+    ax.add_patch(home_rect)
     ax.text(
-        (game_abs / 7),
-        1,
-        f" {home_score:.0f} ",
+        (game_abs * 0.15),
+        1.02,
+        f"{home_score:.0f}",
         color=pl_highlight if home_score > away_score else "k",
         fontsize=30,
         ha="center",
         va="center",
-        bbox=dict(
-            boxstyle="round",
-            pad=0,
-            fc="w",
-            linewidth=2,
-            ec=home_color if home_score > away_score else "w",
-        ),
+        zorder=10,
     )
 
-    away_team_ax = fig.add_axes([0.12, 0.625, 0.1, 0.12], anchor="NW", zorder=1)
+    away_team_ax = fig.add_axes([0.13, 0.625, 0.1, 0.12], anchor="NW", zorder=1)
     image = load_team_logo(away_abbr)
     away_team_ax.imshow(image, aspect="equal")
     away_team_ax.axis("off")
+    away_rect = patches.Rectangle((-0.5, -0.13), width=game_abs * 0.21, 
+                                  height=0.25, facecolor="w",zorder=10,
+                                  linewidth=2,
+                                #  boxstyle="round",
+                                 edgecolor=pl_highlight if away_score > home_score else pl_background)
+    ax.add_patch(away_rect)
     ax.text(
-        (game_abs / 7),
+        (game_abs * 0.15),
         0,
-        f" {away_score:.0f} ",
+        f"{away_score:.0f}",
         color=pl_highlight if away_score > home_score else "k",
         fontsize=30,
         ha="center",
         va="center",
-        bbox=dict(
-            boxstyle="round",
-            pad=0,
-            fc="w",
-            linewidth=2,
-            ec=away_color if away_score > home_score else "w",
-        ),
+        zorder=10,
     )
 
-    fig.suptitle(f"{away_name} @ {home_name}", fontsize=25, x=0.415, y=0.92)
+    fig.suptitle(f"{away_name} @ {home_name}", fontsize=25, x=0.415, y=0.9)
     fig.text(
         0.415,
-        0.77,
+        0.79,
         f"{game_date} - Game ID: {game_choice_id:.0f}",
         fontsize=12,
+        color=pl_line_color,
         ha="center",
     )
-    fig.text(0.375, 0.1, "Volatility", ha="center", fontsize=16)
+    fig.text(0.38, 0.1, "Volatility", ha="center", fontsize=16)
     fig.text(
-        0.375,
-        0.015,
+        0.38,
+        0.03,
         (
             f"{excite_index:.0f}"
             if round(excite_index, 1) >= 10
@@ -850,14 +858,14 @@ def game_chart(game_choice_id):
             fc=sns.color_palette("vlag", n_colors=1001)[
                 int(np.clip(excite_index * 100, 0, 1000))
             ],
-            ec="k",
+            ec="w",
         ),
     )
 
-    fig.text(0.55, 0.1, "Tension", ha="center", fontsize=16)
+    fig.text(0.555, 0.1, "Tension", ha="center", fontsize=16)
     fig.text(
-        0.55,
-        0.015,
+        0.555,
+        0.03,
         (
             f"{tension_index:.0f}"
             if round(tension_index, 1) >= 10
@@ -872,14 +880,14 @@ def game_chart(game_choice_id):
             fc=sns.color_palette("vlag", n_colors=1001)[
                 int(np.clip(tension_index * 100, 0, 1000))
             ],
-            ec="k",
+            ec="w",
         ),
     )
 
     fig.text(0.775, 0.1, "Biggest Swing", ha="center", fontsize=16)
     fig.text(
         0.775,
-        0.015,
+        0.03,
         f"{biggest_swing:.0f}%",
         ha="center",
         fontsize=16,
@@ -890,19 +898,19 @@ def game_chart(game_choice_id):
             fc=sns.color_palette("vlag", n_colors=1001)[
                 int(np.clip(win_swing_index * 100, 0, 1000))
             ],
-            ec="k",
+            ec="w",
         ),
     )
-    fig.text(0.55, 0.69, "Game Win Probability", ha="center", fontsize=12)
-    fig.text(0.14, 0.02, "Data: MLB", ha="left", fontsize=10)
+    fig.text(0.55, 0.7, "Game Win Probability", ha="center", fontsize=12,color=pl_line_color)
+    fig.text(0.15, -0.1, "Data: MLB", ha="left", fontsize=10,color=pl_line_color)
 
     # Add PL logo
-    # pl_ax = fig.add_axes([0.675,0.04,0.2,0.1], anchor='NE', zorder=1)
-    # pl_ax.set_facecolor(pl_background)
-    # # width, height = logo.size
-    # # pl_ax.imshow(logo.crop((0, 0, width, height-150)))
-    # pl_ax.imshow(logo)
-    # pl_ax.axis('off')
+    pl_ax = fig.add_axes([0.35,-0.2,0.32,0.16], anchor='NE', zorder=1)
+    pl_ax.set_facecolor(pl_background)
+    # width, height = logo.size
+    # pl_ax.imshow(logo.crop((0, 0, width, height-150)))
+    pl_ax.imshow(logo)
+    pl_ax.axis('off')
 
     sns.despine()
     st.pyplot(fig)
