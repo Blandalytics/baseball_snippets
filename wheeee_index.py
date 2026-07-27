@@ -9,7 +9,7 @@ import requests
 import pytz
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-import matplotlib.patches as 
+import matplotlib.patches as patches
 import urllib
 import cairosvg
 from PIL import Image
