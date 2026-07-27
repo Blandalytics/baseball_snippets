@@ -868,7 +868,7 @@ def game_chart(game_choice_id):
     fig.text(0.38, 0.1, "Volatility", ha="center", fontsize=16)
     fig.text(
         0.38,
-        0.03,
+        0.025,
         (
             f"{excite_index:.0f}"
             if round(excite_index, 1) >= 10
@@ -890,7 +890,7 @@ def game_chart(game_choice_id):
     fig.text(0.555, 0.1, "Tension", ha="center", fontsize=16)
     fig.text(
         0.555,
-        0.03,
+        0.025,
         (
             f"{tension_index:.0f}"
             if round(tension_index, 1) >= 10
@@ -912,7 +912,7 @@ def game_chart(game_choice_id):
     fig.text(0.775, 0.1, "Biggest Swing", ha="center", fontsize=16)
     fig.text(
         0.775,
-        0.03,
+        0.025,
         f"{biggest_swing:.0f}%",
         ha="center",
         fontsize=16,
