@@ -811,7 +811,7 @@ def game_chart(game_choice_id):
     ax.add_patch(home_rect)
     ax.text(
         (game_abs * 0.15),
-        1.02,
+        1,
         f"{home_score:.0f}",
         color=pl_highlight if home_score > away_score else "k",
         fontsize=30,
