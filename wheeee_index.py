@@ -841,7 +841,7 @@ def game_chart(game_choice_id):
         zorder=10,
     )
 
-    fig.suptitle(f"{away_name} @ {home_name}", fontsize=25, x=0.415, y=0.9)
+    fig.text(f"{away_name} @ {home_name}", fontsize=25, x=0.415, y=0.9,ha='center)
     fig.text(
         0.415,
         0.79,
