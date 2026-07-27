@@ -777,7 +777,7 @@ def game_chart(game_choice_id):
             color="w",
             bbox=dict(
                 boxstyle="circle",
-                pad=0.4,
+                pad=0.35,
                 fc=sns.color_palette("vlag", n_colors=1001)[-1],
                 ec=pl_highlight,
                 linewidth=2
