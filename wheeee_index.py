@@ -805,13 +805,13 @@ def game_chart(game_choice_id):
     image = load_team_logo(home_abbr)
     home_team_ax.imshow(image, aspect="equal")
     home_team_ax.axis("off")
-    home_rect = patches.Rectangle((-0.9, 0.875), width=game_abs * 0.215,
+    home_rect = patches.Rectangle((-0.8, 0.875), width=game_abs * 0.21,
                                   height=0.25, facecolor=pl_background,zorder=10,
                                   linewidth=2,
                                 #  boxstyle="round",
                                  edgecolor=pl_highlight if home_score > away_score else pl_background)
     ax.add_patch(home_rect)
-    home_rect2 = patches.Rectangle((-0.65, 0.8825), width=game_abs * 0.105,
+    home_rect2 = patches.Rectangle((-0.6, 0.8825), width=game_abs * 0.1,
                                   height=0.2375, facecolor="w",zorder=10,
                                   linewidth=0,
                                 #  boxstyle="round",
@@ -833,13 +833,13 @@ def game_chart(game_choice_id):
     away_team_ax.imshow(image, aspect="equal")
     away_team_ax.axis("off")
     
-    away_rect = patches.Rectangle((-0.9, -0.13), width=game_abs * 0.215,
+    away_rect = patches.Rectangle((-0.8, -0.13), width=game_abs * 0.21,
                                   height=0.25, facecolor=pl_background,zorder=10,
                                   linewidth=2,
                                 #  boxstyle="round",
                                  edgecolor=pl_highlight if away_score > home_score else pl_background)
     ax.add_patch(away_rect)
-    away_rect2 = patches.Rectangle((-0.65, -0.1225), width=game_abs * 0.105,
+    away_rect2 = patches.Rectangle((-0.6, -0.1225), width=game_abs * 0.1,
                                   height=0.2375, facecolor="w",zorder=10,
                                   linewidth=0,
                                 #  boxstyle="round",
