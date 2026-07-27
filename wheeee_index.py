@@ -811,7 +811,7 @@ def game_chart(game_choice_id):
                                 #  boxstyle="round",
                                  edgecolor=pl_highlight if home_score > away_score else pl_background)
     ax.add_patch(home_rect)
-    home_rect2 = patches.Rectangle((-0.65, 0.88), width=game_abs * 0.105,
+    home_rect2 = patches.Rectangle((-0.675, 0.88), width=game_abs * 0.105,
                                   height=0.24, facecolor="w",zorder=10,
                                   linewidth=0,
                                 #  boxstyle="round",
@@ -839,8 +839,8 @@ def game_chart(game_choice_id):
                                 #  boxstyle="round",
                                  edgecolor=pl_highlight if away_score > home_score else pl_background)
     ax.add_patch(away_rect)
-    away_rect2 = patches.Rectangle((-0.6, -0.1225), width=game_abs * 0.105,
-                                  height=0.2375, facecolor="w",zorder=10,
+    away_rect2 = patches.Rectangle((-0.675, -0.1225), width=game_abs * 0.105,
+                                  height=0.24, facecolor="w",zorder=10,
                                   linewidth=0,
                                 #  boxstyle="round",
                                  edgecolor=pl_background)
