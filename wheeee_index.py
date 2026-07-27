@@ -636,9 +636,11 @@ def game_chart(game_choice_id):
     home_color = (
         "k" if color_dict[home_abbr][0] == "#FFFFFF" else color_dict[home_abbr][0]
     )
+    home_color = "#001c43" if home_abbr == "NYY" else home_color
     away_color = (
         "k" if color_dict[away_abbr][0] == "#FFFFFF" else color_dict[away_abbr][0]
     )
+    away_color = "#001c43" if away_abbr == "NYY" else away_color
 
     # Add start row for 50%
     append_row = single_game_df[0]
