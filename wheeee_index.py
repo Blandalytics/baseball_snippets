@@ -81,23 +81,32 @@ border_table = "#768ABE"
 red = "#f4707c"
 gold = "#f5b950"
 
+## Set Styling
+# Plot Style
+pl_white = '#FFFFFF'
+pl_background = '#292C42'
+pl_text = '#00D4FF'#'#72CBFD'
+pl_line_color = '#8D96B3'
+pl_highlight = '#F1C647'
+pl_highlight_gradient = ['#F1C647','#F5A05E']
+pl_highlight_cmap = sns.color_palette(f'blend:{pl_highlight_gradient[0]},{pl_highlight_gradient[1]}', as_cmap=True)
+
 sns.set_theme(
     style={
-        "axes.edgecolor": pl_line_color,
-        "axes.facecolor": pl_white,
-        "axes.labelcolor": pl_white,
-        "xtick.color": pl_line_color,
-        "ytick.color": pl_line_color,
-        "figure.facecolor": pl_white,
-        "grid.color": pl_background,
-        "grid.linestyle": "-",
-        "legend.facecolor": pl_background,
-        "text.color": "k",
-    },
-    font=base_font,
-)
+        'axes.edgecolor': pl_line_color,
+        'axes.facecolor': pl_background,
+        'axes.labelcolor': pl_white,
+        'xtick.color': pl_line_color,
+        'ytick.color': pl_line_color,
+        'figure.facecolor':pl_background,
+        'grid.color': pl_background,
+        'grid.linestyle': '-',
+        'legend.facecolor':pl_background,
+        'text.color': pl_white
+     },
+    font=base_font
+    )
 mpl.rcParams.update({"font.weight": 700})
-
 st.set_page_config(page_title="MLB Excitement Stats", page_icon=letter_logo)
 
 st.markdown(
