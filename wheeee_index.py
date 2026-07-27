@@ -630,7 +630,9 @@ def game_chart(game_choice_id):
     home_name = single_game_df["home_team"][0]
     away_name = single_game_df["away_team"][0]
     home_abbr = single_game_df["home_abbrev"][0]
+    home_abbr = "ATH" if home_abbr == "OAK" else home_abbr
     away_abbr = single_game_df["away_abbrev"][0]
+    away_abbr = "ATH" if away_abbr == "OAK" else away_abbr
     home_score = single_game_df["home_score"][0]
     away_score = single_game_df["away_score"][0]
     home_color = (
