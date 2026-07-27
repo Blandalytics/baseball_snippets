@@ -856,7 +856,7 @@ def game_chart(game_choice_id):
         zorder=10,
     )
 
-    fig.text(0.415,0.92,f"{away_name} @ {home_name}", fontsize=25,ha="center",va="top")
+    fig.text(0.415,0.92,f"{away_name} @ {home_name}", color=pl_text, fontsize=25,ha="center",va="top")
     fig.text(
         0.415,
         0.79,
