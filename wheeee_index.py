@@ -334,7 +334,7 @@ def fetch_pitches(game_pk):
                     pl.lit(date.year).alias("year_played"),
                 )
             )
-    if not df_list:
+    if (not df_list) | (len(x['scoreboard']['stats']['wpa']['gameWpa'])==0):
         pitches = pl.DataFrame(df_list)
     else:
         pitches = pl.concat(df_list, how="diagonal_relaxed").with_columns(
