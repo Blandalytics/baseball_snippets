@@ -171,7 +171,7 @@ def series_chart(fill_dict):
     # pl_ax.imshow(logo.crop((0, 0, width, height-150)))
     pl_ax.imshow(logo)
     pl_ax.axis('off')
-    sns.despine(left=True,bottom=True)
+    sns.despine(bottom=True,trim=True)
     st.pyplot(fig)
 
 # if st.button("Simulate series"):
@@ -228,7 +228,7 @@ def games_played_chart(series_len):
     home_text = f', all @{higher_seed_code}' if all_home else ''
     fig.suptitle(f'{higher_seed_team}/{lower_seed_team} Series Outcomes',y=1.03)
     fig.text(0.5,0.93,f'Games Played Distribution (Best of {series_len}{home_text})',ha='center',fontsize=9)
-    sns.despine(trim=True,bottom=True)
+    sns.despine(left=True,bottom=True)
     st.pyplot(fig)
 games_played_chart(series_len)
 
