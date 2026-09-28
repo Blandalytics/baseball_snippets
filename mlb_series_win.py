@@ -171,7 +171,7 @@ def series_chart(fill_dict):
     # pl_ax.imshow(logo.crop((0, 0, width, height-150)))
     pl_ax.imshow(logo)
     pl_ax.axis('off')
-    sns.despine(bottom=True,trim=True)
+    sns.despine(left=True,bottom=True)
     st.pyplot(fig)
 
 # if st.button("Simulate series"):
