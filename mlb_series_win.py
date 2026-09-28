@@ -220,7 +220,7 @@ def games_played_chart(series_len):
     # ax.yaxis.set_major_formatter(mtick.PercentFormatter(100,0))
     # ax.set_yticks(ax.get_yticks()[:-2])
     ax.yaxis.set_visible(False)
-    pl_ax = fig.add_axes([0.1,-0.04,0.2,0.1], anchor='S', zorder=1)
+    pl_ax = fig.add_axes([0.15,-0.04,0.2,0.1], anchor='S', zorder=1)
     # width, height = logo.size
     # pl_ax.imshow(logo.crop((0, 0, width, height-150)))
     pl_ax.imshow(logo)
