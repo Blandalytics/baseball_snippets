@@ -215,10 +215,11 @@ def games_played_chart(series_len):
     ax.legend(ncol=2,bbox_to_anchor=(0.49,0.93),loc='lower center',
               labels=[higher_seed_team+f' Win: {sum(games[0])/series_sims:.1%}',lower_seed_team+f' Win: {1-sum(games[0])/series_sims:.1%}'],edgecolor='w',framealpha=0)
 
-    ax.yaxis.set_major_formatter(mtick.PercentFormatter(100,0))
     ax.set_xticks(game_space)
     ax.set(xlabel='Win in X Games',ylabel='',ylim=(0,ax.get_ylim()[1]*1.15))
-    ax.set_yticks(ax.get_yticks()[:-2])
+    # ax.yaxis.set_major_formatter(mtick.PercentFormatter(100,0))
+    # ax.set_yticks(ax.get_yticks()[:-2])
+    ax.yaxis.set_visible(False)
     pl_ax = fig.add_axes([0.05,-0.04,0.2,0.1], anchor='S', zorder=1)
     # width, height = logo.size
     # pl_ax.imshow(logo.crop((0, 0, width, height-150)))
