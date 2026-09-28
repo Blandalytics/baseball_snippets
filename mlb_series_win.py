@@ -226,8 +226,8 @@ def games_played_chart(series_len):
     pl_ax.imshow(logo)
     pl_ax.axis('off')
     home_text = f', all @{higher_seed_code}' if all_home else ''
-    fig.suptitle(f'{higher_seed_team}/{lower_seed_team} Series Outcomes',y=1.03)
-    fig.text(0.5,0.93,f'Games Played Distribution (Best of {series_len}{home_text})',ha='center',fontsize=9)
+    fig.suptitle(f'{higher_seed_team}/{lower_seed_team} Series Outcomes',y=1)
+    fig.text(0.5,0.9,f'Games Played Distribution (Best of {series_len}{home_text})',ha='center',fontsize=9)
     sns.despine(left=True,bottom=True)
     st.pyplot(fig)
 games_played_chart(series_len)
