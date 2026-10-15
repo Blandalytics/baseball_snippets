@@ -5,4 +5,4 @@ choice = st.pills('Are you Indigenous/Native American?',['Yes','No'])
 if choice == 'Yes':
   st.write("It's your call.")
 elif choice == 'No':
-  st.write("Yeah, [it is](https://www.cnn.com/2021/10/28/us/atlanta-braves-tomahawk-chop).")
+  st.write("Yeah, [it](https://www.cnn.com/2021/10/28/us/atlanta-braves-tomahawk-chop) [is](https://www.11alive.com/article/sports/mlb/atlanta-braves/atlanta-braves-tomahawk-chop-offensive/85-cb0c1d5f-123a-4f2e-9b74-b8798e451100).")
